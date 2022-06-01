@@ -30,3 +30,20 @@ f_cij[:] = w_c[:,np.newaxis, np.newaxis]
 u_aij = np.einsum('cij,ca->aij',f_cij,c_ca)
 
 rho_ij = np.einsum('cij -> ij', f_cij)
+
+## From Lecture (23.5)
+Deadline: init june
+We have to show that our viscocity vs theoretical viscocity (picture 2).
+
+$y=a(t)/a(0)$
+
+$x= t$
+
+$curve = e^(-v*t*k_y ^2)$
+
+shearwave decay is nothing else than testing streaming and collision
+
+## next deadline
+Couette flow is super important because we will paralyze it.
+
+### Last Paralization
