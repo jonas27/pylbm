@@ -30,8 +30,3 @@ f_cij[:] = w_c[:,np.newaxis, np.newaxis]
 u_aij = np.einsum('cij,ca->aij',f_cij,c_ca)
 
 rho_ij = np.einsum('cij -> ij', f_cij)
-
-
-
-## probability function - don't really use
-Should have the form f(c,i,j) (running dim as first is fortran style), but I like f(i,j,c) more
