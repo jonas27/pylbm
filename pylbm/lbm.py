@@ -5,12 +5,9 @@ f_ijc: is the probability density function with space dim i and j and velocity d
 
 """
 
-from dataclasses import dataclass
 from typing import Tuple
 
 import numpy as np
-
-from pylbm import log
 
 TAU = 0.5
 
@@ -84,33 +81,37 @@ def stream(f_cij: np.array) -> np.array:
     return f_cij
 
 
-def make_boundries(i_dim, j_dim, north: bool, east: bool, south: bool, west: bool) -> np.array:
-    b = np.zeros((i_dim, j_dim), dtype=bool)
-    if north:
-        b[0, :] = True
-    if east:
-        b[:, 0] = True
-    if south:
-        b[-1, :] = True
-    if west:
-        b[:, -1] = True
-    return b
+def make_walls(i_dim, j_dim, up: bool, down: bool, left: bool, right: bool) -> np.array:
+    w = np.zeros((i_dim, j_dim), dtype=bool)
+    if up:
+        w[:, -1] = True
+    if down:
+        w[:, 0] = True
+    if left:
+        w[:, 0] = True
+    if right:
+        w[:, -1] = True
+    return w
 
 
-def apply_boundries(f_cij: np.array, f_cij_old: np.array, boundries: np.array) -> np.array:
+def apply_walls(f_cij: np.array, f_cij_old: np.array, walls: np.array) -> np.array:
     for i in range(1, 9):
-        # use old values where boundry is true.
-        f_cij[i, :, :] = np.where(boundries, f_cij_old[i, :, :], f_cij[i, :, :])
+        # use old values where wapps is true.
+        f_cij[i, :, :] = np.where(walls, f_cij_old[i, :, :], f_cij[i, :, :])
     return f_cij
 
 
-def apply_sliding_top_boundry(f_cij: np.array, f_cij_old: np.array, velocity: float) -> np.array:
-    # calc vel at sliding boundry
+def apply_sliding_top_wall(f_cij: np.array, f_cij_old: np.array, velocity: float) -> np.array:
+    # calc vel at sliding wall
     rho_i_top = f_cij_old[[2, 5, 6], :, -1].sum(axis=0) * 2 + f_cij_old[[0, 1, 3], :, -1].sum(axis=0)
+    # for i in [4, 7, 8]:
+    #     rev = C_REVERSED[i]
+    #     f_cij[i, :, -1] = f_cij_old[rev, :, -1] - 6 * W_C[rev] * rho_i_top * velocity
     # update bottom velocities
-    for i in [4, 7, 8]:
-        rev = C_REVERSED[i]
-        f_cij[i, :, -1] = f_cij_old[rev, :, -1] - 6 * W_C[rev] * rho_i_top * velocity
+    j = [4, 7, 8]
+    f_cij[j, :, -1] = (
+        f_cij_old[C_REVERSED[j], :, -1] - np.array([[0, -6, 6]]).T * (W_C[j] * np.stack((rho_i_top,) * 3, axis=-1)).T * velocity
+    )
     return f_cij
 
 

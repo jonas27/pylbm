@@ -1,4 +1,4 @@
-# high-performance-python-lbm
+# pylbm
 A Lattice Boltzmann method implementation for the university course high performance python - fluid computing.
 
 ## Setup

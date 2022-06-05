@@ -1,15 +1,15 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(
-    name="high-performance-python-lbm",
-    version="0.1.0",
+    name="pylbm",
+    version="0.1.1",
     author="jonas",
     author_email="jonas.burster@gmail.com",
-    url="https://github.com/jonas27/high-performance-python-lbm",
+    url="https://github.com/jonas27/pylbm",
     packages=find_packages(),
-    python_requires=">=3.6",
+    python_requires=">=3.9",
     platforms=["Linux"],
     install_requires=REQUIREMENTS,
     include_package_data=True,
