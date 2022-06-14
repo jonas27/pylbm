@@ -117,10 +117,7 @@ def apply_sliding_top_wall(f_cij: np.array, f_cij_old, velocity: float) -> np.ar
 
 def apply_sliding_top_wall_simple(f_cij: np.array, f_cij_old, velocity: float = None) -> np.array:
     """for incompressible fluids with  we can say the"""
-    f_cij[4, :, -1] = f_cij_old[2, :, -1]
-    # f_cij[4, :, -1] = f_cij_old[[2, 5, 6], :, -1] + np.array([[0, -1 / 6, 1 / 6]]).T
-    f_cij[7, :, -1] = f_cij_old[5, :, -1] - 1 / 6
-    f_cij[8, :, -1] = f_cij_old[6, :, -1] + 1 / 6
+    f_cij[4, :, -1] = f_cij_old[[2, 5, 6], :, -1] + np.array([[0, -1 / 6, 1 / 6]]).T
     return f_cij
 
 

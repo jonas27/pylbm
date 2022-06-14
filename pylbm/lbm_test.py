@@ -66,17 +66,15 @@ def test_bottom_wall():
     r_mean = 0.5
     u_mean = 0.5
     i_dim, j_dim = 12, 4
-    walls = lbm.make_walls(i_dim=i_dim, j_dim=j_dim, up=True, down=True, left=False, right=False)
 
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
     u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=u_mean, eps=eps)
     f_cij = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
     f_cij_old = f_cij.copy()
     f_cij = lbm.stream(f_cij)
-    assert not np.array_equal(f_cij[:, walls], f_cij_old[:, walls])
     f_cij = lbm.apply_bottom_wall(f_cij=f_cij, f_cij_old=f_cij_old)
-    f_cij = lbm.apply_top_wall(f_cij=f_cij, f_cij_old=f_cij_old)
-    np.testing.assert_array_equal(f_cij[:, walls], f_cij_old[:, walls])
+    directions = [0, 1, 2, 3, 5, 6]
+    np.testing.assert_almost_equal(f_cij[directions, :, 0].sum(), f_cij_old[lbm.C_REVERSED[directions], :, 0].sum())
 
 
 def test_sliding_top_wall():
@@ -93,6 +91,23 @@ def test_sliding_top_wall():
     f_cij_old = f_cij.copy()
     f_cij = lbm.stream(f_cij)
     f_cij = lbm.apply_sliding_top_wall(f_cij=f_cij, f_cij_old=f_cij_old, velocity=velocity)
+    assert f_cij.shape == (9, i_dim, j_dim)
+
+
+def test_sliding_top_wall_simple():
+    """check how to test this."""
+    eps = 0.0
+    velocity = 0.1
+    r_mean = 1
+    u_mean = 0
+    i_dim, j_dim = 5, 10
+
+    r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
+    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=u_mean, eps=eps)
+    f_cij = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
+    f_cij_old = f_cij.copy()
+    f_cij = lbm.stream(f_cij)
+    f_cij = lbm.apply_sliding_top_wall_simple(f_cij=f_cij, f_cij_old=f_cij_old, velocity=velocity)
     assert f_cij.shape == (9, i_dim, j_dim)
 
 
