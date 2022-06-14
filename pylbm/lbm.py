@@ -85,30 +85,22 @@ def stream(f_cij: np.array) -> np.array:
 
 
 def apply_bottom_wall(f_cij: np.array, f_cij_old: np.array) -> np.array:
-    f_cij[2, :, -1] = f_cij_old[4, :, -1]
-    f_cij[5, :, -1] = f_cij_old[7, :, -1]
-    f_cij[6, :, -1] = f_cij_old[8, :, -1]
+    f_cij[[2, 5, 6], :, 0] = f_cij_old[[4, 7, 8], :, 0]
     return f_cij
 
 
 def apply_top_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
-    f_cij[4, :, -1] = f_cij_old[2, :, -1]
-    f_cij[7, :, -1] = f_cij_old[5, :, -1]
-    f_cij[8, :, -1] = f_cij_old[6, :, -1]
+    f_cij[[4, 7, 8], :, -1] = f_cij_old[[2, 5, 6], :, -1]
     return f_cij
 
 
 def apply_left_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
-    f_cij[1, 1:-1, -1] = f_cij_old[3, 1:-1, -1]
-    f_cij[5, 1:-1, -1] = f_cij_old[7, 1:-1, -1]
-    f_cij[8, 1:-1, -1] = f_cij_old[6, 1:-1, -1]
+    f_cij[[1, 5, 8], 0, :] = f_cij_old[[3, 7, 6], 0, :]
     return f_cij
 
 
 def apply_right_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
-    f_cij[3, 1:-1, -1] = f_cij_old[1, 1:-1, -1]
-    f_cij[7, 1:-1, -1] = f_cij_old[5, 1:-1, -1]
-    f_cij[6, 1:-1, -1] = f_cij_old[8, 1:-1, -1]
+    f_cij[[3, 7, 6], -1, :] = f_cij_old[[1, 5, 8], -1, :]
     return f_cij
 
 
@@ -123,12 +115,12 @@ def apply_sliding_top_wall(f_cij: np.array, f_cij_old, velocity: float) -> np.ar
     return f_cij
 
 
-def apply_sliding_top_wall_old(f_cij: np.array, f_cij_old, velocity: float) -> np.array:
-    # calc vel at sliding wall
-    r_i_top = f_cij[[0, 1, 3], 1:-1, -2].sum(axis=0) + 2.0 * (f_cij[2, 1:-1, -1] + f_cij[5, 2:, -1] + f_cij[6, :-2, -1])
-    f_cij[4, 1:-1, -1] = f_cij_old[2, 1:-1, -1]
-    f_cij[7, 1:-1, -1] = f_cij_old[5, 1:-1, -1] - 6.0 * W_C[5] * r_i_top * velocity
-    f_cij[8, 1:-1, -1] = f_cij_old[6, 1:-1, -1] + 6.0 * W_C[6] * r_i_top * velocity
+def apply_sliding_top_wall_simple(f_cij: np.array, f_cij_old, velocity: float = None) -> np.array:
+    """for incompressible fluids with  we can say the"""
+    f_cij[4, :, -1] = f_cij_old[2, :, -1]
+    # f_cij[4, :, -1] = f_cij_old[[2, 5, 6], :, -1] + np.array([[0, -1 / 6, 1 / 6]]).T
+    f_cij[7, :, -1] = f_cij_old[5, :, -1] - 1 / 6
+    f_cij[8, :, -1] = f_cij_old[6, :, -1] + 1 / 6
     return f_cij
 
 
