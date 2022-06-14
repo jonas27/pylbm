@@ -2,6 +2,7 @@
 Notations:
 f_ijc: is the probability density function with space dim i and j and velocity dim c
 
+TODO: Moving from global lists to tuples could be faster.
 
 """
 
@@ -14,9 +15,11 @@ TAU = 0.5
 C_CA: np.array = np.array([[0, 0], [1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]])
 
 W_C: np.array = np.array([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36])
+# W_C: Tuple = (4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36)
 
 # The bounce back direction
 C_REVERSED: np.array = np.array([0, 3, 4, 1, 2, 7, 8, 5, 6])
+# C_REVERSED: Tuple = (0, 3, 4, 1, 2, 7, 8, 5, 6)
 
 NORTH = "north"
 EAST = "east"
@@ -81,37 +84,51 @@ def stream(f_cij: np.array) -> np.array:
     return f_cij
 
 
-def make_walls(i_dim, j_dim, up: bool, down: bool, left: bool, right: bool) -> np.array:
-    w = np.zeros((i_dim, j_dim), dtype=bool)
-    if up:
-        w[:, -1] = True
-    if down:
-        w[:, 0] = True
-    if left:
-        w[:, 0] = True
-    if right:
-        w[:, -1] = True
-    return w
-
-
-def apply_walls(f_cij: np.array, f_cij_old: np.array, walls: np.array) -> np.array:
-    for i in range(1, 9):
-        # use old values where wapps is true.
-        f_cij[i, :, :] = np.where(walls, f_cij_old[i, :, :], f_cij[i, :, :])
+def apply_bottom_wall(f_cij: np.array, f_cij_old: np.array) -> np.array:
+    f_cij[2, :, -1] = f_cij_old[4, :, -1]
+    f_cij[5, :, -1] = f_cij_old[7, :, -1]
+    f_cij[6, :, -1] = f_cij_old[8, :, -1]
     return f_cij
 
 
-def apply_sliding_top_wall(f_cij: np.array, f_cij_old: np.array, velocity: float) -> np.array:
+def apply_top_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
+    f_cij[4, :, -1] = f_cij_old[2, :, -1]
+    f_cij[7, :, -1] = f_cij_old[5, :, -1]
+    f_cij[8, :, -1] = f_cij_old[6, :, -1]
+    return f_cij
+
+
+def apply_left_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
+    f_cij[1, 1:-1, -1] = f_cij_old[3, 1:-1, -1]
+    f_cij[5, 1:-1, -1] = f_cij_old[7, 1:-1, -1]
+    f_cij[8, 1:-1, -1] = f_cij_old[6, 1:-1, -1]
+    return f_cij
+
+
+def apply_right_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
+    f_cij[3, 1:-1, -1] = f_cij_old[1, 1:-1, -1]
+    f_cij[7, 1:-1, -1] = f_cij_old[5, 1:-1, -1]
+    f_cij[6, 1:-1, -1] = f_cij_old[8, 1:-1, -1]
+    return f_cij
+
+
+def apply_sliding_top_wall(f_cij: np.array, f_cij_old, velocity: float) -> np.array:
     # calc vel at sliding wall
-    rho_i_top = f_cij_old[[2, 5, 6], :, -1].sum(axis=0) * 2 + f_cij_old[[0, 1, 3], :, -1].sum(axis=0)
-    # for i in [4, 7, 8]:
-    #     rev = C_REVERSED[i]
-    #     f_cij[i, :, -1] = f_cij_old[rev, :, -1] - 6 * W_C[rev] * rho_i_top * velocity
-    # update bottom velocities
-    j = [4, 7, 8]
-    f_cij[j, :, -1] = (
-        f_cij_old[C_REVERSED[j], :, -1] - np.array([[0, -6, 6]]).T * (W_C[j] * np.stack((rho_i_top,) * 3, axis=-1)).T * velocity
+    r_i_top = (f_cij_old[0, :, -1] + f_cij_old[1, :, -1] + f_cij_old[3, :, -1]) + 2 * (
+        f_cij_old[2, :, -1] + f_cij_old[5, :, -1] + f_cij_old[6, :, -1]
     )
+    f_cij[4, :, -1] = f_cij_old[2, :, -1]
+    f_cij[7, :, -1] = f_cij_old[5, :, -1] - 6.0 * W_C[5] * r_i_top * velocity
+    f_cij[8, :, -1] = f_cij_old[6, :, -1] + 6.0 * W_C[6] * r_i_top * velocity
+    return f_cij
+
+
+def apply_sliding_top_wall_old(f_cij: np.array, f_cij_old, velocity: float) -> np.array:
+    # calc vel at sliding wall
+    r_i_top = f_cij[[0, 1, 3], 1:-1, -2].sum(axis=0) + 2.0 * (f_cij[2, 1:-1, -1] + f_cij[5, 2:, -1] + f_cij[6, :-2, -1])
+    f_cij[4, 1:-1, -1] = f_cij_old[2, 1:-1, -1]
+    f_cij[7, 1:-1, -1] = f_cij_old[5, 1:-1, -1] - 6.0 * W_C[5] * r_i_top * velocity
+    f_cij[8, 1:-1, -1] = f_cij_old[6, 1:-1, -1] + 6.0 * W_C[6] * r_i_top * velocity
     return f_cij
 
 
