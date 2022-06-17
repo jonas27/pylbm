@@ -40,36 +40,36 @@ def rho(f_cij: np.array) -> np.array:
     return r_ij
 
 
-def local_avg_velocity_init(i_dim, j_dim, u_mean: float, eps: float):
+def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float):
     """local_avg_velocity_init based on dim, a mean and a deviation factor eps."""
-    u_aij = eps * np.random.randn(2, i_dim, j_dim)
+    u_aij = eps * np.random.randn(2, x_dim, y_dim)
     u_aij[:, :] += u_mean
     return u_aij
 
 
-def local_avg_velocity(f_cij: np.array, r_ij: np.array) -> np.array:
+def local_avg_velocity(f_cxy: np.array, r_xy: np.array) -> np.array:
     """local_avg_velocity calculation based on f and rho."""
-    u_aij = np.einsum("ac, cij->aij", C_CA.T, f_cij) / r_ij
+    u_aij = np.einsum("ac, cxy->axy", C_CA.T, f_cxy) / r_xy
     return u_aij
 
 
-def f_eq(u_aij: np.array, r_ij: np.array) -> np.array:
+def f_eq(u_axy: np.array, r_xy: np.array) -> np.array:
     """f_eq calculates the probability equilibrium distribution function.
 
     The probability density function  f(r,v,t)  has a non trivial physical meaning. Therefore we suggest, at the beginning, to think of the value of  fi(r,t)  as the number of "particles" which are in the position  r  at the time  t  and that are moving in the direction  ci
 
     Returns:
-        f_eq_ijc: equilibrium distribution function.
+        f_eq_cxy: equilibrium distribution function.
         u_ija: the local average velocity u(r) for testing.
     """
-    cu_cij_3 = 3 * np.einsum("ac,aij->cij", C_CA.T, u_aij)
-    u_ij_2 = np.einsum("aij->ij", u_aij * u_aij)
-    r_cij_w = np.einsum("c,ij->cij", W_C, r_ij)
-    f_eq_cij = r_cij_w * (1 + cu_cij_3 * (1 + 0.5 * cu_cij_3) - 1.5 * u_ij_2[np.newaxis, :, :])
-    return f_eq_cij
+    cu_cxy_3 = 3 * np.einsum("ac,axy->cxy", C_CA.T, u_axy)
+    u_xy_2 = np.einsum("axy->xy", u_axy * u_axy)
+    r_cxy_w = np.einsum("c,xy->cxy", W_C, r_xy)
+    f_eq_cxy = r_cxy_w * (1 + cu_cxy_3 * (1 + 0.5 * cu_cxy_3) - 1.5 * u_xy_2[np.newaxis, :, :])
+    return f_eq_cxy
 
 
-def stream(f_cij: np.array) -> np.array:
+def stream(f_cxy: np.array) -> np.array:
     """stream shifts all values according to the velocities.
 
     Implementation:
@@ -80,18 +80,18 @@ def stream(f_cij: np.array) -> np.array:
         Rolling over after array ends is ok, as we simulate a large plane which in its limit is transformed into a cylinder.
     """
     for i in range(1, 9):
-        f_cij[i, :, :] = np.roll(f_cij[i, :, :], shift=C_CA[i], axis=(0, 1))
-    return f_cij
+        f_cxy[i, :, :] = np.roll(f_cxy[i, :, :], shift=C_CA[i], axis=(0, 1))
+    return f_cxy
 
 
-def apply_bottom_wall(f_cij: np.array, f_cij_old: np.array) -> np.array:
-    f_cij[[2, 5, 6], :, 0] = f_cij_old[[4, 7, 8], :, 0]
-    return f_cij
+def apply_bottom_wall(f_cxy: np.array, f_cij_old: np.array) -> np.array:
+    f_cxy[[2, 5, 6], :, 0] = f_cij_old[[4, 7, 8], :, 0]
+    return f_cxy
 
 
-def apply_top_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
-    f_cij[[4, 7, 8], :, -1] = f_cij_old[[2, 5, 6], :, -1]
-    return f_cij
+def apply_top_wall(f_cxy: np.array, f_cij_old: np.array = None) -> np.array:
+    f_cxy[[4, 7, 8], :, -1] = f_cij_old[[2, 5, 6], :, -1]
+    return f_cxy
 
 
 def apply_left_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
@@ -99,29 +99,29 @@ def apply_left_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
     return f_cij
 
 
-def apply_right_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
-    f_cij[[3, 7, 6], -1, :] = f_cij_old[[1, 5, 8], -1, :]
-    return f_cij
+def apply_right_wall(f_cxy: np.array, f_cij_old: np.array = None) -> np.array:
+    f_cxy[[3, 7, 6], -1, :] = f_cij_old[[1, 5, 8], -1, :]
+    return f_cxy
 
 
-def apply_sliding_top_wall(f_cij: np.array, f_cij_old, velocity: float) -> np.array:
+def apply_sliding_top_wall(f_cxy: np.array, f_cij_old, velocity: float) -> np.array:
     # calc vel at sliding wall
     r_i_top = (f_cij_old[0, :, -1] + f_cij_old[1, :, -1] + f_cij_old[3, :, -1]) + 2 * (
         f_cij_old[2, :, -1] + f_cij_old[5, :, -1] + f_cij_old[6, :, -1]
     )
-    f_cij[4, :, -1] = f_cij_old[2, :, -1]
-    f_cij[7, :, -1] = f_cij_old[5, :, -1] - 6.0 * W_C[5] * r_i_top * velocity
-    f_cij[8, :, -1] = f_cij_old[6, :, -1] + 6.0 * W_C[6] * r_i_top * velocity
-    return f_cij
+    f_cxy[4, :, -1] = f_cij_old[2, :, -1]
+    f_cxy[7, :, -1] = f_cij_old[5, :, -1] - 6.0 * W_C[5] * r_i_top * velocity
+    f_cxy[8, :, -1] = f_cij_old[6, :, -1] + 6.0 * W_C[6] * r_i_top * velocity
+    return f_cxy
 
 
-def apply_sliding_top_wall_simple(f_cij: np.array, f_cij_old, velocity: float = None) -> np.array:
+def apply_sliding_top_wall_simple(f_cxy: np.array, f_cij_old, velocity: float = None) -> np.array:
     """for incompressible fluids with  we can say the"""
-    f_cij[4, :, -1] = f_cij_old[[2, 5, 6], :, -1] + np.array([[0, -1 / 6, 1 / 6]]).T
-    return f_cij
+    f_cxy[C_REVERSED[[2, 5, 6]], :, -1] = f_cij_old[[2, 5, 6], :, -1] + np.array([[0, -1 / 6, 1 / 6]]).T
+    return f_cxy
 
 
-def collision(f_cij: np.array, omega: float) -> Tuple[np.array, np.array]:
+def collision(f_cxy: np.array, omega: float) -> Tuple[np.array, np.array]:
     """collision adds the collision term \Delta_i to the probability distribution function f.
 
         Here we use the Bhatnagar-Gross-Krook-Operator (BGK-Operator):
@@ -136,8 +136,8 @@ def collision(f_cij: np.array, omega: float) -> Tuple[np.array, np.array]:
                 omega = 1 / tau wobei tau
 
     """
-    r_ij = rho(f_cij)
-    u_aij = local_avg_velocity(f_cij=f_cij, r_ij=r_ij)
-    f_eq_ijc = f_eq(u_aij=u_aij, r_ij=r_ij)
-    f_cij += omega * (f_eq_ijc - f_cij)
-    return f_cij, u_aij
+    r_xy = rho(f_cxy)
+    u_axy = local_avg_velocity(f_cxy=f_cxy, r_xy=r_xy)
+    f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
+    f_cxy += omega * (f_eq_cxy - f_cxy)
+    return f_cxy, u_axy

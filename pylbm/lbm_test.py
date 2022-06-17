@@ -27,9 +27,9 @@ def test_local_average_velocity():
     u_mean = 0.5
     i_dim, j_dim = 5, 10
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
-    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=u_mean, eps=eps)
-    f_cij = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
-    u_aij = lbm.local_avg_velocity(f_cij=f_cij, r_ij=r_ij)
+    u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
+    f_cij = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
+    u_aij = lbm.local_avg_velocity(f_cxy=f_cij, r_xy=r_ij)
     assert u_aij.shape == (2, i_dim, j_dim)
 
 
@@ -38,8 +38,8 @@ def test_f_eq():
     r_mean = 0.5
     i_dim, j_dim, v_dim = 5, 10, 9
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
-    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=0.5, eps=0.01)
-    f_eq_cij = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
+    u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=0.5, eps=0.01)
+    f_eq_cij = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
     assert f_eq_cij.shape == (v_dim, i_dim, j_dim)
 
 
@@ -49,8 +49,8 @@ def test_stream():
     u_mean = 0.5
     i_dim, j_dim, v_dim = 5, 10, 9
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
-    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=u_mean, eps=eps)
-    f_cij_init = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
+    u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
+    f_cij_init = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
     f_cij = lbm.stream(f_cij_init.copy())
     # assert correct shape
     assert f_cij.shape == (v_dim, i_dim, j_dim)
@@ -68,11 +68,11 @@ def test_bottom_wall():
     i_dim, j_dim = 12, 4
 
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
-    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=u_mean, eps=eps)
-    f_cij = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
+    u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
+    f_cij = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
     f_cij_old = f_cij.copy()
     f_cij = lbm.stream(f_cij)
-    f_cij = lbm.apply_bottom_wall(f_cij=f_cij, f_cij_old=f_cij_old)
+    f_cij = lbm.apply_bottom_wall(f_cxy=f_cij, f_cij_old=f_cij_old)
     directions = [0, 1, 2, 3, 5, 6]
     np.testing.assert_almost_equal(f_cij[directions, :, 0].sum(), f_cij_old[lbm.C_REVERSED[directions], :, 0].sum())
 
@@ -86,11 +86,11 @@ def test_sliding_top_wall():
     i_dim, j_dim = 5, 10
 
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
-    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=u_mean, eps=eps)
-    f_cij = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
+    u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
+    f_cij = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
     f_cij_old = f_cij.copy()
     f_cij = lbm.stream(f_cij)
-    f_cij = lbm.apply_sliding_top_wall(f_cij=f_cij, f_cij_old=f_cij_old, velocity=velocity)
+    f_cij = lbm.apply_sliding_top_wall(f_cxy=f_cij, f_cij_old=f_cij_old, velocity=velocity)
     assert f_cij.shape == (9, i_dim, j_dim)
 
 
@@ -103,11 +103,11 @@ def test_sliding_top_wall_simple():
     i_dim, j_dim = 5, 10
 
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
-    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=u_mean, eps=eps)
-    f_cij = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
+    u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
+    f_cij = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
     f_cij_old = f_cij.copy()
     f_cij = lbm.stream(f_cij)
-    f_cij = lbm.apply_sliding_top_wall_simple(f_cij=f_cij, f_cij_old=f_cij_old, velocity=velocity)
+    f_cij = lbm.apply_sliding_top_wall_simple(f_cxy=f_cij, f_cij_old=f_cij_old, velocity=velocity)
     assert f_cij.shape == (9, i_dim, j_dim)
 
 
@@ -116,7 +116,7 @@ def test_collision():
     r_value = 0.5
     i_dim, j_dim = 5, 10
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_value, eps=eps)
-    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=0.5, eps=0.01)
-    f_cij = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
-    f_cij, u_aij = lbm.collision(f_cij=f_cij, omega=0.5)
+    u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=0.5, eps=0.01)
+    f_cij = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
+    f_cij, u_aij = lbm.collision(f_cxy=f_cij, omega=0.5)
     assert f_cij.shape == (9, i_dim, j_dim)
