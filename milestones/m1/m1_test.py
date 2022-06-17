@@ -24,7 +24,7 @@ def test_streaming():
     i_dim, j_dim, v_dim = 5, 10, 9
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_value, eps=eps)
     f_ijc_init = lbm.f_ijc_init(i_dim=i_dim, j_dim=j_dim, v_dim=v_dim, r_ij=r_ij)
-    f_ijc = lbm.stream(f_cij=f_ijc_init.copy())
+    f_ijc = lbm.stream(f_cxy=f_ijc_init.copy())
 
     i_start, j_start = 1, 1
     for i in range(9):

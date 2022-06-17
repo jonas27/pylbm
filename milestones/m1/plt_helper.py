@@ -29,13 +29,13 @@ def plot_streaming(fig, streaming_direction: int) -> List[plt.Axes]:
     r_mean, u_mean = 0.5, 0.5
     i_dim, j_dim = 5, 10
     r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
-    u_aij = lbm.local_avg_velocity_init(i_dim=i_dim, j_dim=j_dim, u_mean=u_mean, eps=eps)
-    f_ijc = lbm.f_eq(u_aij=u_aij, r_ij=r_ij)
+    u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
+    f_ijc = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
     epochs = 3
     axs = fig.subplots(nrows=epochs, ncols=1)
 
     for ax in axs:
         data = f_ijc[:, :, streaming_direction]
         set_ax(ax, data=data)
-        f_ijc = lbm.stream(f_cij=f_ijc)
+        f_ijc = lbm.stream(f_cxy=f_ijc)
     return fig
