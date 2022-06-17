@@ -34,10 +34,10 @@ def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01)
     return r_ij
 
 
-def rho(f_cij: np.array) -> np.array:
+def density(f_cxy: np.array) -> np.array:
     """rho is the local density."""
-    r_ij = np.einsum("cij -> ij", f_cij)
-    return r_ij
+    r_xy = np.einsum("cxy -> xy", f_cxy)
+    return r_xy
 
 
 def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float):
@@ -84,40 +84,44 @@ def stream(f_cxy: np.array) -> np.array:
     return f_cxy
 
 
-def apply_bottom_wall(f_cxy: np.array, f_cij_old: np.array) -> np.array:
-    f_cxy[[2, 5, 6], :, 0] = f_cij_old[[4, 7, 8], :, 0]
+def apply_bottom_wall(f_cxy: np.array) -> np.array:
+    f_cxy[2, 1:-1, 1] = f_cxy[4, 1:-1, 0]
+    f_cxy[5, 1:-1, 1] = f_cxy[7, :-2, 0]
+    f_cxy[6, 1:-1, 1] = f_cxy[8, 2:, 0]
     return f_cxy
 
 
-def apply_top_wall(f_cxy: np.array, f_cij_old: np.array = None) -> np.array:
-    f_cxy[[4, 7, 8], :, -1] = f_cij_old[[2, 5, 6], :, -1]
+def apply_top_wall(f_cxy: np.array) -> np.array:
+    f_cxy[4, 1:-1, 1] = f_cxy[2, 1:-1, 0]
+    f_cxy[7, 1:-1, 1] = f_cxy[5, 2:, 0]
+    f_cxy[8, 1:-1, 1] = f_cxy[6, :-2, 0]
     return f_cxy
 
 
-def apply_left_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
-    f_cij[[1, 5, 8], 0, :] = f_cij_old[[3, 7, 6], 0, :]
-    return f_cij
+# def apply_left_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
+#     f_cij[[1, 5, 8], 0, :] = f_cij_old[[3, 7, 6], 0, :]
+#     return f_cij
 
 
-def apply_right_wall(f_cxy: np.array, f_cij_old: np.array = None) -> np.array:
-    f_cxy[[3, 7, 6], -1, :] = f_cij_old[[1, 5, 8], -1, :]
-    return f_cxy
+# def apply_right_wall(f_cxy: np.array, f_cij_old: np.array = None) -> np.array:
+#     f_cxy[[3, 7, 6], -1, :] = f_cij_old[[1, 5, 8], -1, :]
+#     return f_cxy
 
 
-def apply_sliding_top_wall(f_cxy: np.array, f_cij_old, velocity: float) -> np.array:
+def apply_sliding_top_wall(f_cxy: np.array, velocity: float) -> np.array:
     # calc vel at sliding wall
-    r_i_top = (f_cij_old[0, :, -1] + f_cij_old[1, :, -1] + f_cij_old[3, :, -1]) + 2 * (
-        f_cij_old[2, :, -1] + f_cij_old[5, :, -1] + f_cij_old[6, :, -1]
-    )
-    f_cxy[4, :, -1] = f_cij_old[2, :, -1]
-    f_cxy[7, :, -1] = f_cij_old[5, :, -1] - 6.0 * W_C[5] * r_i_top * velocity
-    f_cxy[8, :, -1] = f_cij_old[6, :, -1] + 6.0 * W_C[6] * r_i_top * velocity
+    r_x_top = f_cxy[[0, 1, 3], 1:-1, -2] + 2.0 * (f_cxy[2, 1:-1, -1] + f_cxy[5, 2:, -1] + f_cxy[6, :-2, -1])
+    f_cxy[4, 1:-1, -1] = f_cxy[2, 1:-1, -1]
+    f_cxy[7, 1:-1, -1] = f_cxy[5, 2:, -1] - 6.0 * W_C[5] * r_x_top * velocity
+    f_cxy[8, 1:-1, -1] = f_cxy[6, :-2, -1] + 6.0 * W_C[6] * r_x_top * velocity
     return f_cxy
 
 
-def apply_sliding_top_wall_simple(f_cxy: np.array, f_cij_old, velocity: float = None) -> np.array:
+def apply_sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np.array:
     """for incompressible fluids with  we can say that at the wall we have a density of -1/6, 0 and 1/6"""
-    f_cxy[C_REVERSED[[2, 5, 6]], :, -1] = f_cij_old[[2, 5, 6], :, -1] + np.array([[0, -1 / 6, 1 / 6]]).T
+    f_cxy[4, 1:-1, -1] = f_cxy[2, 1:-1, -1]
+    f_cxy[7, 1:-1, -1] = f_cxy[5, 2:, -1] - 1 / 6.0
+    f_cxy[8, 1:-1, -1] = f_cxy[6, :-2, -1] + 1 / 6.0
     return f_cxy
 
 
@@ -136,7 +140,7 @@ def collision(f_cxy: np.array, omega: float) -> Tuple[np.array, np.array]:
                 omega = 1 / tau wobei tau
 
     """
-    r_xy = rho(f_cxy)
+    r_xy = density(f_cxy)
     u_axy = local_avg_velocity(f_cxy=f_cxy, r_xy=r_xy)
     f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
     f_cxy += omega * (f_eq_cxy - f_cxy)

@@ -1,5 +1,5 @@
 # pylbm
-A Lattice Boltzmann method implementation for the university course high performance python - fluid computing.
+
 
 ## Setup
 Create a conda environemnt:

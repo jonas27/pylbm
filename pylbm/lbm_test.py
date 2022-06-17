@@ -72,7 +72,7 @@ def test_bottom_wall():
     f_cxy = lbm.f_eq(u_axy=u_axy, r_xy=r_xy)
     f_cxy_old = f_cxy.copy()
     f_cxy = lbm.stream(f_cxy)
-    f_cxy = lbm.apply_bottom_wall(f_cxy=f_cxy, f_cij_old=f_cxy_old)
+    f_cxy = lbm.apply_bottom_wall(f_cxy=f_cxy, f_cxy_old=f_cxy_old)
     directions = [0, 1, 2, 3, 5, 6]
     np.testing.assert_almost_equal(f_cxy[directions, :, 0].sum(), f_cxy_old[lbm.C_REVERSED[directions], :, 0].sum())
 

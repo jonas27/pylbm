@@ -28,7 +28,7 @@ def plot_streaming(fig, streaming_direction: int) -> List[plt.Axes]:
     eps = 0.01
     r_mean, u_mean = 0.5, 0.5
     i_dim, j_dim = 5, 10
-    r_ij = lbm.rho_init(i_dim=i_dim, j_dim=j_dim, r_mean=r_mean, eps=eps)
+    r_ij = lbm.density_init(x_dim=i_dim, y_dim=j_dim, r_mean=r_mean, eps=eps)
     u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
     f_ijc = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
     epochs = 3
