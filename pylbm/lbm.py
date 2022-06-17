@@ -27,9 +27,9 @@ SOUTH = "south"
 WEST = "west"
 
 
-def rho_init(i_dim: int, j_dim: int, r_mean: float = 0.5, eps: float = 0.01) -> np.array:
+def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01) -> np.array:
     """rho_init based on dim, a mean and a deviation factor eps."""
-    r_ij = eps * np.random.randn(i_dim, j_dim)
+    r_ij = eps * np.random.randn(x_dim, y_dim)
     r_ij[:, :] += r_mean
     return r_ij
 
@@ -116,7 +116,7 @@ def apply_sliding_top_wall(f_cxy: np.array, f_cij_old, velocity: float) -> np.ar
 
 
 def apply_sliding_top_wall_simple(f_cxy: np.array, f_cij_old, velocity: float = None) -> np.array:
-    """for incompressible fluids with  we can say the"""
+    """for incompressible fluids with  we can say that at the wall we have a density of -1/6, 0 and 1/6"""
     f_cxy[C_REVERSED[[2, 5, 6]], :, -1] = f_cij_old[[2, 5, 6], :, -1] + np.array([[0, -1 / 6, 1 / 6]]).T
     return f_cxy
 
@@ -141,3 +141,7 @@ def collision(f_cxy: np.array, omega: float) -> Tuple[np.array, np.array]:
     f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
     f_cxy += omega * (f_eq_cxy - f_cxy)
     return f_cxy, u_axy
+
+
+def unmask(f_cxy: np.array):
+    return f_cxy[:, 1:-1, 1:-1]
