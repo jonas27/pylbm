@@ -1,29 +1,85 @@
-\documentclass[a4paper]{scrartcl}
-
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel} % use ngerman here for german text
+\documentclass[a4paper,11pt]{report}
 \usepackage[T1]{fontenc}
-\usepackage{mathtools}
-\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage[protrusion=true,expansion=true,kerning]{microtype}
-\usepackage{graphicx}
-\usepackage{hyperref}
 
-\title{High-Performance Computing: Fluid Mechanics with Python}
-\author{Jonas Manser}
-\date{\today}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\usepackage{listings} % package for listing parts of code
+
+\renewcommand*\footnoterule{}
+
+\makeatletter
+\renewcommand{\@chapapp}{}% Not necessary...
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+
+
+
+% Book's title and subtitle
+\title{\Huge \textbf{High Performance Computing with Python} \vspace{4mm} \\ \huge Final Report}
+% Author
+% \author{\textsc{First-name Last-name}\footnote{email address}}
+\author{\textsc{First-name Last-name} \\ \vspace{3mm}\text{matriculation number}  \\
+\vspace{3mm}\text{email-address}}
+
 
 \begin{document}
 
-\maketitle
+\makeatletter
+\begin{titlepage}
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{logos/Uni_Logo-Grundversion_E1_A4_CMYK.eps}\\[4ex]
+        {\huge \bfseries  \@title }\\[2ex]
+        {\LARGE  \@author}\\[30ex]
+        {\large \@date}
+    \end{center}
+\end{titlepage}
+\makeatother
+\thispagestyle{empty}
+\newpage
+
+
+
+\tableofcontents
 
 \section{Introduction}
-The Boltzmann transport equation (BTE) published by Ludwig Boltzmann in 1872 describes the statistical behaviour of particles in a closed system.
+The Lattice Boltzmann Method (LBM) is used to simulate fluid flows in a closed system and is based on the core assumptions that fluids can be approximated to particles on a lattice.
+It originated from the lattice gas automata (LGCA) pioneered by Hardy–Pomeau–de Pazzis and Frisch–Hasslacher–Pomeau.
+
+a fluid density on a lattice is simulated with streaming and collision (relaxation) processes
+core it utalizes the Boltzmann transport equation (BTE) published by Ludwig Boltzmann in 1872 describes the statistical behaviour of particles in a closed system.
+
+The
+
+
+\section{Model Properties}
+https://de.wikipedia.org/wiki/FHP-Modell
+Teilchen existieren immer nur auf den Gitterpunkten, d. h. nie auf den Kanten und nie auf den Flächen.
+Jedem Teilchen ist eine Richtung (von einem Gitterpunkt zu einem anderen unmittelbar benachbarten) zugeordnet.
+Ein Gitterpunkt kann für jede Richtung maximal ein Teilchen, d. h. insgesamt zwischen null und sechs Teilchen enthalten.
+Die Teilchen werden rundenweise vorwärts bewegt. Zwischen den Zügen wird jeweils überprüft, ob es an einem Gitterpunkt zu einer Streuung kommt.
 
 
 
 
 
+
+
+
+
+\bibliographystyle{unsrt}
+\bibliography{biblio}
 
 \end{document}
