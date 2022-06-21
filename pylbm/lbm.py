@@ -92,9 +92,8 @@ def apply_bottom_wall(f_cxy: np.array) -> np.array:
 
 
 def apply_bottom_wall_m4(f_cxy: np.array) -> np.array:
-    f_cxy[2, :, 1] = f_cxy[4, :, 0]
-    f_cxy[5, :, 1] = f_cxy[7, :, 0]
-    f_cxy[6, :, 1] = f_cxy[8, :, 0]
+    """m4: in the couette flow we have no side walls and thus need to copy all values up."""
+    f_cxy[[2,5,6], :, 1] = f_cxy[[4,7,8], :, 0]
     return f_cxy
 
 
@@ -127,13 +126,16 @@ def apply_sliding_top_wall(f_cxy: np.array, velocity: float) -> np.array:
 def apply_sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np.array:
     """for incompressible fluids with  we can say that at the wall we have a density of -1/6, 0 and 1/6"""
     f_cxy[4, 1:-1, -1] = f_cxy[2, 1:-1, -1]
-    f_cxy[7, 1:-1, -1] = f_cxy[5, 2:, -1] - 1 / 6.0
-    f_cxy[8, 1:-1, -1] = f_cxy[6, :-2, -1] + 1 / 6.0
+    f_cxy[7, 1:-1, -1] = f_cxy[5, 2:, -1] - 1 / 6.0 * velocity
+    f_cxy[8, 1:-1, -1] = f_cxy[6, :-2, -1] + 1 / 6.0 * velocity
     return f_cxy
 
 
 def apply_sliding_top_wall_simple_m4(f_cxy: np.array, velocity: float = None) -> np.array:
-    """for incompressible fluids with  we can say that at the wall we have a density of -1/6, 0 and 1/6"""
+    """for incompressible fluids with  we can say that at the wall we have a density of -1/6, 0 and 1/6
+
+    m4: in the couette flow we have no side walls and thus need to copy all values down.
+    """
     f_cxy[4, :, -2] = f_cxy[2, :, -1]
     f_cxy[7, :, -2] = f_cxy[5, :, -1] - 1 / 6.0 * velocity
     f_cxy[8, :, -2] = f_cxy[6, :, -1] + 1 / 6.0 * velocity
