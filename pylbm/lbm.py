@@ -91,6 +91,13 @@ def apply_bottom_wall(f_cxy: np.array) -> np.array:
     return f_cxy
 
 
+def apply_bottom_wall_m4(f_cxy: np.array) -> np.array:
+    f_cxy[2, :, 1] = f_cxy[4, :, 0]
+    f_cxy[5, :, 1] = f_cxy[7, :, 0]
+    f_cxy[6, :, 1] = f_cxy[8, :, 0]
+    return f_cxy
+
+
 def apply_top_wall(f_cxy: np.array) -> np.array:
     f_cxy[4, 1:-1, 1] = f_cxy[2, 1:-1, 0]
     f_cxy[7, 1:-1, 1] = f_cxy[5, 2:, 0]
@@ -110,7 +117,7 @@ def apply_top_wall(f_cxy: np.array) -> np.array:
 
 def apply_sliding_top_wall(f_cxy: np.array, velocity: float) -> np.array:
     # calc vel at sliding wall
-    r_x_top = f_cxy[[0, 1, 3], 1:-1, -2] + 2.0 * (f_cxy[2, 1:-1, -1] + f_cxy[5, 2:, -1] + f_cxy[6, :-2, -1])
+    r_x_top = f_cxy[[0, 1, 3], 1:-1, -2].sum(axis=0) + 2.0 * (f_cxy[2, 1:-1, -1] + f_cxy[5, 2:, -1] + f_cxy[6, :-2, -1])
     f_cxy[4, 1:-1, -1] = f_cxy[2, 1:-1, -1]
     f_cxy[7, 1:-1, -1] = f_cxy[5, 2:, -1] - 6.0 * W_C[5] * r_x_top * velocity
     f_cxy[8, 1:-1, -1] = f_cxy[6, :-2, -1] + 6.0 * W_C[6] * r_x_top * velocity
@@ -122,6 +129,14 @@ def apply_sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np
     f_cxy[4, 1:-1, -1] = f_cxy[2, 1:-1, -1]
     f_cxy[7, 1:-1, -1] = f_cxy[5, 2:, -1] - 1 / 6.0
     f_cxy[8, 1:-1, -1] = f_cxy[6, :-2, -1] + 1 / 6.0
+    return f_cxy
+
+
+def apply_sliding_top_wall_simple_m4(f_cxy: np.array, velocity: float = None) -> np.array:
+    """for incompressible fluids with  we can say that at the wall we have a density of -1/6, 0 and 1/6"""
+    f_cxy[4, :, -2] = f_cxy[2, :, -1]
+    f_cxy[7, :, -2] = f_cxy[5, :, -1] - 1 / 6.0 * velocity
+    f_cxy[8, :, -2] = f_cxy[6, :, -1] + 1 / 6.0 * velocity
     return f_cxy
 
 
