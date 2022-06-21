@@ -24,6 +24,12 @@ __pycache__/
 *.cb2
 .*.lb
 
+# latex bib stuff
+*.bbl
+*.blg
+*.bib
+
+
 ## Intermediate documents:
 *.dvi
 *.xdv

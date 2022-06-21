@@ -31,8 +31,8 @@
 \title{\Huge \textbf{High Performance Computing with Python} \vspace{4mm} \\ \huge Final Report}
 % Author
 % \author{\textsc{First-name Last-name}\footnote{email address}}
-\author{\textsc{First-name Last-name} \\ \vspace{3mm}\text{matriculation number}  \\
-\vspace{3mm}\text{email-address}}
+\author{\textsc{Jonas Manser} \\ \vspace{3mm}\text{matriculation number}  \\
+\vspace{3mm}\text{jonas.burster@gmail.com}}
 
 
 \begin{document}
@@ -54,12 +54,31 @@
 
 \tableofcontents
 
-\section{Introduction}
-The Lattice Boltzmann Method (LBM) is used to simulate fluid flows in a closed system and is based on the core assumptions that fluids can be approximated to particles on a lattice.
-It originated from the lattice gas automata (LGCA) pioneered by Hardy–Pomeau–de Pazzis and Frisch–Hasslacher–Pomeau.
 
-a fluid density on a lattice is simulated with streaming and collision (relaxation) processes
-core it utalizes the Boltzmann transport equation (BTE) published by Ludwig Boltzmann in 1872 describes the statistical behaviour of particles in a closed system.
+\section{Introduction}
+The Lattice Boltzmann Method (LBM) is a numerical solution of (nonlinear) partial differential equations.
+It is used to simulate fluid flows in a closed system and is based on the core assumption that fluids can be approximated to particles on a lattice.
+
+It originated from the lattice gas automata (LGA) pioneered by Hardy, Pomeau and de Pazzis in the 1970s with the HPP-model \cite{hardy1973timeHPP}.
+This model could be used to simluate both gas and fluid, but did not not, as initially hoped by by the authors, lead to the Navier-Stokes equation in the macroscopic limit.
+Later lattice gas automata models like the FPH-model \cite{PhysRevLett.56.1505-fhp} were able to satisfy the Navier-Stokes equation but were still plagued by many problens, like the lack of Galilean invariance\cite{nie2008galileanInvariance} or the strong assumption that at each grid point, each discrete velocity $c_i$ may be taken by just one or no particle\cite{IIISELEC71:online-univie}, which lead to massive compyting requirements.
+In 1988 McNamara and Zanetti introduce the LBM as a direct alternative to the LGA \cite{mcnamara1988boltzmann-method}.
+Their new method "is based on the simulation of a very simple microscopic system, rather than on the direct integration of partial differential equations" \cite{mcnamara1988boltzmann-method}.
+Because of their close similarity the LBM shares many features with the LGA, like the lack of Galilean invariance.
+But whereas in LGA statistical averaging to compute the velocity in LGA, in LBM "we directly study the time evolution of the mean values"\cite{mcnamara1988boltzmann-method}.
+
+The key points of the LBM success is it's simplicity, relatively low consumption of computing resources and easy parallelization of the algorithm.
+Unlike other computational fluid dynamics (CFD) method it does not numerically solve the macroscopic properties of a fluied, i.e. the mass, momentum, and energy.
+But rather, approximates the fluid to particles on a grid and uses the streaming step and the collision step to simulate the particles behaviour over time.
+Using particles also makes incorperating boundries and microscopic interactions easier than in most other CFD models.
+
+\section{Methods}
+
+
+\section{Boltzmann Transport Equation}
+At core of the LBM stands the Boltzmann transport equation (BTE) published by Ludwig Boltzmann in 1872, which describes the statistical behaviour of particles in a closed system.
+
+% The equation arises not by analyzing the individual positions and momenta of each particle in the fluid but rather by considering a probability distribution for the position and momentum of a typical particle—that is, the probability that the particle occupies a given very small region of space (mathematically the volume element {\displaystyle \mathrm {d} ^{3}{\bf {r}}}{\displaystyle \mathrm {d} ^{3}{\bf {r}}}) centered at the position {\displaystyle {\bf {r}}}{\displaystyle {\bf {r}}}, and has momentum nearly equal to a given momentum vector {\displaystyle {\bf {p}}}{\displaystyle {\bf {p}}} (thus occupying a very small region of momentum space {\displaystyle \mathrm {d} ^{3}{\bf {p}}}{\displaystyle \mathrm {d} ^{3}{\bf {p}}}), at an instant of time.
 
 The
 
@@ -73,13 +92,8 @@ Die Teilchen werden rundenweise vorwärts bewegt. Zwischen den Zügen wird jewei
 
 
 
-
-
-
-
-
-
 \bibliographystyle{unsrt}
 \bibliography{biblio}
+% \bibliography{"/home/joe/repos/pylbm/milestones/final/biblio.bib"}
 
 \end{document}
