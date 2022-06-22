@@ -93,7 +93,11 @@ def apply_bottom_wall(f_cxy: np.array) -> np.array:
 
 def apply_bottom_wall_m4(f_cxy: np.array) -> np.array:
     """m4: in the couette flow we have no side walls and thus need to copy all values up."""
-    f_cxy[[2,5,6], :, 1] = f_cxy[[4,7,8], :, 0]
+    # should be np roll
+    # argument ohne np roll: im steady state ist es egal
+    f_cxy[2, :, 1] = f_cxy[4, :, 0]
+    f_cxy[5, :, 1] = np.roll(f_cxy[7, :, 0], -1)
+    f_cxy[6, :, 1] = np.roll(f_cxy[8, :, 0], 1)
     return f_cxy
 
 
@@ -137,9 +141,16 @@ def apply_sliding_top_wall_simple_m4(f_cxy: np.array, velocity: float = None) ->
     m4: in the couette flow we have no side walls and thus need to copy all values down.
     """
     f_cxy[4, :, -2] = f_cxy[2, :, -1]
-    f_cxy[7, :, -2] = f_cxy[5, :, -1] - 1 / 6.0 * velocity
-    f_cxy[8, :, -2] = f_cxy[6, :, -1] + 1 / 6.0 * velocity
+    f_cxy[7, :, -2] = np.roll(f_cxy[5, :, -1] - 1 / 6.0 * velocity, 1)
+    f_cxy[8, :, -2] = np.roll(f_cxy[6, :, -1] + 1 / 6.0 * velocity, -1)
     return f_cxy
+
+    #     f_cxy[4, 1:-1, -1] = f_cxy[2, 1:-1, -1]
+    # f_cxy[7, 1:-1, -1] = np.roll(f_cxy[5, 2:, -1] - 1 / 6.0 * velocity, 1)
+    # f_cxy[8, 1:-1, -1] = np.roll(f_cxy[6, :-2, -1] + 1 / 6.0 * velocity, -1)
+
+
+# def inled_pressure(f_cxy: np.array, ):
 
 
 def collision(f_cxy: np.array, omega: float) -> Tuple[np.array, np.array]:

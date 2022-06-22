@@ -8,19 +8,13 @@ def m4_1(x_dim, y_dim, epochs, omega):
     u_axy = lbm.local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
     f_cxy = lbm.f_eq(u_axy=u_axy, r_xy=r_xy)
 
-    print_epoch = round(epochs / 12)
-    if print_epoch == 0:
-        print_epoch = 1
-
     velocities = []
     for t in range(epochs):
         f_cxy = lbm.stream(f_cxy=f_cxy)
         f_cxy = lbm.apply_bottom_wall_m4(f_cxy=f_cxy)
         f_cxy = lbm.apply_sliding_top_wall_simple_m4(f_cxy=f_cxy, velocity=1)
         f_cxy, u_axy = lbm.collision(f_cxy=f_cxy, omega=omega)
-
-        if t % print_epoch == 0:
-            velocities.append((u_axy, t))
+        velocities.append(u_axy)
 
     return velocities
 
@@ -49,7 +43,8 @@ def m4_1_fig(fig, x_dim, y_dim, velocities):
         # ax.grid(True)
         ax.axis("equal")
         # streamplot is really slow at big grids
-        ax.streamplot(np.arange(x_dim), np.arange(y_dim), v[0][0, :, :].T, v[0][1, :, :].T, color="blue")
+        strm = ax.streamplot(np.arange(x_dim), np.arange(y_dim), v[0][0, :, :].T, v[0][1, :, :].T, cmap="autumn")
+        fig.colorbar(strm.lines)
         ax.set_title("epoch is {}".format(v[1] + 1))
         i += 1
         fig.add_axes(ax)
