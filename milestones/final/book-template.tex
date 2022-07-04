@@ -38,14 +38,14 @@
 \begin{document}
 
 \makeatletter
-    \begin{titlepage}
-        \begin{center}
-            \includegraphics[width=0.5\linewidth]{logos/Uni_Logo-Grundversion_E1_A4_CMYK.eps}\\[4ex]
-            {\huge \bfseries  \@title }\\[2ex] 
-            {\LARGE  \@author}\\[30ex] 
-            {\large \@date}
-        \end{center}
-    \end{titlepage}
+\begin{titlepage}
+  \begin{center}
+    \includegraphics[width=0.5\linewidth]{logos/Uni_Logo-Grundversion_E1_A4_CMYK.eps}\\[4ex]
+    {\huge \bfseries  \@title }\\[2ex]
+    {\LARGE  \@author}\\[30ex]
+    {\large \@date}
+  \end{center}
+\end{titlepage}
 \makeatother
 \thispagestyle{empty}
 \newpage
@@ -63,15 +63,15 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus ante, auctor
 
 Example of normal equation
 \begin{equation}\label{eq:LBE}
-f_i(\mathbf{x}_j+\mathbf{c}_i\cdot\Delta t,t+\Delta t)=f_i(\mathbf{x}_j,t)
--\omega \left( f_i(\mathbf{x}_j,t)-f_i^\text{eq}(\mathbf{x}_j,t) \right)
+  f_i(\mathbf{x}_j+\mathbf{c}_i\cdot\Delta t,t+\Delta t)=f_i(\mathbf{x}_j,t)
+  -\omega \left( f_i(\mathbf{x}_j,t)-f_i^\text{eq}(\mathbf{x}_j,t) \right)
 \end{equation}
 
 Example of aligned equation:
 \begin{align}
-  \rho(\mathbf{x}_j, t) &= \sum_i f_i(\mathbf{x}_j, t) \\
-  \mathbf{u}(\mathbf{x}_j, t) &= \frac{1}{ \rho(\mathbf{x}_j, t)}
-    \sum_i \mathbf{c}_i f_i(\mathbf{x}_j, t)
+  \rho(\mathbf{x}_j, t)       & = \sum_i f_i(\mathbf{x}_j, t)      \\
+  \mathbf{u}(\mathbf{x}_j, t) & = \frac{1}{ \rho(\mathbf{x}_j, t)}
+  \sum_i \mathbf{c}_i f_i(\mathbf{x}_j, t)
 \end{align}
 
 \section{section title}
@@ -87,9 +87,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis risus ante, auctor
 
 \begin{figure}[h!]
   \begin{center}
-   \includegraphics[width=10cm]{logos/Gitter_LBM.png}
-   \caption{example figure}
-  \label{fig:mesh}
+    \includegraphics[width=10cm]{logos/Gitter_LBM.png}
+    \caption{example figure}
+    \label{fig:mesh}
   \end{center}
 \end{figure}
 
@@ -98,23 +98,23 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 id convallis magna eros nec metus. Sed vel ligula justo, sit amet vestibulum dolor. Sed vitae augue sit amet magna ullamcorper suscipit. Quisque dictum ipsum a sapien egestas facilisis.
 
 \begin{table}[ht]
-\caption{Sample table} % title of Table
-\centering % used for centering table
-\begin{tabular}{c c c c}
-% centered columns (4 columns)
-\hline\hline %inserts double horizontal lines
-S. No. & Column\#1 & Column\#2 & Column\#3 \\ [0.5ex]
-% inserts table
-%heading
-\hline % inserts single horizontal line
-1 & 50 & 837 & 970 \\
-2 & 47 & 877 & 230 \\
-3 & 31 & 25 & 415 \\
-4 & 35 & 144 & 2356 \\
-5 & 45 & 300 & 556 \\ [1ex] % [1ex] adds vertical space
-\hline %inserts single line
-\end{tabular}
-\label{table:nonlin} % is used to refer this table in the text
+  \caption{Sample table} % title of Table
+  \centering % used for centering table
+  \begin{tabular}{c c c c}
+    % centered columns (4 columns)
+    \hline\hline %inserts double horizontal lines
+    S. No. & Column\#1 & Column\#2 & Column\#3 \\ [0.5ex]
+    % inserts table
+    %heading
+    \hline % inserts single horizontal line
+    1      & 50        & 837       & 970       \\
+    2      & 47        & 877       & 230       \\
+    3      & 31        & 25        & 415       \\
+    4      & 35        & 144       & 2356      \\
+    5      & 45        & 300       & 556       \\ [1ex] % [1ex] adds vertical space
+    \hline %inserts single line
+  \end{tabular}
+  \label{table:nonlin} % is used to refer this table in the text
 \end{table}
 
 \section{Code listing}
@@ -146,3 +146,6 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 \bibliography{biblio}
 
 \end{document}
+
+
+% https://www.mathematik.tu-dortmund.de/lsiii/cms/papers/Safi2014.pdf

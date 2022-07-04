@@ -95,9 +95,9 @@ def apply_bottom_wall(f_cxy: np.array) -> np.array:
 
 
 def apply_top_wall(f_cxy: np.array) -> np.array:
-    f_cxy[4, 1:-1, 1] = f_cxy[2, 1:-1, 0]
-    f_cxy[7, 1:-1, 1] = f_cxy[5, 2:, 0]
-    f_cxy[8, 1:-1, 1] = f_cxy[6, :-2, 0]
+    f_cxy[4, :, -2] = f_cxy[2, :, -1]
+    f_cxy[7, :, -2] = np.roll(f_cxy[5, :, -1], -1)
+    f_cxy[8, :, -2] = np.roll(f_cxy[6, :, -1], 1)
     return f_cxy
 
 
@@ -128,8 +128,16 @@ def apply_sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np
     return f_cxy
 
 
+def in_out_pressure(f_cxy: np.array, rho_in: float, rho_out: float) -> np.array:
+    r_xy = density(f_cxy)
+    r_xy[0, 1:-1] = np.ones(r_xy.shape[1] - 2) * rho_in
+    r_xy[-1, 1:-1] = np.ones(r_xy.shape[1] - 2) * rho_out
 
-# def inled_pressure(f_cxy: np.array, ):
+    u_axy = local_avg_velocity(f_cxy=f_cxy, r_xy=r_xy)
+    f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
+    f_cxy[:, 0:1, 1:-1] = f_eq(u_axy=u_axy[:, -2:-1, 1:-1], r_xy=r_xy[0:1, 1:-1]) + (f_cxy[:, -2:-1, 1:-1] - f_eq_cxy[:, -2:-1, 1:-1])
+    f_cxy[:, -1:, 1:-1] = f_eq(u_axy=u_axy[:, :1, 1:-1], r_xy=r_xy[-1:, 1:-1]) + (f_cxy[:, :1, 1:-1] - f_eq_cxy[:, :1, 1:-1])
+    return f_cxy
 
 
 def collision(f_cxy: np.array, omega: float) -> Tuple[np.array, np.array]:
@@ -152,7 +160,3 @@ def collision(f_cxy: np.array, omega: float) -> Tuple[np.array, np.array]:
     f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
     f_cxy += omega * (f_eq_cxy - f_cxy)
     return f_cxy, u_axy
-
-
-def unmask(f_cxy: np.array):
-    return f_cxy[:, 1:-1, 1:-1]

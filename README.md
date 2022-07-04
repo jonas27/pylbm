@@ -1,5 +1,6 @@
 # pylbm
 
+low reynolds number means very viscos fluid
 
 ## Setup
 Create a conda environemnt:
