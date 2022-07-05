@@ -101,14 +101,18 @@ def apply_top_wall(f_cxy: np.array) -> np.array:
     return f_cxy
 
 
-# def apply_left_wall(f_cij: np.array, f_cij_old: np.array = None) -> np.array:
-#     f_cij[[1, 5, 8], 0, :] = f_cij_old[[3, 7, 6], 0, :]
-#     return f_cij
+def left_wall(f_cxy: np.array) -> np.array:
+    f_cxy[1, 0, :] = f_cxy[3, 0, :]
+    f_cxy[5, 0, :] = np.roll(f_cxy[7, 0, :], -1)
+    f_cxy[8, 0, :] = np.roll(f_cxy[6, 0, :], 1)
+    return f_cxy
 
 
-# def apply_right_wall(f_cxy: np.array, f_cij_old: np.array = None) -> np.array:
-#     f_cxy[[3, 7, 6], -1, :] = f_cij_old[[1, 5, 8], -1, :]
-#     return f_cxy
+def right_wall(f_cxy: np.array) -> np.array:
+    f_cxy[3, 0, :] = f_cxy[1, 0, :]
+    f_cxy[7, 0, :] = np.roll(f_cxy[5, 0, :], -1)
+    f_cxy[6, 0, :] = np.roll(f_cxy[8, 0, :], 1)
+    return f_cxy
 
 
 def apply_sliding_top_wall(f_cxy: np.array, velocity: float) -> np.array:
@@ -130,13 +134,18 @@ def apply_sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np
 
 def in_out_pressure(f_cxy: np.array, rho_in: float, rho_out: float) -> np.array:
     r_xy = density(f_cxy)
-    r_xy[0, 1:-1] = np.ones(r_xy.shape[1] - 2) * rho_in
-    r_xy[-1, 1:-1] = np.ones(r_xy.shape[1] - 2) * rho_out
+
+    r_xy_in = np.full((1, r_xy.shape[1] - 2), rho_in)
+    r_xy_out = np.full((1, r_xy.shape[1] - 2), rho_out)
 
     u_axy = local_avg_velocity(f_cxy=f_cxy, r_xy=r_xy)
     f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
-    f_cxy[:, 0:1, 1:-1] = f_eq(u_axy=u_axy[:, -2:-1, 1:-1], r_xy=r_xy[0:1, 1:-1]) + (f_cxy[:, -2:-1, 1:-1] - f_eq_cxy[:, -2:-1, 1:-1])
-    f_cxy[:, -1:, 1:-1] = f_eq(u_axy=u_axy[:, :1, 1:-1], r_xy=r_xy[-1:, 1:-1]) + (f_cxy[:, :1, 1:-1] - f_eq_cxy[:, :1, 1:-1])
+
+    f_eq_in = f_eq(u_axy=u_axy[:, -2:-1, 1:-1], r_xy=r_xy_in)
+    f_cxy[:, :1, 1:-1] = f_eq_in + (f_cxy[:, -2:-1, 1:-1] - f_eq_cxy[:, -2:-1, 1:-1])
+
+    f_eq_out = f_eq(u_axy=u_axy[:, 1:2, 1:-1], r_xy=r_xy_out)
+    f_cxy[:, -1:, 1:-1] = f_eq_out + (f_cxy[:, 1:2, 1:-1] - f_eq_cxy[:, 1:2, 1:-1])
     return f_cxy
 
 
@@ -160,3 +169,8 @@ def collision(f_cxy: np.array, omega: float) -> Tuple[np.array, np.array]:
     f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
     f_cxy += omega * (f_eq_cxy - f_cxy)
     return f_cxy, u_axy
+
+
+def reynolds(y_dim, omega, top_vel) -> float:
+    nu = 1 / 3 * (1 / omega - 1 / 2)
+    return (top_vel * y_dim) / (nu)
