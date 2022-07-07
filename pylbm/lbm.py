@@ -88,48 +88,80 @@ def apply_bottom_wall(f_cxy: np.array) -> np.array:
     """m4: in the couette flow we have no side walls and thus need to copy all values up."""
     # should be np roll
     # argument ohne np roll: im steady state ist es egal
+    f_cxy[2, 1:-1, 1] = f_cxy[4, 1:-1, 0]
+    f_cxy[5, 1:-1, 1] = np.roll(f_cxy[7, 2:, 0], -1)
+    f_cxy[6, 1:-1, 1] = np.roll(f_cxy[8, :-2, 0], 1)
+    return f_cxy
+
+
+def left_wall(f_cxy: np.array) -> np.array:
+    f_cxy[1, 1, 1:-1] = f_cxy[3, 0, 1:-1]
+    f_cxy[5, 1, 1:-1] = np.roll(f_cxy[7, 0, 2:], -1)
+    f_cxy[8, 1, 1:-1] = np.roll(f_cxy[6, 0, :-2], 1)
+    return f_cxy
+
+
+def right_wall(f_cxy: np.array) -> np.array:
+    f_cxy[3, -2, 1:-1] = f_cxy[1, -1, 1:-1]
+    f_cxy[7, -2, 1:-1] = np.roll(f_cxy[5, -1, 2:], -1)
+    f_cxy[6, -2, 1:-1] = np.roll(f_cxy[8, -1, :-2], 1)
+    return f_cxy
+
+
+def apply_bottom_wall_simple(f_cxy: np.array) -> np.array:
+    """m4: in the couette flow we have no side walls and thus need to copy all values up."""
+    # should be np roll
+    # argument ohne np roll: im steady state ist es egal
     f_cxy[2, :, 1] = f_cxy[4, :, 0]
     f_cxy[5, :, 1] = np.roll(f_cxy[7, :, 0], -1)
     f_cxy[6, :, 1] = np.roll(f_cxy[8, :, 0], 1)
     return f_cxy
 
 
-def apply_top_wall(f_cxy: np.array) -> np.array:
+def apply_top_wall_simple(f_cxy: np.array) -> np.array:
     f_cxy[4, :, -2] = f_cxy[2, :, -1]
     f_cxy[7, :, -2] = np.roll(f_cxy[5, :, -1], -1)
     f_cxy[8, :, -2] = np.roll(f_cxy[6, :, -1], 1)
     return f_cxy
 
 
-def left_wall(f_cxy: np.array) -> np.array:
-    f_cxy[1, 0, :] = f_cxy[3, 0, :]
-    f_cxy[5, 0, :] = np.roll(f_cxy[7, 0, :], -1)
-    f_cxy[8, 0, :] = np.roll(f_cxy[6, 0, :], 1)
+def left_wall_simple(f_cxy: np.array) -> np.array:
+    f_cxy[1, 1, :] = f_cxy[3, 0, :]
+    f_cxy[5, 1, :] = np.roll(f_cxy[7, 0, :], -1)
+    f_cxy[8, 1, :] = np.roll(f_cxy[6, 0, :], 1)
     return f_cxy
 
 
-def right_wall(f_cxy: np.array) -> np.array:
-    f_cxy[3, 0, :] = f_cxy[1, 0, :]
-    f_cxy[7, 0, :] = np.roll(f_cxy[5, 0, :], -1)
-    f_cxy[6, 0, :] = np.roll(f_cxy[8, 0, :], 1)
+def right_wall_simpl(f_cxy: np.array) -> np.array:
+    f_cxy[3, -2, :] = f_cxy[1, -1, :]
+    f_cxy[7, -2, :] = np.roll(f_cxy[5, -1, :], 11)
+    f_cxy[6, -2, :] = np.roll(f_cxy[8, -1, :], 1)
     return f_cxy
 
 
 def apply_sliding_top_wall(f_cxy: np.array, velocity: float) -> np.array:
     # calc vel at sliding wall
     r_x_top = f_cxy[[0, 1, 3], 1:-1, -2].sum(axis=0) + 2.0 * (f_cxy[2, 1:-1, -1] + f_cxy[5, 2:, -1] + f_cxy[6, :-2, -1])
-    f_cxy[4, 1:-1, -1] = f_cxy[2, 1:-1, -1]
-    f_cxy[7, 1:-1, -1] = f_cxy[5, 2:, -1] - 6.0 * W_C[5] * r_x_top * velocity
-    f_cxy[8, 1:-1, -1] = f_cxy[6, :-2, -1] + 6.0 * W_C[6] * r_x_top * velocity
+    f_cxy[4, 1:-1, -2] = f_cxy[2, 1:-1, -1]
+    f_cxy[7, 1:-1, -2] = f_cxy[5, 2:, -1] - 6.0 * W_C[5] * r_x_top * velocity
+    f_cxy[8, 1:-1, -2] = f_cxy[6, :-2, -1] + 6.0 * W_C[6] * r_x_top * velocity
     return f_cxy
 
 
 def apply_sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np.array:
     """for incompressible fluids with  we can say that at the wall we have a density of -1/6, 0 and 1/6"""
     f_cxy[4, :, -2] = f_cxy[2, :, -1]
-    f_cxy[7, :, -2] = np.roll(f_cxy[5, :, -1] - 1 / 6.0 * velocity, 1)
-    f_cxy[8, :, -2] = np.roll(f_cxy[6, :, -1] + 1 / 6.0 * velocity, -1)
+    f_cxy[7, :, -2] = f_cxy[5, :, -1] - 1 / 6.0 * velocity
+    f_cxy[8, :, -2] = f_cxy[6, :, -1] + 1 / 6.0 * velocity
     return f_cxy
+
+
+# def apply_sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np.array:
+#     """for incompressible fluids with  we can say that at the wall we have a density of -1/6, 0 and 1/6"""
+#     f_cxy[4, :, -2] = f_cxy[2, :, -1]
+#     f_cxy[7, :, -2] = np.roll(f_cxy[5, :, -1] - 1 / 6.0 * velocity, 1)
+#     f_cxy[8, :, -2] = np.roll(f_cxy[6, :, -1] + 1 / 6.0 * velocity, -1)
+#     return f_cxy
 
 
 def in_out_pressure(f_cxy: np.array, rho_in: float, rho_out: float) -> np.array:
