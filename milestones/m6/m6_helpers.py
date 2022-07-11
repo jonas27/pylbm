@@ -26,4 +26,4 @@ def m6_1(x_dim, y_dim, epochs, omega, top_vel):
     return velocities
 
 
-# m6_1(50,50,100,1.,1)
+m6_1(5, 4, 100, 1.0, 1)
