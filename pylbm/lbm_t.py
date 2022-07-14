@@ -12,13 +12,16 @@ import torch
 
 TAU = 0.5
 
-C_CA: torch.tensor = torch.tensor([[0, 0], [1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]])
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# DEVICE = torch.device("cpu")
 
-W_C: torch.tensor = torch.tensor([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36], dtype=torch.float)
+C_CA: torch.tensor = torch.tensor([[0, 0], [1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]], device=DEVICE)
+
+W_C: torch.tensor = torch.tensor([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36], dtype=torch.float, device=DEVICE)
 # W_C: Tuple = (4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36)
 
 # The bounce back direction
-C_REVERSED: torch.tensor = torch.tensor([0, 3, 4, 1, 2, 7, 8, 5, 6])
+C_REVERSED: torch.tensor = torch.tensor([0, 3, 4, 1, 2, 7, 8, 5, 6], device=DEVICE)
 # C_REVERSED: Tuple = (0, 3, 4, 1, 2, 7, 8, 5, 6)
 
 NORTH = "north"
@@ -27,9 +30,9 @@ SOUTH = "south"
 WEST = "west"
 
 
-def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01, device=torch.device("cpu")) -> torch.tensor:
+def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01) -> torch.tensor:
     """rho_init based on dim, a mean and a deviation factor eps."""
-    r_ij = eps * torch.randn(x_dim, y_dim, device=device)
+    r_ij = eps * torch.randn(x_dim, y_dim, device=DEVICE)
     r_ij[:, :] += r_mean
     return r_ij
 
@@ -40,9 +43,9 @@ def density(f_cxy: torch.tensor) -> torch.tensor:
     return r_xy
 
 
-def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float, device=torch.device("cpu")):
+def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float):
     """local_avg_velocity_init based on dim, a mean and a deviation factor eps."""
-    u_aij = eps * torch.randn(2, x_dim, y_dim, device=device)
+    u_aij = eps * torch.randn(2, x_dim, y_dim, device=DEVICE)
     u_aij[:, :] += u_mean
     return u_aij
 
