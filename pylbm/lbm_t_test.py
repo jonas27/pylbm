@@ -15,7 +15,7 @@ f_cxy = lbm.f_eq(u_axy=u_axy, r_xy=r_xy)
 
 velocities = []
 for t in range(epochs):
-    velocities.append(u_axy)
+    # velocities.append(u_axy)
     f_cxy = lbm.stream(f_cxy=f_cxy)
     f_cxy = lbm.apply_bottom_wall(f_cxy=f_cxy)
     f_cxy = lbm.apply_sliding_top_wall_simple(f_cxy=f_cxy, velocity=top_vel)
