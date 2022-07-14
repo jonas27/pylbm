@@ -1,13 +1,15 @@
-from pylbm import lbm_t as lbm
 import matplotlib.pyplot as plt
 import torch
 
-x_dim, y_dim = 100, 80
-epochs = 100
+from pylbm import lbm_t as lbm
+
+x_dim, y_dim = 300, 300
+epochs = 10000
 top_vel = 1
 omega = 1
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cpu")
 
 
 r_xy = lbm.density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0, device=device)

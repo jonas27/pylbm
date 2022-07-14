@@ -27,7 +27,7 @@ SOUTH = "south"
 WEST = "west"
 
 
-def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01, device="cpu") -> torch.tensor:
+def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01, device=torch.device("cpu")) -> torch.tensor:
     """rho_init based on dim, a mean and a deviation factor eps."""
     r_ij = eps * torch.randn(x_dim, y_dim, device=device)
     r_ij[:, :] += r_mean
@@ -40,7 +40,7 @@ def density(f_cxy: torch.tensor) -> torch.tensor:
     return r_xy
 
 
-def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float, device="cpu"):
+def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float, device=torch.device("cpu")):
     """local_avg_velocity_init based on dim, a mean and a deviation factor eps."""
     u_aij = eps * torch.randn(2, x_dim, y_dim, device=device)
     u_aij[:, :] += u_mean
