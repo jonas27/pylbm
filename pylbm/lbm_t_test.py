@@ -9,8 +9,8 @@ top_vel = 1
 omega = 1
 
 
-r_xy = lbm.density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0, device=device)
-u_axy = lbm.local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0, device=device)
+r_xy = lbm.density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
+u_axy = lbm.local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
 f_cxy = lbm.f_eq(u_axy=u_axy, r_xy=r_xy)
 
 velocities = []
