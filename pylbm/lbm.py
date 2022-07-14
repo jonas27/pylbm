@@ -125,7 +125,6 @@ def apply_sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np
     return f_cxy
 
 
-
 def in_out_pressure(f_cxy: np.array, rho_in: float, rho_out: float) -> np.array:
     r_xy = density(f_cxy)
 
@@ -166,5 +165,6 @@ def collision(f_cxy: np.array, omega: float) -> Tuple[np.array, np.array]:
 
 
 def reynolds(y_dim, omega, top_vel) -> float:
+    """y_dim should be largest physical dimension."""
     nu = 1 / 3 * (1 / omega - 1 / 2)
     return (top_vel * y_dim) / (nu)

@@ -36,12 +36,11 @@
 % % \newcommand*\l@subsubsection{\@dottedtocline{3}{3.8em}{3.2em}}
 
 
-
 % Book's title and subtitle
 \title{\Huge \textbf{High Performance Computing with Python} \vspace{4mm} \\ \huge Final Report}
 % Author
 % \author{\textsc{First-name Last-name}\footnote{email address}}
-\author{\textsc{Jonas Manser} \\ \vspace{3mm}\text{matriculation number}  \\
+\author{\textsc{Jonas Manser} \\ \vspace{3mm}\text{4953222}  \\
 \vspace{3mm}\text{jonas.burster@gmail.com}}
 
 
@@ -225,12 +224,27 @@ where $w_i$ for a D2Q9 lattice can be defined as follow: $w_i = \left( \frac{4}{
 It is important to note that the approximation in the collision term is not always accurate.
 But under the assumption that all transport processes occur on a longer time scale it is appropriate to do.
 
-\section{Milestones}
-\subsection{Milestone 3}
+\section{Shear Wave Decay and Kinematic Viscosity}
+Shear wave decay describes the amplitude decay of shear waves, elastic waves travelling through the body of an object.
+
+The kinematic viscocity $\nu$ is especially revelant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid, $\nu = \frac{\mu}{\rho}$.
+
+\paragraph{M3.1} We chose an initial distribution of $\rho (r,t_{0}=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}}) \right)$ and $u(r,0)=0$. 
+Where $L_{x}$ is the length of the domain in the x direction.
+
+\begin{figure}
+  \captionsetup{justification=centering,margin=1cm}
+  \includegraphics[scale=0.8]{}
+\end{figure}
+
+\centering
+\includegraphics[width=0.9\columnwidth]{figs/fig-cell-normal-to-cancer.png}
+\caption{Cell development: from normal to cancer. \\Credit: Terese Winslow LLC}
+% https://www.cancer.gov/about-cancer/understanding/what-is-cancer
+\label{fig:cancer-cell-development}
 
 
-
-.
+% .$u(r,0)  ρ(r,0)=\rho_{0}+ \eps \sin \left( \frac{2\pi x}{L_{x}} \right)$
 
 
 
