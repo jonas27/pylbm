@@ -9,7 +9,7 @@ setup(
     author_email="jonas.burster@gmail.com",
     url="https://github.com/jonas27/pylbm",
     packages=find_packages(),
-    python_requires=">=3.9",
+    python_requires=">=3.8",
     platforms=["Linux"],
     install_requires=REQUIREMENTS,
     include_package_data=True,

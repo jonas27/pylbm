@@ -9,6 +9,7 @@ TODO: Moving from global lists to tuples could be faster.
 from typing import Tuple
 
 import numpy as np
+from mpi4py import MPI
 
 TAU = 0.5
 
@@ -168,3 +169,39 @@ def reynolds(y_dim, omega, top_vel) -> float:
     """y_dim should be largest physical dimension."""
     nu = 1 / 3 * (1 / omega - 1 / 2)
     return (top_vel * y_dim) / (nu)
+
+
+def parallelize(x_dim, y_dim, x_grids, y_grids):
+    comm = MPI.COMM_WORLD
+    cartcomm = comm.Create_cart((x_grids, y_grids), periods=(False, False))
+    rows = x_dim // x_grids
+    columns = y_dim // y_grids
+
+
+def sync_f(cartcomm: MPI.Cartcomm, f_cxy: np.array):
+    # copy is required!
+    left_src, left_dst = cartcomm.Shift(1, -1)
+    right_src, right_dst = cartcomm.Shift(1, 1)
+    bottom_src, bottom_dst = cartcomm.Shift(0, 1)
+    top_src, top_dst = cartcomm.Shift(0, -1)
+
+    # Send left, receive left
+    recvbuf = f_cxy[:, -1, :].copy()
+    cartcomm.Sendrecv(f_cxy[:, 1, :].copy(), dest=left_dst, recvbuf=recvbuf, source=left_src)
+    f_cxy[:, -1, :] = recvbuf
+
+    # Send right, receive right
+    recvbuf = f_cxy[:, 0, :].copy()
+    cartcomm.Sendrecv(f_cxy[:, -2, :].copy(), dest=right_dst, recvbuf=recvbuf, source=right_src)
+    f_cxy[:, 0, :] = recvbuf
+
+    # Send top, receive top
+    recvbuf = f_cxy[:, -1, :].copy()
+    cartcomm.Sendrecv(f_cxy[:, 1, :].copy(), dest=top_dst, recvbuf=recvbuf, source=top_src)
+    f_cxy[:, -1, :] = recvbuf
+
+    # Send bottom, receive bottom
+    recvbuf = f_cxy[: , 0, :].copy()
+    cartcomm.Sendrecv(f_cxy[:, -2, :].copy(), dest=bottom_dst, recvbuf=recvbuf, source=bottom_src)
+    f_cxy[:, 0, :] = recvbuf
+    return f_cxy
