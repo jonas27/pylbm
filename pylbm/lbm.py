@@ -85,13 +85,23 @@ def stream(f_cxy: np.array) -> np.array:
     return f_cxy
 
 
-def apply_bottom_wall(f_cxy: np.array) -> np.array:
+def bottom_wall(f_cxy: np.array) -> np.array:
     """m4: in the couette flow we have no side walls and thus need to copy all values up."""
     # should be np roll
     # argument ohne np roll: im steady state ist es egal
     f_cxy[2, :, 1] = f_cxy[4, :, 0]
     f_cxy[5, :, 1] = f_cxy[7, :, 0]
     f_cxy[6, :, 1] = f_cxy[8, :, 0]
+    return f_cxy
+
+
+def sliding_bottom_wall(f_cxy: np.array) -> np.array:
+    """m4: in the couette flow we have no side walls and thus need to copy all values up."""
+    # should be np roll
+    # argument ohne np roll: im steady state ist es egal
+    f_cxy[2, :, 1] = f_cxy[4, :, 0]
+    f_cxy[5, :, 1] = f_cxy[7, :, 0] - 1 / 6.0 * 0.1
+    f_cxy[6, :, 1] = f_cxy[8, :, 0] + 1 / 6.0 * 0.1
     return f_cxy
 
 
@@ -102,10 +112,24 @@ def left_wall(f_cxy: np.array) -> np.array:
     return f_cxy
 
 
+def sliding_left_wall(f_cxy: np.array) -> np.array:
+    f_cxy[1, 1, :] = f_cxy[3, 0, :]
+    f_cxy[5, 1, :] = f_cxy[7, 0, :] - 1 / 6.0 * 0.1
+    f_cxy[8, 1, :] = f_cxy[6, 0, :] + 1 / 6.0 * 0.1
+    return f_cxy
+
+
 def right_wall(f_cxy: np.array) -> np.array:
     f_cxy[3, -2, :] = f_cxy[1, -1, :]
     f_cxy[7, -2, :] = f_cxy[5, -1, :]
     f_cxy[6, -2, :] = f_cxy[8, -1, :]
+    return f_cxy
+
+
+def sliding_right_wall(f_cxy: np.array) -> np.array:
+    f_cxy[3, -2, :] = f_cxy[1, -1, :]
+    f_cxy[7, -2, :] = f_cxy[5, -1, :] - 1 / 6.0 * 0.1
+    f_cxy[6, -2, :] = f_cxy[8, -1, :] + 1 / 6.0 * 0.1
     return f_cxy
 
 
@@ -201,7 +225,7 @@ def sync_f(cartcomm: MPI.Cartcomm, f_cxy: np.array):
     f_cxy[:, -1, :] = recvbuf
 
     # Send bottom, receive bottom
-    recvbuf = f_cxy[: , 0, :].copy()
+    recvbuf = f_cxy[:, 0, :].copy()
     cartcomm.Sendrecv(f_cxy[:, -2, :].copy(), dest=bottom_dst, recvbuf=recvbuf, source=bottom_src)
     f_cxy[:, 0, :] = recvbuf
     return f_cxy

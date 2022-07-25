@@ -18,7 +18,7 @@ def m5_1(x_dim, y_dim, epochs, omega, rho_in, rho_out):
         # d_0 = lbm.density(f_cxy).sum()
         f_cxy = lbm.in_out_pressure(f_cxy=f_cxy, rho_in=rho_in, rho_out=rho_out)
         # print(d_0 - lbm.density(f_cxy).sum())
-        f_cxy = lbm.apply_bottom_wall(f_cxy=f_cxy)
+        f_cxy = lbm.bottom_wall(f_cxy=f_cxy)
         f_cxy = lbm.apply_top_wall(f_cxy=f_cxy)
         f_cxy, u_axy = lbm.collision(f_cxy=f_cxy, omega=omega)
         velocities.append(u_axy)

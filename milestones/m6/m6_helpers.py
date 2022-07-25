@@ -15,7 +15,7 @@ def m6_1(x_dim, y_dim, epochs, omega, top_vel):
         f_cxy = lbm.stream(f_cxy=f_cxy)
 
         f_cxy = lbm.apply_sliding_top_wall_simple(f_cxy=f_cxy, velocity=top_vel)
-        f_cxy = lbm.apply_bottom_wall(f_cxy=f_cxy)
+        f_cxy = lbm.bottom_wall(f_cxy=f_cxy)
         f_cxy = lbm.left_wall(f_cxy=f_cxy)
         f_cxy = lbm.right_wall(f_cxy=f_cxy)
 

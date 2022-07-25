@@ -12,7 +12,7 @@ def m4_1(x_dim, y_dim, epochs, omega, top_vel):
     for t in range(epochs):
         velocities.append(u_axy)
         f_cxy = lbm.stream(f_cxy=f_cxy)
-        f_cxy = lbm.apply_bottom_wall(f_cxy=f_cxy)
+        f_cxy = lbm.bottom_wall(f_cxy=f_cxy)
         f_cxy = lbm.apply_sliding_top_wall_simple(f_cxy=f_cxy, velocity=top_vel)
         f_cxy, u_axy = lbm.collision(f_cxy=f_cxy, omega=omega)
 
@@ -23,8 +23,8 @@ def m4_1_fig(fig, x_dim, y_dim, num_plots, velocities):
     top_wall, left_wall, right_wall = False, False, False
     top_moving_wall, bottom_wall = True, True
     i_plot = 1
-    for i in range(0, len(velocities), int(len(velocities)/num_plots)):
-    # for v in velocities:
+    for i in range(0, len(velocities), int(len(velocities) / num_plots)):
+        # for v in velocities:
         v = velocities[i]
         if i_plot > 25:
             break
