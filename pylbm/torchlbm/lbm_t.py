@@ -24,11 +24,6 @@ W_C: torch.tensor = torch.tensor([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 /
 C_REVERSED: torch.tensor = torch.tensor([0, 3, 4, 1, 2, 7, 8, 5, 6], device=DEVICE)
 # C_REVERSED: Tuple = (0, 3, 4, 1, 2, 7, 8, 5, 6)
 
-NORTH = "north"
-EAST = "east"
-SOUTH = "south"
-WEST = "west"
-
 
 def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01) -> torch.tensor:
     """rho_init based on dim, a mean and a deviation factor eps."""
@@ -167,6 +162,20 @@ def collision(f_cxy: torch.tensor, omega: float) -> Tuple[torch.tensor, torch.te
     return f_cxy, u_axy
 
 
-def reynolds(y_dim, omega, top_vel) -> float:
-    nu = 1 / 3 * (1 / omega - 1 / 2)
-    return (top_vel * y_dim) / (nu)
+def run():
+    x_dim, y_dim = 300, 300
+    epochs = 100000
+    top_vel = 1
+    omega = 1
+
+    r_xy = density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
+    u_axy = local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
+    f_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
+
+    velocities = []
+    for t in range(epochs):
+        # velocities.append(u_axy)
+        f_cxy = stream(f_cxy=f_cxy)
+        f_cxy = apply_bottom_wall(f_cxy=f_cxy)
+        f_cxy = apply_sliding_top_wall_simple(f_cxy=f_cxy, velocity=top_vel)
+        f_cxy, u_axy = collision(f_cxy=f_cxy, omega=omega)
