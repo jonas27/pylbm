@@ -8,7 +8,7 @@
 #SBATCH --output=slurm.out
 #SBATCH --error=slurm.err
 echo "Loading Pythona module and mpi module"
-module load devel/python/3.9.2_gnu_10.2
+module load devel/python/3.10.0_gnu_11.1
 module load compiler/gnu/12.1
 module load mpi/openmpi/4.1
 module list
