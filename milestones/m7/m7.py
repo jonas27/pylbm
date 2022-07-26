@@ -263,13 +263,13 @@ def run():
         f_cxy = stream(f_cxy=f_cxy)
         rank = cartcomm.Get_rank()
         coords = cartcomm.Get_coords(rank)
-        if coords == [1, 1] or coords == [0, 1]:
+        if coords[1] == y_sects - 1:
             f_cxy = apply_sliding_top_wall_simple(f_cxy=f_cxy, velocity=top_vel)
-        if coords == [0, 0] or coords == [1, 0]:
+        if coords[1] == 0:
             f_cxy = bottom_wall(f_cxy=f_cxy)
-        if coords == [0, 0] or coords == [0, 1]:
+        if coords[0] == 0:
             f_cxy = left_wall(f_cxy=f_cxy)
-        if coords == [1, 0] or coords == [1, 1]:
+        if coords[0] == x_sects - 1:
             f_cxy = right_wall(f_cxy=f_cxy)
         f_cxy, u_axy = collision(f_cxy=f_cxy, omega=omega)
 
