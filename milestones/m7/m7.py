@@ -239,16 +239,19 @@ def save_mpiio(comm: MPI.Cartcomm, fn, g_kl):
 def run():
     org_x_dim = 300
     org_y_dim = 300
-    sync_rows = 2
-    sync_cols = 2
-    epochs = 100000
+    size = org_y_dim * org_x_dim
+    epochs = 100
     omega = 1.7
     top_vel = 0.1
-    x_dim = org_x_dim // sync_rows
-    y_dim = org_y_dim // sync_cols
 
     comm = MPI.COMM_WORLD
-    cartcomm = comm.Create_cart(dims=[2, 2], periods=(False, False), reorder=False)
+    cartcomm = comm.Create_cart(dims=(150, 150), periods=(False, False), reorder=False)
+
+    size = comm.Get_size()
+    x_sects = int(np.floor(np.sqrt(size)))
+    y_sects = int(size / x_sects)
+    x_dim = org_x_dim // x_sects
+    y_dim = org_y_dim // y_sects
 
     r_xy = density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
     u_axy = local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
