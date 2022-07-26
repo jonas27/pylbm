@@ -13,14 +13,14 @@
 # run job
 # sbatch -x ./m7.job
 
+# for nodes = 4
+# for i in 1 4 9 16 25 36
+# do
+# ./m7.job 4 $i
+# done
+
 
 for i in 1 4 9 16 25 36
 do
-./m7.job 4 $i
+sbatch ./m7.job 2 $((i*2))
 done
-
-
-# for i in 1 4 9 16 25 36
-# do
-# sbatch ./m7.job 2 $i*2
-# done
