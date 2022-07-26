@@ -16,7 +16,7 @@
 
 for i in 1 4 9 16
 do
-sbatch ./m7.job 4 $i
+./m7.job 4 $i
 done
 
 # for i in 1 4 9 16 25 36
