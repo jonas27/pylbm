@@ -14,5 +14,5 @@ module load devel/python/3.10.0_gnu_11.1
 module load compiler/gnu/12.1
 module load mpi/openmpi/4.1
 module list
-mpirun --bind-to core --map-by core -report-bindings python3 ./m7.py
+mpirun --bind-to core --map-by core --output=slurm_nodes_$1_ntasks_$2.out -report-bindings python3 ./m7.py
 EOT
