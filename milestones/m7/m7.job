@@ -7,7 +7,7 @@
 #SBATCH --export=ALL
 #SBATCH --partition=multiple
 
-module load devel/python/3.9.2_gnu_10.2
+module load devel/python/3.10.0_gnu_11.1
 module load mpi/openmpi/4.1
 
 echo "Running on ${SLURM_JOB_NUM_NODES} nodes with ${SLURM_JOB_CPUS_PER_NODE} cores each."

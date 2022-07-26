@@ -6,4 +6,7 @@
 # module load compiler/gnu/12.1
 # module load mpi/openmpi/4.1
 
+# list queue in server
+# squeue  
+
 sbatch -x ./m7.job
