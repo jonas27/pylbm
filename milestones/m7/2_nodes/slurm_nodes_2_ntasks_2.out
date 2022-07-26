@@ -1,0 +1,16 @@
+Loading Pythona module and mpi module
+
+============================= JOB FEEDBACK =============================
+
+NodeName=uc2n[001-002]
+Job ID: 20935689
+Cluster: uc2
+User/Group: fr_km280/fr_fr
+State: COMPLETED (exit code 0)
+Nodes: 2
+Cores per node: 80
+CPU Utilized: 00:23:08
+CPU Efficiency: 2.25% of 17:06:40 core-walltime
+Job Wall-clock time: 00:06:25
+Memory Utilized: 350.86 MB
+Memory Efficiency: 0.19% of 175.78 GB
