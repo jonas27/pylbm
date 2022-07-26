@@ -240,7 +240,7 @@ def run():
     org_x_dim = 300
     org_y_dim = 300
     size = org_y_dim * org_x_dim
-    epochs = 100
+    epochs = 10000
     omega = 1.7
     top_vel = 0.1
 
