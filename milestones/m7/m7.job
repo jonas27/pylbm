@@ -1,5 +1,6 @@
 #!/bin/bash
 sbatch <<EOT
+#!/bin/bash
 #SBATCH --nodes=$1
 #SBATCH --time=00:05:00
 #SBATCH --partition=dev_multiple
