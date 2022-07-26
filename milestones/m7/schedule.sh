@@ -22,5 +22,5 @@
 
 for i in 1 4 9 16 25 36
 do
-sbatch ./m7.job 2 $((i*2))
+./m7.job 2 $((i*2))
 done
