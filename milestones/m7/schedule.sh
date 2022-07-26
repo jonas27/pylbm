@@ -14,22 +14,13 @@
 # sbatch -x ./m7.job
 
 
-for i in 1 4 9 16
+for i in 1 4 9 16 25 36
 do
 ./m7.job 4 $i
 done
 
+
 # for i in 1 4 9 16 25 36
 # do
-# sbatch ./m7.job 4 $i
+# sbatch ./m7.job 2 $i*2
 # done
-
-
-#  t='/usr/bin/time -f "%U" ls 2>&1 )
-# t=`(/usr/bin/time -f "%U" ls) 2>&1 `
-# echo $t
-# echo $t
-# echo $t
-
-# t=$( TIMEFORMAT="%R"; { time ls; } 2>&1 | awk '{print $NF}') 
-# echo $t
