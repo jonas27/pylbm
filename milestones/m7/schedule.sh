@@ -14,7 +14,7 @@
 # sbatch -x ./m7.job
 
 
-for i in 1 4
+for i in 1 4 9 16
 do
 sbatch ./m7.job 4 $i
 done

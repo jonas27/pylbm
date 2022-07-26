@@ -240,7 +240,7 @@ def run():
     org_x_dim = 300
     org_y_dim = 300
     size = org_y_dim * org_x_dim
-    epochs = 10000
+    epochs = 100000
     omega = 1.7
     top_vel = 0.1
 
@@ -273,8 +273,8 @@ def run():
             f_cxy = right_wall(f_cxy=f_cxy)
         f_cxy, u_axy = collision(f_cxy=f_cxy, omega=omega)
 
-    save_mpiio(cartcomm, "./ux.npy", u_axy[0, :, :])
-    save_mpiio(cartcomm, "./uy.npy", u_axy[1, :, :])
+    save_mpiio(cartcomm, "./ux_{}.npy".format(size), u_axy[0, :, :])
+    save_mpiio(cartcomm, "./uy_{}.npy".format(size), u_axy[1, :, :])
 
 
 run()
