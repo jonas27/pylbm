@@ -179,3 +179,6 @@ def run():
         f_cxy = apply_bottom_wall(f_cxy=f_cxy)
         f_cxy = apply_sliding_top_wall_simple(f_cxy=f_cxy, velocity=top_vel)
         f_cxy, u_axy = collision(f_cxy=f_cxy, omega=omega)
+
+
+run()
