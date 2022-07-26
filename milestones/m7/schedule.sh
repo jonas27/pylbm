@@ -19,8 +19,14 @@
 # ./m7.job 4 $i
 # done
 
+# for nodes = 2
+# for i in 1 4 9 16
+# do
+# ./m7.job 2 $((i*2))
+# done
 
-for i in 1 4 9 16 25 36
+# for nodes = 1
+for i in 1 4 9
 do
-./m7.job 2 $((i*2))
+./m7.job 2 $((i*4))
 done
