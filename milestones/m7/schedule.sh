@@ -8,5 +8,28 @@
 
 # list queue in server
 # squeue  
+# watch squeue  
 
-sbatch -x ./m7.job
+# run job
+# sbatch -x ./m7.job
+
+
+for i in 1 4
+do
+sbatch ./m7.job 4 $i
+done
+
+# for i in 1 4 9 16 25 36
+# do
+# sbatch ./m7.job 4 $i
+# done
+
+
+#  t='/usr/bin/time -f "%U" ls 2>&1 )
+# t=`(/usr/bin/time -f "%U" ls) 2>&1 `
+# echo $t
+# echo $t
+# echo $t
+
+# t=$( TIMEFORMAT="%R"; { time ls; } 2>&1 | awk '{print $NF}') 
+# echo $t
