@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --nodes=8
+#SBATCH --nodes=4
 #SBATCH --time=00:05:00
 #SBATCH --partition=dev_multiple
-#SBATCH --ntasks-per-node=25
+#SBATCH --ntasks-per-node=10
 #SBATCH --mail-user=jonas.burster@gmail.com
 #SBATCH --mail-type=END,FAIL
 #SBATCH --output=slurm.out
