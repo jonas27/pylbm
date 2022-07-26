@@ -245,13 +245,13 @@ def run():
     top_vel = 0.1
 
     comm = MPI.COMM_WORLD
-    cartcomm = comm.Create_cart(dims=(150, 150), periods=(False, False), reorder=False)
-
     size = comm.Get_size()
     x_sects = int(np.floor(np.sqrt(size)))
     y_sects = int(size / x_sects)
     x_dim = org_x_dim // x_sects
     y_dim = org_y_dim // y_sects
+
+    cartcomm = comm.Create_cart(dims=(x_sects, y_sects), periods=(False, False), reorder=False)
 
     r_xy = density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
     u_axy = local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
