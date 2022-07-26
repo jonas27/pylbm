@@ -1,15 +1,34 @@
-#!/bin/bash -x
+#!/bin/bash
 #SBATCH --nodes=8
-#SBATCH --ntasks-per-node=40
-#SBATCH --time=00:40:00
-#SBATCH -J HPC_WITH_PYTHON
-#SBATCH --mem=8gb
-#SBATCH --export=ALL
-#SBATCH --partition=multiple
-
-module load devel/python/3.10.0_gnu_11.1
+#SBATCH --time=00:05:00
+#SBATCH --partition=dev_multiple
+#SBATCH --ntasks-per-node=25
+#SBATCH --mail-user=jonas.burster@gmail.com
+#SBATCH --mail-type=END,FAIL
+#SBATCH --output=slurm.out
+#SBATCH --error=slurm.err
+echo "Loading Pythona module and mpi module"
+module load devel/python/3.9.2_gnu_10.2
+module load compiler/gnu/12.1
 module load mpi/openmpi/4.1
+module list
+startexe="mpirun --bind-to core --map-by core -report-bindings python3 ./m7.py"
+exec $startexe
 
-echo "Running on ${SLURM_JOB_NUM_NODES} nodes with ${SLURM_JOB_CPUS_PER_NODE} cores each."
-echo "Each node has ${SLURM_MEM_PER_NODE} of memory allocated to this job."
-time mpirun python
+
+
+# #!/bin/bash -x
+# #SBATCH --nodes=8
+# #SBATCH --ntasks-per-node=40
+# #SBATCH --time=00:40:00
+# #SBATCH -J HPC_WITH_PYTHON
+# #SBATCH --mem=8gb
+# #SBATCH --export=ALL
+# #SBATCH --partition=multiple
+
+# module load devel/python/3.10.0_gnu_11.1
+# module load mpi/openmpi/4.1
+
+# echo "Running on ${SLURM_JOB_NUM_NODES} nodes with ${SLURM_JOB_CPUS_PER_NODE} cores each."
+# echo "Each node has ${SLURM_MEM_PER_NODE} of memory allocated to this job."
+# time mpirun python
