@@ -28,5 +28,5 @@
 # for nodes = 1
 for i in 1 4 9
 do
-./m7.job 2 $((i*4))
+./m7.job 1 $((i*4))
 done
