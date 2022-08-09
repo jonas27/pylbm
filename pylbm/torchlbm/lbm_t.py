@@ -12,12 +12,14 @@ import torch
 
 TAU = 0.5
 
+ttype = torch.double
+
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # DEVICE = torch.device("cpu")
 
 C_CA: torch.tensor = torch.tensor([[0, 0], [1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]], device=DEVICE)
 
-W_C: torch.tensor = torch.tensor([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36], dtype=torch.float, device=DEVICE)
+W_C: torch.tensor = torch.tensor([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36], dtype=ttype, device=DEVICE)
 # W_C: Tuple = (4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36)
 
 # The bounce back direction
@@ -27,7 +29,7 @@ C_REVERSED: torch.tensor = torch.tensor([0, 3, 4, 1, 2, 7, 8, 5, 6], device=DEVI
 
 def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01) -> torch.tensor:
     """rho_init based on dim, a mean and a deviation factor eps."""
-    r_ij = eps * torch.randn(x_dim, y_dim, device=DEVICE)
+    r_ij = eps * torch.randn(x_dim, y_dim, device=DEVICE, dtype=ttype)
     r_ij[:, :] += r_mean
     return r_ij
 
@@ -40,14 +42,14 @@ def density(f_cxy: torch.tensor) -> torch.tensor:
 
 def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float):
     """local_avg_velocity_init based on dim, a mean and a deviation factor eps."""
-    u_aij = eps * torch.randn(2, x_dim, y_dim, device=DEVICE)
+    u_aij = eps * torch.randn(2, x_dim, y_dim, device=DEVICE, dtype=ttype)
     u_aij[:, :] += u_mean
     return u_aij
 
 
 def local_avg_velocity(f_cxy: torch.tensor, r_xy: torch.tensor) -> torch.tensor:
     """local_avg_velocity calculation based on f and rho."""
-    u_aij = torch.einsum("ac, cxy->axy", C_CA.T.float(), f_cxy) / r_xy
+    u_aij = torch.einsum("ac, cxy->axy", C_CA.T.double(), f_cxy) / r_xy
     return u_aij
 
 
@@ -60,7 +62,7 @@ def f_eq(u_axy: torch.tensor, r_xy: torch.tensor) -> torch.tensor:
         f_eq_cxy: equilibrium distribution function.
         u_ija: the local average velocity u(r) for testing.
     """
-    cu_cxy_3 = 3 * torch.einsum("ac,axy->cxy", C_CA.T.float(), u_axy)
+    cu_cxy_3 = 3 * torch.einsum("ac,axy->cxy", C_CA.T.double(), u_axy)
     u_xy_2 = torch.einsum("axy->xy", u_axy * u_axy)
     r_cxy_w = torch.einsum("c,xy->cxy", W_C, r_xy)
     f_eq_cxy = r_cxy_w * (1 + cu_cxy_3 * (1 + 0.5 * cu_cxy_3) - 1.5 * u_xy_2[None, :, :])
@@ -165,8 +167,8 @@ def collision(f_cxy: torch.tensor, omega: float) -> Tuple[torch.tensor, torch.te
 def run():
     x_dim, y_dim = 300, 300
     epochs = 100000
-    top_vel = 1
-    omega = 1
+    top_vel = 1.7
+    omega = 0.1
 
     r_xy = density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
     u_axy = local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
