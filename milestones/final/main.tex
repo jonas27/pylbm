@@ -1,6 +1,6 @@
 \documentclass[a4paper,11pt]{article}
 \usepackage[T1]{fontenc}
-% \usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 
 \usepackage{graphicx}
@@ -258,16 +258,32 @@ But the general motion is to set a sinusoidal density or velocity profile in our
 For each part we use the following setup:
 \begin{enumerate}
     \item epochs\footnote{We use the common name 'epochs' from machine learning to describe the number of time steps. } = 3000
-    \item $\mu_{\rho}=\mu_{u}=0.5$
+    % \item $\mu_{\rho}=\mu_{u}=0.5$
     \item $\epsilon$ = 0.1
     \item $L_{x}$, $L_{y}$ = 30, 30
 \end{enumerate}
 
 \paragraph{M3.1 Density decay} 
-We chose an initial distribution of $\rho (r,t_{0}=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}}) \right)$ and $u(r,0)=0$. 
-Where $L_{x}$ is the length of the domain in the x direction.
+I chose an initial distribution of $\rho (\textbf{r},t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}} \right)$ and $\textbf{u}(\textbf{r},0)=0$, where $L_{x}$ is the length of the domain in the x direction.
+I use three omega values: $\omega=[0.5,1.0,1.7]$ and the density decay for these values is shown in \ref{fig:m3-1}
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m3-1-density-decay.pgf}}
+\vspace*{-10mm}
+\caption[Density decay]{The density decay with for $\omega=[0.5,1.0,1.7]$. The less viscose the fluid the faster the amplitude decays.}
+\label{fig:m3-1}
+\end{figure}
+It shows that the smaller $\omega$ the faster the decay, inline with expectations.
 
 \paragraph{M3.2 Velocity decay}
+For the velocity decay I chose initial distribution of $\rho $ and $u(r,0) (r,t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}} \right)$, where $L_{x}$ is the length of the domain in the x direction.
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m3-2-velocity-decay.pgf}}
+\vspace*{-10mm}
+\caption[Density decay]{The density decay with for $\omega=[0.5,1.0,1.7]$. The less viscose the fluid the faster the amplitude decays.}
+\label{fig:m3-1}
+\end{figure}
 
 
 % \begin{figure}
