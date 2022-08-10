@@ -836,16 +836,16 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{5.118009in}{3.881174in}}%
-\pgfpathlineto{\pgfqpoint{7.102778in}{3.881174in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{7.130556in}{3.881174in}}{\pgfqpoint{7.130556in}{3.908952in}}%
-\pgfpathlineto{\pgfqpoint{7.130556in}{4.302778in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{7.130556in}{4.330556in}}{\pgfqpoint{7.102778in}{4.330556in}}%
-\pgfpathlineto{\pgfqpoint{5.118009in}{4.330556in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{5.090232in}{4.330556in}}{\pgfqpoint{5.090232in}{4.302778in}}%
-\pgfpathlineto{\pgfqpoint{5.090232in}{3.908952in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{5.090232in}{3.881174in}}{\pgfqpoint{5.118009in}{3.881174in}}%
-\pgfpathlineto{\pgfqpoint{5.118009in}{3.881174in}}%
+\pgfpathmoveto{\pgfqpoint{4.285213in}{3.673644in}}%
+\pgfpathlineto{\pgfqpoint{7.063889in}{3.673644in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{7.102778in}{3.673644in}}{\pgfqpoint{7.102778in}{3.712533in}}%
+\pgfpathlineto{\pgfqpoint{7.102778in}{4.263889in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{7.102778in}{4.302778in}}{\pgfqpoint{7.063889in}{4.302778in}}%
+\pgfpathlineto{\pgfqpoint{4.285213in}{4.302778in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{4.246324in}{4.302778in}}{\pgfqpoint{4.246324in}{4.263889in}}%
+\pgfpathlineto{\pgfqpoint{4.246324in}{3.712533in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{4.246324in}{3.673644in}}{\pgfqpoint{4.285213in}{3.673644in}}%
+\pgfpathlineto{\pgfqpoint{4.285213in}{3.673644in}}%
 \pgfpathclose%
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
@@ -856,9 +856,9 @@
 \definecolor{currentstroke}{rgb}{1.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{{5.550000pt}{2.400000pt}}{0.000000pt}%
-\pgfpathmoveto{\pgfqpoint{5.145787in}{4.218088in}}%
-\pgfpathlineto{\pgfqpoint{5.284676in}{4.218088in}}%
-\pgfpathlineto{\pgfqpoint{5.423565in}{4.218088in}}%
+\pgfpathmoveto{\pgfqpoint{4.324102in}{4.145323in}}%
+\pgfpathlineto{\pgfqpoint{4.518547in}{4.145323in}}%
+\pgfpathlineto{\pgfqpoint{4.712991in}{4.145323in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
@@ -885,7 +885,7 @@
 \pgfusepath{stroke,fill}%
 }%
 \begin{pgfscope}%
-\pgfsys@transformshift{5.284676in}{4.218088in}%
+\pgfsys@transformshift{4.518547in}{4.145323in}%
 \pgfsys@useobject{currentmarker}{}%
 \end{pgfscope}%
 \end{pgfscope}%
@@ -893,7 +893,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=5.534676in,y=4.169477in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont Theoretical viscocities}%
+\pgftext[x=4.868547in,y=4.077268in,left,base]{\color{textcolor}\sffamily\fontsize{14.000000}{16.800000}\selectfont Theoretical viscocities}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -902,9 +902,9 @@
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,1.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{{5.550000pt}{2.400000pt}}{0.000000pt}%
-\pgfpathmoveto{\pgfqpoint{5.145787in}{4.014231in}}%
-\pgfpathlineto{\pgfqpoint{5.284676in}{4.014231in}}%
-\pgfpathlineto{\pgfqpoint{5.423565in}{4.014231in}}%
+\pgfpathmoveto{\pgfqpoint{4.324102in}{3.859923in}}%
+\pgfpathlineto{\pgfqpoint{4.518547in}{3.859923in}}%
+\pgfpathlineto{\pgfqpoint{4.712991in}{3.859923in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
@@ -931,7 +931,7 @@
 \pgfusepath{stroke,fill}%
 }%
 \begin{pgfscope}%
-\pgfsys@transformshift{5.284676in}{4.014231in}%
+\pgfsys@transformshift{4.518547in}{3.859923in}%
 \pgfsys@useobject{currentmarker}{}%
 \end{pgfscope}%
 \end{pgfscope}%
@@ -939,7 +939,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=5.534676in,y=3.965620in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont Empirical viscocities}%
+\pgftext[x=4.868547in,y=3.791868in,left,base]{\color{textcolor}\sffamily\fontsize{14.000000}{16.800000}\selectfont Empirical viscocities}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%
