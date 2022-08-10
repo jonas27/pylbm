@@ -143,13 +143,6 @@ def reynolds(y_dim, omega, top_vel):
     return (top_vel * y_dim) / (nu)
 
 
-def parallelize(x_dim, y_dim, x_grids, y_grids):
-    comm = MPI.COMM_WORLD
-    cartcomm = comm.Create_cart((x_grids, y_grids), periods=(False, False))
-    rows = x_dim // x_grids
-    columns = y_dim // y_grids
-
-
 def sync_shifts(cartcomm):
     sL, dL = cartcomm.Shift(0, -1)
     sR, dR = cartcomm.Shift(0, 1)
