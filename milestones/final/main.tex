@@ -160,6 +160,7 @@ This is illustarate in \href{fig:d2q9-scheme} where $a$ shows the discretazation
   \small{(Material from lecture)}
 \end{figure}
 
+\clearpage
 \section{Milestons}
 This chapter presents the results from the seven milestone and gives an in detail review.
 
@@ -187,16 +188,18 @@ def stream(f_cxy: np.array) -> np.array:
 \end{center}
 Where $f_{cxy}$ is the PDF and $C \_ CA$ are the discretized velocity directions.
 For each velocity direction the streaming shifts the velocities values in the respective direction.
-That the streaming works can visualized by the shifting on a 2D grid for each velocity.
+Testing the streaming operator can be easily done by visualizing the different shift on a 2D grid for each velocity as shown in figure \ref{fig:m1-shifting} for the velocities $v=2$ $v=3$.
 \begin{figure}[ht]
 \centering
 \resizebox{\columnwidth}{!}{\large\input{img/m2-streaming.pgf}}
-\vspace*{-1cm}
-\caption[Overlapping protein-protein interactions]{Overlapping connections between  networks. By far the most connections are not shared between any network as depicted by the blue part. Only a total of $~13\%$ connections are shared and of those the majority are between two networks (orange part).}
-\label{fig:ppi-comparison}
+\vspace*{-10mm}
+\caption[Visualization of the streaming]{A visualization of the streaming operator for velocity 2 and 3. In the top row each element is shifted to the top. In the bottom  each element is shifted to the left.}
+\label{fig:m1-shifting}
 \end{figure}
-
-
+The local densities and velocities are randomly initialized with an average of $\mu_{\rho}=\mu_{u}=0.5$ and a standard deviation of $std_{\rho}=std_{u}=0.01$ and used to calculate the equilibrium PDF.
+For simplicity we only plot two velocity directions.
+The top row in figure \ref{fig:m1-shifting} shows the streaming of each element to the top, i.e. using streaming direction $2$. In the bottom row each element is shifted to the left, which corresponds to the streaming in direction $3$.
+This is the expected behaviour and concludes Mileston 1.
 
 \subsection{M2: Collision}
 The collision term is the \textit{r.h.s} of the BTE \ref{eq:BTE} and represents the interaction between particles.
@@ -208,24 +211,24 @@ The resulting discrete form of the BTE is shown in equation
     f_{i}(r+ \nabla t c_{i},t+\nabla t)=f_{i}(r,t) + \omega \left( f_{i}^{eq}(r,t) - f_{i}(r,t) \right)
   \end{aligned}
 \end{equation}
-Because of the relaxation the PDF equilibrium is a local one and therefor depends on the local denisty $\rho$ and the local average velocity $u$.
+Because of the relaxation the PDF equilibrium is a local one and therefor depends on the local density $\rho$ and the local average velocity $u$.
 
-The local denisty is just a summation over the velocities of the PDF, i.e. $\rho(r) = \sum_{i} f_{i}$.
+The local density is just a summation over the velocities of the PDF, i.e. $\rho(r) = \sum_{i} f_{i}$.
 An example implementation is shown in listing \ref{lst:rho}.
 \begin{center}
-  \begin{lstlisting}[caption=Implementation of the local density,label=lst:rho, basicstyle=\small]
-    def local_density(f_cxy: np.array) -> np.array:
-      r_xy = np.einsum("cxy -> xy", f_cxy)
-      return r_xy
+\begin{lstlisting}[caption=Implementation of the local density,label=lst:rho, basicstyle=\small]
+def local_density(f_cxy: np.array) -> np.array:
+    r_xy = np.einsum("cxy -> xy", f_cxy)
+    return r_xy
   \end{lstlisting}
 \end{center}
 The local average velocity is more complicated but effectively it is the summation over the velocity dimensions for each physical dimension divided by the local density.
 It is calculated via $u(r)=\frac{1}{\rho (r)} \sum_{i} c_{i}f_{i}(r)$ and respective code is shown in listing \ref{lst:vel}.
 \begin{center}
   \begin{lstlisting}[caption=Implementation of the local average velocity.,label=lst:vel, basicstyle=\small]
-    def local_avg_velocity(f_cxy: np.array, r_xy: np.array):
-      u_aij = np.einsum("ac, cxy->axy", C_CA.T, f_cxy) / r_xy
-      return u_aij
+def local_avg_velocity(f_cxy: np.array, r_xy: np.array):
+    u_aij = np.einsum("ac, cxy->axy", C_CA.T, f_cxy) / r_xy
+    return u_aij
   \end{lstlisting}
 \end{center}
 With this we can define the PDF equilibrium function as in equation \ref{eq:pdf-eq},
@@ -242,13 +245,30 @@ w_i = \left( \frac{4}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{9}, \f
 It is important to note that the approximation in the collision term is not always accurate.
 But under the assumption that all transport processes occur on a longer time scale it is appropriate to do.
 
-\section{Shear Wave Decay and Kinematic Viscosity}
-Shear wave decay describes the amplitude decay of shear waves, elastic waves travelling through the body of an object.
 
-The kinematic viscocity $\nu$ is especially revelant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid, $\nu = \frac{\mu}{\rho}$.
 
-\paragraph{M3.1} We chose an initial distribution of $\rho (r,t_{0}=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}}) \right)$ and $u(r,0)=0$. 
+\section{M3: Shear Wave Decay}
+Shear wave decay describes the amplitude decay of shear waves, i.e. elastic waves travelling through the body of an object.
+In this milestone we are interested in the effects of a certain $\omega$  on the shear wave decay and thus on the kinematic viscosity $\nu$ of a fluid, which is especially relevant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid:
+\begin{equation}
+\nu = \frac{\mu}{\rho}
+\end{equation}
+The milestone is separated in three different parts. 
+But the general motion is to set a sinusoidal density or velocity profile in our box and then measuring how fast it decays.
+For each part we use the following setup:
+\begin{enumerate}
+    \item epochs\footnote{We use the common name 'epochs' from machine learning to describe the number of time steps. } = 3000
+    \item $\mu_{\rho}=\mu_{u}=0.5$
+    \item $\epsilon$ = 0.1
+    \item $L_{x}$, $L_{y}$ = 30, 30
+\end{enumerate}
+
+\paragraph{M3.1 Density decay} 
+We chose an initial distribution of $\rho (r,t_{0}=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}}) \right)$ and $u(r,0)=0$. 
 Where $L_{x}$ is the length of the domain in the x direction.
+
+\paragraph{M3.2 Velocity decay}
+
 
 % \begin{figure}
 % %   \captionsetup{justification=centering,margin=1cm}
