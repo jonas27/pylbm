@@ -11,6 +11,8 @@
 \usepackage{amsmath}
 \usepackage{hyperref}
 
+\usepackage{pgfplots}
+
 
 % \renewcommand*\footnoterule{}
 
@@ -164,26 +166,37 @@ This chapter presents the results from the seven milestone and gives an in detai
 \subsection{M1: Streaming}
 As shown in equation~\ref{eq:pdf} streaming and collision are two separate terms.
 The collision can be ignored by setting it to zero, i.e. $\left( \frac{\partial f}{\partial t} \right)_{col} \overset{!}{=} 0$.
-This simplifies the BTE and implies the movement of particles in the vacuum with no mutual interaction between particles, see equation \ref{eq:streaming}.
+This simplifies the BTE and implies the movement of particles in the vacuum with no mutual interaction between particles and is defined by equation \ref{eq:streaming}.
 \begin{equation}
   \label{eq:streaming}
   \begin{aligned}
     f_{i}(r+c_{i} \nabla t,t+\nabla t)=f_{i}(r,t)
   \end{aligned}
 \end{equation}
-The code wise implementation of a streaming function on a 2D lattice is shown in listing \ref{lst:streaming}
+The code implementation of a streaming function on a 2D lattice is shown in listing \ref{lst:streaming}
 \footnote{Throughout I will use the notation $_ixy$ where $i$ is the rolling dimension and x and y are the deminsions of the physical space.}.
 \begin{center}
-  \begin{lstlisting}[caption=Implementation of the streaming term,label=lst:streaming, basicstyle=\small]
-    def stream(f_cxy: np.array) -> np.array:
-      for i in range(1, 9):
+\begin{lstlisting}[caption=Implementation of the streaming operator,label=lst:streaming, basicstyle=\small]
+def stream(f_cxy: np.array) -> np.array:
+    for i in range(1, 9):
         f_cxy[i, :, :] = np.roll(f_cxy[i, :, :], 
-                                  shift=C_CA[i], 
-                                  axis=(0, 1))
-      return f_cxy
+                      shift=C_CA[i], 
+                      axis=(0, 1))
+    return f_cxy
   \end{lstlisting}
 \end{center}
 Where $f_{cxy}$ is the PDF and $C \_ CA$ are the discretized velocity directions.
+For each velocity direction the streaming shifts the velocities values in the respective direction.
+That the streaming works can visualized by the shifting on a 2D grid for each velocity.
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m2-streaming.pgf}}
+\vspace*{-1cm}
+\caption[Overlapping protein-protein interactions]{Overlapping connections between  networks. By far the most connections are not shared between any network as depicted by the blue part. Only a total of $~13\%$ connections are shared and of those the majority are between two networks (orange part).}
+\label{fig:ppi-comparison}
+\end{figure}
+
+
 
 \subsection{M2: Collision}
 The collision term is the \textit{r.h.s} of the BTE \ref{eq:BTE} and represents the interaction between particles.
