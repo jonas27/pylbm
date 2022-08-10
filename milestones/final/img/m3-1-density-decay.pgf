@@ -2028,16 +2028,16 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{12.142090in}{3.677317in}}%
+\pgfpathmoveto{\pgfqpoint{12.529645in}{3.677317in}}%
 \pgfpathlineto{\pgfqpoint{13.402778in}{3.677317in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{13.430556in}{3.677317in}}{\pgfqpoint{13.430556in}{3.705095in}}%
 \pgfpathlineto{\pgfqpoint{13.430556in}{4.302778in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{13.430556in}{4.330556in}}{\pgfqpoint{13.402778in}{4.330556in}}%
-\pgfpathlineto{\pgfqpoint{12.142090in}{4.330556in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{12.114312in}{4.330556in}}{\pgfqpoint{12.114312in}{4.302778in}}%
-\pgfpathlineto{\pgfqpoint{12.114312in}{3.705095in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{12.114312in}{3.677317in}}{\pgfqpoint{12.142090in}{3.677317in}}%
-\pgfpathlineto{\pgfqpoint{12.142090in}{3.677317in}}%
+\pgfpathlineto{\pgfqpoint{12.529645in}{4.330556in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{12.501867in}{4.330556in}}{\pgfqpoint{12.501867in}{4.302778in}}%
+\pgfpathlineto{\pgfqpoint{12.501867in}{3.705095in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{12.501867in}{3.677317in}}{\pgfqpoint{12.529645in}{3.677317in}}%
+\pgfpathlineto{\pgfqpoint{12.529645in}{3.677317in}}%
 \pgfpathclose%
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
@@ -2048,16 +2048,16 @@
 \definecolor{currentstroke}{rgb}{0.121569,0.466667,0.705882}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{12.169868in}{4.218088in}}%
-\pgfpathlineto{\pgfqpoint{12.308757in}{4.218088in}}%
-\pgfpathlineto{\pgfqpoint{12.447645in}{4.218088in}}%
+\pgfpathmoveto{\pgfqpoint{12.557423in}{4.218088in}}%
+\pgfpathlineto{\pgfqpoint{12.696312in}{4.218088in}}%
+\pgfpathlineto{\pgfqpoint{12.835201in}{4.218088in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=12.558757in,y=4.169477in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont omega=1.7}%
+\pgftext[x=12.946312in,y=4.169477in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont \(\displaystyle \omega\)=1.7}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -2066,16 +2066,16 @@
 \definecolor{currentstroke}{rgb}{1.000000,0.498039,0.054902}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{12.169868in}{4.014231in}}%
-\pgfpathlineto{\pgfqpoint{12.308757in}{4.014231in}}%
-\pgfpathlineto{\pgfqpoint{12.447645in}{4.014231in}}%
+\pgfpathmoveto{\pgfqpoint{12.557423in}{4.014231in}}%
+\pgfpathlineto{\pgfqpoint{12.696312in}{4.014231in}}%
+\pgfpathlineto{\pgfqpoint{12.835201in}{4.014231in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=12.558757in,y=3.965620in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont omega=1}%
+\pgftext[x=12.946312in,y=3.965620in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont \(\displaystyle \omega\)=1}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -2084,16 +2084,16 @@
 \definecolor{currentstroke}{rgb}{0.172549,0.627451,0.172549}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{12.169868in}{3.810374in}}%
-\pgfpathlineto{\pgfqpoint{12.308757in}{3.810374in}}%
-\pgfpathlineto{\pgfqpoint{12.447645in}{3.810374in}}%
+\pgfpathmoveto{\pgfqpoint{12.557423in}{3.810374in}}%
+\pgfpathlineto{\pgfqpoint{12.696312in}{3.810374in}}%
+\pgfpathlineto{\pgfqpoint{12.835201in}{3.810374in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=12.558757in,y=3.761763in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont omega=0.5}%
+\pgftext[x=12.946312in,y=3.761763in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont \(\displaystyle \omega\)=0.5}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%
