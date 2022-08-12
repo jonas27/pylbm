@@ -66,293 +66,293 @@
 \clearpage
 
 
-% \chapter{Introduction}
-% The Lattice Boltzmann Method (LBM) is a numerical solution of (nonlinear) partial differential equations of the original BLT introduced in 1988 by McNamara and Zanetti~\cite{mcnamara1988boltzmann-method}.
-% It is used to simulate flows in a closed system and is based on the core assumption that flows can be approximated to particles on a lattice.
-% This assumption has been shown to be true for incompressible subsonic flows of fluids and gases.
-% Today, the LBM is used in a wide variety of fields from car aerodynamics to ocean current flows.
+\chapter{Introduction}
+The Lattice Boltzmann Method (LBM) is a numerical solution of (nonlinear) partial differential equations of the original BLT introduced in 1988 by McNamara and Zanetti~\cite{mcnamara1988boltzmann-method}.
+It is used to simulate flows in a closed system and is based on the core assumption that flows can be approximated to particles on a lattice.
+This assumption has been shown to be true for incompressible subsonic flows of fluids and gases.
+Today, the LBM is used in a wide variety of fields from car aerodynamics to ocean current flows.
 
-% The LBM originates from the lattice gas automata (LGA) pioneered by Hardy, Pomeau and de Pazzis in the 1970s with the HPP-model~\cite{hardy1973timeHPP}.
-% This model could be used to simluate both gas and fluid flows, but did not not, as initially hoped by the authors, lead to the Navier-Stokes equation in the macroscopic limit.
-% Later lattice gas automata models like the FPH-model~\cite{PhysRevLett.56.1505-fhp} were able to satisfy the Navier-Stokes equation but were still plagued by many problens, like the lack of Galilean invariance~\cite{nie2008galileanInvariance} or the strong assumption
-% that each node is surrounded by discrete particle cells, which resulted in massive computing requirements.
-% It also assumed that streaming and collision happened synchronously for all nodes and thus the collision was non-deterministic.
+The LBM originates from the lattice gas automata (LGA) pioneered by Hardy, Pomeau and de Pazzis in the 1970s with the HPP-model~\cite{hardy1973timeHPP}.
+This model could be used to simluate both gas and fluid flows, but did not not, as initially hoped by the authors, lead to the Navier-Stokes equation in the macroscopic limit.
+Later lattice gas automata models like the FPH-model~\cite{PhysRevLett.56.1505-fhp} were able to satisfy the Navier-Stokes equation but were still plagued by many problens, like the lack of Galilean invariance~\cite{nie2008galileanInvariance} or the strong assumption
+that each node is surrounded by discrete particle cells, which resulted in massive computing requirements.
+It also assumed that streaming and collision happened synchronously for all nodes and thus the collision was non-deterministic.
 
-% In 1988 McNamara and Zanetti introduced the LBM as a direct alternative to the LGA~\cite{mcnamara1988boltzmann-method}.
-% Their new method "is based on the simulation of a very simple microscopic system, rather than on the direct integration of partial differential equations"~\cite{mcnamara1988boltzmann-method}.
-% Because of their close similarity the LBM shares many features with the LGA, like the lack of Galilean invariance but it also satisfies the Navier-Stokes equation in the macroscopic limit.
-% It, crucially, "directly stud[ies] the time evolution of the mean values"~\cite{mcnamara1988boltzmann-method} and thus does not need statistical averaging to compute the velocity as in LGA leading to lower computing requirements.
+In 1988 McNamara and Zanetti introduced the LBM as a direct alternative to the LGA~\cite{mcnamara1988boltzmann-method}.
+Their new method "is based on the simulation of a very simple microscopic system, rather than on the direct integration of partial differential equations"~\cite{mcnamara1988boltzmann-method}.
+Because of their close similarity the LBM shares many features with the LGA, like the lack of Galilean invariance but it also satisfies the Navier-Stokes equation in the macroscopic limit.
+It, crucially, "directly stud[ies] the time evolution of the mean values"~\cite{mcnamara1988boltzmann-method} and thus does not need statistical averaging to compute the velocity as in LGA leading to lower computing requirements.
 
-% The key points of the LBM success is it's simplicity, relatively low consumption of computing requirements and easy parallelization of the algorithm.
-% This is achieved by approximating the fluid to particles on a grid and using a separate streaming and collision step to simulate the particles behaviour over time.
-% This is unlike other computational fluid dynamics (CFD) methods which directly solve the numerically macroscopic properties of a fluied, i.e. the mass, momentum, and energy.
-% Using particles also makes incorperating boundries and microscopic interactions easier than in most other CFD models.
+The key points of the LBM success is it's simplicity, relatively low consumption of computing requirements and easy parallelization of the algorithm.
+This is achieved by approximating the fluid to particles on a grid and using a separate streaming and collision step to simulate the particles behaviour over time.
+This is unlike other computational fluid dynamics (CFD) methods which directly solve the numerically macroscopic properties of a fluied, i.e. the mass, momentum, and energy.
+Using particles also makes incorperating boundries and microscopic interactions easier than in most other CFD models.
 
-% The reminder of the report will first introduce the theory behind the LBM and later present the results for each milestone.
+The reminder of the report will first introduce the theory behind the LBM and later present the results for each milestone.
 
-% \chapter{Theoretical background}
-% \section{Probability Density Function}
-% The probability density function (PDF) describes the statistical probability of particles in a closed system not in equilibrium and is denoted by $f$.
-% In this case, the PDF is given by $f(r_i,v_i,t)$ where $r$ are the positions and $v$ the velocities.
-% The probability for finding a particle in a certain part of the phase space is then given by equation~\ref{eq:pdf}.
-% \begin{equation}
-%   \label{eq:pdf}
-%   \begin{aligned}
-%     dP = f(\vec{r},\vec{v},t) d^{3}\vec{r} d^{3}\vec{v}
-%   \end{aligned}
-% \end{equation}
-% The phase space for equation \href{eq:pdf} is given by $[\vec{r}, \vec{r}+d\vec{r}, \vec{v}, \vec{v}+d\vec{v}]$.
-% Thus, the probability for finding a particle in the phase space at position $r_i$ is only depended on the velocity $v_i$ and time $t$.
+\chapter{Theoretical background}
+\section{Probability Density Function}
+The probability density function (PDF) describes the statistical probability of particles in a closed system not in equilibrium and is denoted by $f$.
+In this case, the PDF is given by $f(r_i,v_i,t)$ where $r$ are the positions and $v$ the velocities.
+The probability for finding a particle in a certain part of the phase space is then given by equation~\ref{eq:pdf}.
+\begin{equation}
+  \label{eq:pdf}
+  \begin{aligned}
+    dP = f(\vec{r},\vec{v},t) d^{3}\vec{r} d^{3}\vec{v}
+  \end{aligned}
+\end{equation}
+The phase space for equation \href{eq:pdf} is given by $[\vec{r}, \vec{r}+d\vec{r}, \vec{v}, \vec{v}+d\vec{v}]$.
+Thus, the probability for finding a particle in the phase space at position $r_i$ is only depended on the velocity $v_i$ and time $t$.
 
-% The probability of finding a single particle with an arbitraty place $r$ and an arbitrary velocity $v$ in the entire phase space is given by equation \ref{eq:prob-single}.
-% \begin{equation}
-%   \label{eq:prob-single}
-%   \begin{aligned}
-%     P = \int_{\Omega_{\vec{r}}} \int_{\Omega_{\vec{v}}}  f(\vec{r},\vec{v},t) d^{3}\vec{r} d^{3}\vec{v} \quad \overset{!}{=} 1
-%   \end{aligned}
-% \end{equation}
-% As we are in a closed system where no particles are added or destroyed we can assume that it must hold that equation \href{eq:prob-single} is equal to one, i.e. normalized to unity.
+The probability of finding a single particle with an arbitraty place $r$ and an arbitrary velocity $v$ in the entire phase space is given by equation \ref{eq:prob-single}.
+\begin{equation}
+  \label{eq:prob-single}
+  \begin{aligned}
+    P = \int_{\Omega_{\vec{r}}} \int_{\Omega_{\vec{v}}}  f(\vec{r},\vec{v},t) d^{3}\vec{r} d^{3}\vec{v} \quad \overset{!}{=} 1
+  \end{aligned}
+\end{equation}
+As we are in a closed system where no particles are added or destroyed we can assume that it must hold that equation \href{eq:prob-single} is equal to one, i.e. normalized to unity.
 
-% This then leads us to the general form of the $i$-th moments of $ f(\vec{r},\vec{v},t) $ w.r.t. $ \vec{v} $ shown in equation \ref{eq:general-moments}.
-% \begin{equation}
-%   \label{eq:general-moments}
-%   \begin{aligned}
-%     \mu_{i}(\vec{r}) =\int_{\Omega_{\vec{v}}}\vec{v}^{i} f(\vec{r},\vec{v},t)d^{3}\vec{v}
-%   \end{aligned}
-% \end{equation}
-% The first and second order moments are the main subjects of this project and can be readily interpreted.
-% The first order moment is the velocity in our system, which for liquids is the flow field.
-% The second order moment is the kenetic energy density in our system which can be readily interpreted as the temperature of a fluid.
-% Different fluids can have different translation ratios between velocities and temperature and thus an increase in temperature in a closed system would lead to higher velocities but the exact increase is depended on the fluid.
-
-
-% \section{Boltzmann Transport Equation}
-% The Boltzmann transport equation (BTE) tracks the time evolution of the probability distribution function and was published by Ludwig Boltzmann in 1872.
-% To derive it we take the first order derivative of the PDF in respect to time as shown in
-% equation \ref{eq:BTE}.
-% \begin{equation}
-%   \label{eq:BTE}
-%   \begin{aligned}
-%     \frac{df}{dt} =\frac{\partial f}{\partial t} + \frac{dr(t)}{dt} \nabla_{r}f + \frac{dv(t)}{dt} \nabla_{v}f = \left( \frac{\partial f}{\partial t} \right)_{col}
-%   \end{aligned}
-% \end{equation}
-% Where the term $f$ is the PDF, $\frac{dr(t)}{dt}$ is called the velocity and $\frac{dv(t)}{dt}$ is called the acceleration and by Newtons law is the force acting on the particles devivded by their respective mass.
-% The \textit{l.h.s.} of equation \ref{eq:BTE} is called the streaming term and the \textit{r.h.s} is the collision term.
-% To show an implementation of the streaming and collision terms the BTE first needs to be discretized.
-
-% \textcolor{red}{ More detail}
-% \textcolor{red}{Show streaming}
-% \textcolor{red}{Show collision}
-% \textcolor{red}{Show equilibrium func}
+This then leads us to the general form of the $i$-th moments of $ f(\vec{r},\vec{v},t) $ w.r.t. $ \vec{v} $ shown in equation \ref{eq:general-moments}.
+\begin{equation}
+  \label{eq:general-moments}
+  \begin{aligned}
+    \mu_{i}(\vec{r}) =\int_{\Omega_{\vec{v}}}\vec{v}^{i} f(\vec{r},\vec{v},t)d^{3}\vec{v}
+  \end{aligned}
+\end{equation}
+The first and second order moments are the main subjects of this project and can be readily interpreted.
+The first order moment is the velocity in our system, which for liquids is the flow field.
+The second order moment is the kenetic energy density in our system which can be readily interpreted as the temperature of a fluid.
+Different fluids can have different translation ratios between velocities and temperature and thus an increase in temperature in a closed system would lead to higher velocities but the exact increase is depended on the fluid.
 
 
+\section{Boltzmann Transport Equation}
+The Boltzmann transport equation (BTE) tracks the time evolution of the probability distribution function and was published by Ludwig Boltzmann in 1872.
+To derive it we take the first order derivative of the PDF in respect to time as shown in
+equation \ref{eq:BTE}.
+\begin{equation}
+  \label{eq:BTE}
+  \begin{aligned}
+    \frac{df}{dt} =\frac{\partial f}{\partial t} + \frac{dr(t)}{dt} \nabla_{r}f + \frac{dv(t)}{dt} \nabla_{v}f = \left( \frac{\partial f}{\partial t} \right)_{col}
+  \end{aligned}
+\end{equation}
+Where the term $f$ is the PDF, $\frac{dr(t)}{dt}$ is called the velocity and $\frac{dv(t)}{dt}$ is called the acceleration and by Newtons law is the force acting on the particles devivded by their respective mass.
+The \textit{l.h.s.} of equation \ref{eq:BTE} is called the streaming term and the \textit{r.h.s} is the collision term.
+To show an implementation of the streaming and collision terms the BTE first needs to be discretized.
 
-% \section{Lattice-Boltzmann Method} \label{sec:lbm}
-% The BTE is defined in a continous phase space which is not readily implementable in computer code.
-% This can be overcome by approximating the continous phase space to a discrete phase space, called the Lattice-Boltzmann method (LBM).
-% The idea is to discretize over a lattice and use the partial derivatives to solve the BTE.
-% In this project the the spatial dimension is discretized to a 2D lattice and the velocities are descritized to 9 directions also called a D2Q9-model.
-% This is illustarate in \href{fig:d2q9-scheme} where $a$ shows the discretazation of the velocity space and $b$ the discretized of the physical space on a 2D grid with the velocity layered on top.
-% \begin{figure}[h]
-%   \caption{Discretization of the BTE.}
-%   \label{fig:d2q9-scheme}
-%   \centering
-%   \includegraphics[width=9cm]{d2q9_scheme.png}\\
-%   (a) Discretization on the velocity space according to D2Q9.\\
-%   (b) Uniform 2D grid for the discretization in the physical space.\\
-%   \small{(Material from lecture)}
-% \end{figure}
+\textcolor{red}{ More detail}
+\textcolor{red}{Show streaming}
+\textcolor{red}{Show collision}
+\textcolor{red}{Show equilibrium func}
 
-% \clearpage
-% \chapter{Implementation}
-% This chapter shows the most important code implementations, mainly the streaming, the collision, the boundaries and the moving top lid.
-% Throughout the report I will use the notation $_cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the velocities, notated as $_axy$, where $a=2$ a
 
-% \section{M1: Streaming}
-% The main part of milestone 1 is the streaming operator. It is not necessary to include the final report, but because it is used throughout the report it is explained here once. 
-% From equation~\ref{eq:pdf} it follows that streaming and collision are two separate terms and collision can be ignored by setting it to zero, i.e. $\left( \frac{\partial f}{\partial t} \right)_{col} \overset{!}{=} 0$.
-% This simplifies the BTE to equation \ref{eq:streaming} 
-% \begin{equation}
-%   \label{eq:streaming}
-%   \begin{aligned}
-%     f_{i}(r+c_{i} \nabla t,t+\nabla t)=f_{i}(r,t)
-%   \end{aligned}
-% \end{equation}
-% and implies the movement of particles in the vacuum with no mutual interaction between particles.
-% The code implementation of a streaming function on a 2D lattice is shown in listing \ref{lst:streaming}
-% \begin{center}
-% \begin{lstlisting}[caption=Implementation of the streaming operator,label=lst:streaming, basicstyle=\small]
-% def stream(f_cxy: np.array) -> np.array:
-%     for i in range(1, 9):
-%         f_cxy[i, :, :] = np.roll(f_cxy[i, :, :], 
-%                       shift=C_CA[i], 
-%                       axis=(0, 1))
-%     return f_cxy
-%   \end{lstlisting}
-% \end{center}
-% $f_{cxy}$ is the PDF and $C \_ CA$ are the discretized velocity directions.
-% For each velocity direction the streaming shifts the velocities values in the respective direction.
-% Testing the streaming operator can be easily done by visualizing the different shift on a 2D grid for each velocity as shown in figure \ref{fig:m1-shifting} for the velocities $v=2$ $v=3$.
-% \begin{figure}[ht]
-% \centering
-% \resizebox{\columnwidth}{!}{\large\input{img/m2-streaming.pgf}}
+
+\section{Lattice-Boltzmann Method} \label{sec:lbm}
+The BTE is defined in a continous phase space which is not readily implementable in computer code.
+This can be overcome by approximating the continous phase space to a discrete phase space, called the Lattice-Boltzmann method (LBM).
+The idea is to discretize over a lattice and use the partial derivatives to solve the BTE.
+In this project the the spatial dimension is discretized to a 2D lattice and the velocities are descritized to 9 directions also called a D2Q9-model.
+This is illustarate in \href{fig:d2q9-scheme} where $a$ shows the discretazation of the velocity space and $b$ the discretized of the physical space on a 2D grid with the velocity layered on top.
+\begin{figure}[h]
+  \caption{Discretization of the BTE.}
+  \label{fig:d2q9-scheme}
+  \centering
+  \includegraphics[width=9cm]{d2q9_scheme.png}\\
+  (a) Discretization on the velocity space according to D2Q9.\\
+  (b) Uniform 2D grid for the discretization in the physical space.\\
+  \small{(Material from lecture)}
+\end{figure}
+
+\clearpage
+\chapter{Implementation}
+This chapter shows the most important code implementations, mainly the streaming, the collision, the boundaries and the moving top lid.
+Throughout the report I will use the notation $_cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the velocities, notated as $_axy$, where $a=2$ a
+
+\section{M1: Streaming}
+The main part of milestone 1 is the streaming operator. It is not necessary to include the final report, but because it is used throughout the report it is explained here once. 
+From equation~\ref{eq:pdf} it follows that streaming and collision are two separate terms and collision can be ignored by setting it to zero, i.e. $\left( \frac{\partial f}{\partial t} \right)_{col} \overset{!}{=} 0$.
+This simplifies the BTE to equation \ref{eq:streaming} 
+\begin{equation}
+  \label{eq:streaming}
+  \begin{aligned}
+    f_{i}(r+c_{i} \nabla t,t+\nabla t)=f_{i}(r,t)
+  \end{aligned}
+\end{equation}
+and implies the movement of particles in the vacuum with no mutual interaction between particles.
+The code implementation of a streaming function on a 2D lattice is shown in listing \ref{lst:streaming}
+\begin{center}
+\begin{lstlisting}[caption=Implementation of the streaming operator,label=lst:streaming, basicstyle=\small]
+def stream(f_cxy: np.array) -> np.array:
+    for i in range(1, 9):
+        f_cxy[i, :, :] = np.roll(f_cxy[i, :, :], 
+                      shift=C_CA[i], 
+                      axis=(0, 1))
+    return f_cxy
+  \end{lstlisting}
+\end{center}
+$f_{cxy}$ is the PDF and $C \_ CA$ are the discretized velocity directions.
+For each velocity direction the streaming shifts the velocities values in the respective direction.
+Testing the streaming operator can be easily done by visualizing the different shift on a 2D grid for each velocity as shown in figure \ref{fig:m1-shifting} for the velocities $v=2$ $v=3$.
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m2-streaming.pgf}}
+\vspace*{-10mm}
+\caption[Visualization of the streaming]{A visualization of the streaming operator for velocity 2 and 3. In the top row each element is shifted to the top. In the bottom  each element is shifted to the left.}
+\label{fig:m1-shifting}
+\end{figure}
+The local densities and velocities are randomly initialized with an average of $\mu_{\rho}=\mu_{u}=0.5$ and a standard deviation of $std_{\rho}=std_{u}=0.01$ and used to calculate the equilibrium PDF.
+For simplicity we only plot two velocity directions.
+The top row in figure \ref{fig:m1-shifting} shows the streaming of each element to the top, i.e. using streaming direction $2$. In the bottom row each element is shifted to the left, which corresponds to the streaming in direction $3$.
+This is the expected behaviour and concludes Milestone 1.
+
+\section{Collision}
+The collision term is the \textit{r.h.s} of the BTE \ref{eq:BTE} and represents the interaction between particles.
+It is a complicated two particle scattering integral but can be approximated by a relaxation time approximation $\tau$ so that the PDF locally relaxes to an equilibrium distribution $f_{eq}(r,v,t)$.
+The resulting discrete form of the BTE is shown in equation
+\begin{equation}
+  \label{eq:btw-discrete}
+  \begin{aligned}
+    f_{i}(r+ \nabla t c_{i},t+\nabla t)=f_{i}(r,t) + \omega \left( f_{i}^{eq}(r,t) - f_{i}(r,t) \right)
+  \end{aligned}
+\end{equation}
+Because of the relaxation the PDF equilibrium is a local one and therefor depends on the local density $\rho$ and the local average velocity $u$.
+
+The local density is just a summation over the velocities of the PDF, i.e. $\rho(r) = \sum_{i} f_{i}$.
+An example implementation is shown in listing \ref{lst:rho}.
+\begin{center}
+\begin{lstlisting}[caption=Implementation of the local density,label=lst:rho, basicstyle=\small]
+def local_density(f_cxy: np.array) -> np.array:
+    r_xy = np.einsum("cxy -> xy", f_cxy)
+    return r_xy
+  \end{lstlisting}
+\end{center}
+The local average velocity is more complicated but effectively it is the summation over the velocity dimensions for each physical dimension divided by the local density.
+It is calculated via $u(r)=\frac{1}{\rho (r)} \sum_{i} c_{i}f_{i}(r)$ and respective code is shown in listing \ref{lst:vel}.
+\begin{center}
+  \begin{lstlisting}[caption=Implementation of the local average velocity.,label=lst:vel, basicstyle=\small]
+def local_avg_velocity(f_cxy: np.array, r_xy: np.array):
+    u_aij = np.einsum("ac, cxy->axy", C_CA.T, f_cxy) / r_xy
+    return u_aij
+  \end{lstlisting}
+\end{center}
+With this we can define the PDF equilibrium function as in equation \ref{eq:pdf-eq},
+\begin{equation}
+  \label{eq:pdf-eq}
+  \begin{aligned}
+    f_{i}^{eq} ( \rho , u ) = w_i \rho \left[ 1+3 c_i * u + \frac{9}{2}(c_i * u )^2 - \frac{3}{2} | u |^2 \right]
+  \end{aligned}
+\end{equation}
+where $w_i$ for a D2Q9 lattice can be defined as follow: 
+\begin{equation}
+w_i = \left( \frac{4}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{36}, \frac{1}{36}, \frac{1}{36}, \frac{1}{36} \right)
+\end{equation}
+It is important to note that the approximation in the collision term is not always accurate.
+But under the assumption that all transport processes occur on a longer time scale it is appropriate to do.
+
+
+\chapter{Milestones}
+\section{M3: Shear Wave Decay}
+Shear wave decay describes the amplitude decay of shear waves, i.e. elastic waves travelling through the body of an object.
+In this milestone I am interested in the effects of a certain $\omega$, and thereby the kinematic viscosity $\nu(\omega)$ of a fluid, on the shear wave decay..
+The kinematic viscosity is especially relevant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid:
+\begin{equation}
+\nu = \frac{\mu}{\rho}
+\end{equation}
+The milestone is separated in three different parts. 
+The general motion is to set a sinusoidal density or velocity
+perturbation and measure how fast it decays, i.e. reaches the equilibrium.
+For each part we use the following setup:
+\begin{enumerate}
+    \item epochs\footnote{We use the common name 'epochs' from machine learning to describe the number of time steps. } = 3000
+    % \item $\mu_{\rho}=\mu_{u}=0.5$
+    \item $\epsilon$ = 0.1
+    \item $L_{x}$, $L_{y}$ = 30, 30
+\end{enumerate}
+
+\textcolor{red}{low values for omega \url{https://www.researchgate.net/publication/339136823_Impact_of_collision_models_on_the_physical_properties_and_the_stability_of_lattice_Boltzmann_methods}}
+
+\paragraph{M3.1 Density decay} 
+In a closed fluid system with an unequal density, the density is expected to decay over time. In the LBM this decay is dependent on the collision frequency $\omega$ and the size of the system, where both parameters are expected to be inversely correlated to the time it takes to get to the equilibrium.
+
+To investigate if the constructed simulation acts according to the theoretical expectations, I simulate a sine wave in the densities over the length (x dimension) of the physical space.
+Specifically, the initial density distribution is $\rho (\textbf{r},t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}} \right)$ and the velocity is set to zero, i.e. $\textbf{u}(\textbf{r},0)=0$, where $L_{x}$ is the length of the domain in the x direction.
+I set $\rho_{0}=0.5$ and use three omega values for the simulation: $\omega=[0.5,1.0,1.7]$.
+The density decay for these values is shown in \ref{fig:m3-1}.
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m3-1-density-decay.pgf}}
+\vspace*{-10mm}
+\caption[Density decay]{The density decay for $\omega=[0.5,1.0,1.7]$. The less viscose the fluid the faster the amplitude decays.}
+\label{fig:m3-1}
+\end{figure}
+It shows that all curves start at the same amplitude at $t=0$ but that the smaller $\omega$ the faster the density decays which is inline with expectations. 
+For $t\rightarrow \infty$ the density amplitude of all three curves converges towards $0$ and stabilizes around $\rho_{0}$.
+The higher $\omega$, i.e. the collision frequency, the more the initial sine wave is able to propagate through the system. Conversely, lowering $\omega$ increases the kinematic viscosity of the simulated fluid and decreasing the time it takes for the system to get into the equilibrium state.
+
+% Because $\omega = \frac{1}{\tau}$
+
+\paragraph{M3.2 Velocity decay}
+Similarly, the velocity in an imbalanced state is expected to converge towards the equilibrium.
+To test this, an initial distribution of $\rho_{0}=1$ $u_{y}(r,0)=0$ and $u_{x}(r,t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{y}} \right)$ was chosen, where $L_{y}$ is the length of the domain in the y direction, i.e. the height.
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m3-2-velocity-decay.pgf}}
+\vspace*{-10mm}
+\caption[Velocity decay]{The velocity decay for $\omega=[0.3,1.1,1.7]$. The more viscose the fluid the faster the amplitude decays.}
+\label{fig:m3-2-vel}
+\end{figure}
+The velocity decays much slower with higher $\omega$ compared to smaller values, i.e. a positive correlation between collision frequency and the time to reach the equilibrium.
+Similarly to the density decay, this is in line with expectations and shows that the simulation is working.
+
+The comparison between the numerical decay of the initial perturbation to the theoretical decay is shown in \ref{fig:m3-2-norm-vel} for $0.1 \leq \omega \leq 1.9 $.
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m3-2-shear-wave-decay.pgf}}
+\vspace*{-10mm}
+\caption[Normalized density decay]{The density decay for $0.1 \leq \omega \leq 1.9 $ and $T=3,000$. a) is the numerical decay and b) is the theoretical decay.}
+\label{fig:m3-2-norm-vel}
+\end{figure}
+Both graphs in figure \ref{fig:m3-2-norm-vel} use the same axes, time on the x axis and the normalized maximum velocity values along the y dimension (height dimension) on the y axis.
+It illustrates that the higher the collision frequency the faster the system converges towards an equilibrium state where $a)$ is the numerical, velocity decay and $b)$ is the theoretical viscosity decay.
+For all values of $\omega$, except for $\omega=0.1$, the numerical and the theoretical decay are very similar
+For $\omega=0.1$ the numerical decay is very similar to $\omega=0.3$.
+In addition to figure \ref{fig:m3-2-vel}, it also shows that  increases in the collision frequency $\omega$ have a disproportional bigger effect on the time it takes to reach the equilibrium state.
+
+
+\paragraph{M3.3 Kinematic viscosity scaling with $\omega$}
+The kinematic viscosity is (theoretically) only dependent $\omega$. 
+Plotting the theoretical and the numerical kinematic viscosities next to each other, as done in figure \ref{fig:m3-3-kinematic-viscocity}, should then reflect the model performs according to theory. 
+\begin{figure}[ht]
+\centering
+\resizebox{0.8\columnwidth}{!}{\large\input{img/m3-3-kinematic-viscocity-scaling.pgf}}
 % \vspace*{-10mm}
-% \caption[Visualization of the streaming]{A visualization of the streaming operator for velocity 2 and 3. In the top row each element is shifted to the top. In the bottom  each element is shifted to the left.}
-% \label{fig:m1-shifting}
-% \end{figure}
-% The local densities and velocities are randomly initialized with an average of $\mu_{\rho}=\mu_{u}=0.5$ and a standard deviation of $std_{\rho}=std_{u}=0.01$ and used to calculate the equilibrium PDF.
-% For simplicity we only plot two velocity directions.
-% The top row in figure \ref{fig:m1-shifting} shows the streaming of each element to the top, i.e. using streaming direction $2$. In the bottom row each element is shifted to the left, which corresponds to the streaming in direction $3$.
-% This is the expected behaviour and concludes Milestone 1.
+\caption[Kinematic viscosity]{The numerical and theoretical kinematic viscosity for $0.1 \leq \omega \leq 1.9 $. For low $\omega$ the kinematic viscocities diverge.}
+\label{fig:m3-3-kinematic-viscocity}
+\end{figure}
+For low values of $\omega$ the theoretical and numerical values of $\nu$ diverge quite significantly, while for values $\geq\omega$ the values are almost identical.
 
-% \section{Collision}
-% The collision term is the \textit{r.h.s} of the BTE \ref{eq:BTE} and represents the interaction between particles.
-% It is a complicated two particle scattering integral but can be approximated by a relaxation time approximation $\tau$ so that the PDF locally relaxes to an equilibrium distribution $f_{eq}(r,v,t)$.
-% The resulting discrete form of the BTE is shown in equation
-% \begin{equation}
-%   \label{eq:btw-discrete}
-%   \begin{aligned}
-%     f_{i}(r+ \nabla t c_{i},t+\nabla t)=f_{i}(r,t) + \omega \left( f_{i}^{eq}(r,t) - f_{i}(r,t) \right)
-%   \end{aligned}
-% \end{equation}
-% Because of the relaxation the PDF equilibrium is a local one and therefor depends on the local density $\rho$ and the local average velocity $u$.
-
-% The local density is just a summation over the velocities of the PDF, i.e. $\rho(r) = \sum_{i} f_{i}$.
-% An example implementation is shown in listing \ref{lst:rho}.
-% \begin{center}
-% \begin{lstlisting}[caption=Implementation of the local density,label=lst:rho, basicstyle=\small]
-% def local_density(f_cxy: np.array) -> np.array:
-%     r_xy = np.einsum("cxy -> xy", f_cxy)
-%     return r_xy
-%   \end{lstlisting}
-% \end{center}
-% The local average velocity is more complicated but effectively it is the summation over the velocity dimensions for each physical dimension divided by the local density.
-% It is calculated via $u(r)=\frac{1}{\rho (r)} \sum_{i} c_{i}f_{i}(r)$ and respective code is shown in listing \ref{lst:vel}.
-% \begin{center}
-%   \begin{lstlisting}[caption=Implementation of the local average velocity.,label=lst:vel, basicstyle=\small]
-% def local_avg_velocity(f_cxy: np.array, r_xy: np.array):
-%     u_aij = np.einsum("ac, cxy->axy", C_CA.T, f_cxy) / r_xy
-%     return u_aij
-%   \end{lstlisting}
-% \end{center}
-% With this we can define the PDF equilibrium function as in equation \ref{eq:pdf-eq},
-% \begin{equation}
-%   \label{eq:pdf-eq}
-%   \begin{aligned}
-%     f_{i}^{eq} ( \rho , u ) = w_i \rho \left[ 1+3 c_i * u + \frac{9}{2}(c_i * u )^2 - \frac{3}{2} | u |^2 \right]
-%   \end{aligned}
-% \end{equation}
-% where $w_i$ for a D2Q9 lattice can be defined as follow: 
-% \begin{equation}
-% w_i = \left( \frac{4}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{36}, \frac{1}{36}, \frac{1}{36}, \frac{1}{36} \right)
-% \end{equation}
-% It is important to note that the approximation in the collision term is not always accurate.
-% But under the assumption that all transport processes occur on a longer time scale it is appropriate to do.
-
-
-% \chapter{Milestones}
-% \section{M3: Shear Wave Decay}
-% Shear wave decay describes the amplitude decay of shear waves, i.e. elastic waves travelling through the body of an object.
-% In this milestone I am interested in the effects of a certain $\omega$, and thereby the kinematic viscosity $\nu(\omega)$ of a fluid, on the shear wave decay..
-% The kinematic viscosity is especially relevant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid:
-% \begin{equation}
-% \nu = \frac{\mu}{\rho}
-% \end{equation}
-% The milestone is separated in three different parts. 
-% The general motion is to set a sinusoidal density or velocity
-% perturbation and measure how fast it decays, i.e. reaches the equilibrium.
-% For each part we use the following setup:
-% \begin{enumerate}
-%     \item epochs\footnote{We use the common name 'epochs' from machine learning to describe the number of time steps. } = 3000
-%     % \item $\mu_{\rho}=\mu_{u}=0.5$
-%     \item $\epsilon$ = 0.1
-%     \item $L_{x}$, $L_{y}$ = 30, 30
-% \end{enumerate}
-
-% \textcolor{red}{low values for omega \url{https://www.researchgate.net/publication/339136823_Impact_of_collision_models_on_the_physical_properties_and_the_stability_of_lattice_Boltzmann_methods}}
-
-% \paragraph{M3.1 Density decay} 
-% In a closed fluid system with an unequal density, the density is expected to decay over time. In the LBM this decay is dependent on the collision frequency $\omega$ and the size of the system, where both parameters are expected to be inversely correlated to the time it takes to get to the equilibrium.
-
-% To investigate if the constructed simulation acts according to the theoretical expectations, I simulate a sine wave in the densities over the length (x dimension) of the physical space.
-% Specifically, the initial density distribution is $\rho (\textbf{r},t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}} \right)$ and the velocity is set to zero, i.e. $\textbf{u}(\textbf{r},0)=0$, where $L_{x}$ is the length of the domain in the x direction.
-% I set $\rho_{0}=0.5$ and use three omega values for the simulation: $\omega=[0.5,1.0,1.7]$.
-% The density decay for these values is shown in \ref{fig:m3-1}.
-% \begin{figure}[ht]
-% \centering
-% \resizebox{\columnwidth}{!}{\large\input{img/m3-1-density-decay.pgf}}
+The reason for the significant divergence is the relative low physical space which leads to inaccuracies for high viscocities. Increasing the physical/euclidean space to a $300\times300$ grid alleviates the issue as shown in figure \ref{fig:m3-3-update}
+\begin{figure}[ht]
+\centering
+\resizebox{0.8\columnwidth}{!}{\large\input{img/m3-3-update.pgf}}
 % \vspace*{-10mm}
-% \caption[Density decay]{The density decay for $\omega=[0.5,1.0,1.7]$. The less viscose the fluid the faster the amplitude decays.}
-% \label{fig:m3-1}
-% \end{figure}
-% It shows that all curves start at the same amplitude at $t=0$ but that the smaller $\omega$ the faster the density decays which is inline with expectations. 
-% For $t\rightarrow \infty$ the density amplitude of all three curves converges towards $0$ and stabilizes around $\rho_{0}$.
-% The higher $\omega$, i.e. the collision frequency, the more the initial sine wave is able to propagate through the system. Conversely, lowering $\omega$ increases the kinematic viscosity of the simulated fluid and decreasing the time it takes for the system to get into the equilibrium state.
+\caption[Kinematic viscosity]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
+\label{fig:m3-3-update}
+\end{figure}
 
-% % Because $\omega = \frac{1}{\tau}$
+Initially I wanted to include the correct numerical results, but decided to include the numerical incorrect results and then show that using a bigger physical space alleviates the problem.
+I found it interesting that the correctness of the results would be influenced by the collision frequency \textbf{and} the dimensions of the physical space. 
+As $\omega$ only influences how much the equilibrium function is integrated in the collision term, I suspect that the increased rolling over the boundaries somehow causes the equilibrium function to be more imprecise. 
+This is just one possible reason, but not a definitive explanation.
 
-% \paragraph{M3.2 Velocity decay}
-% Similarly, the velocity in an imbalanced state is expected to converge towards the equilibrium.
-% To test this, an initial distribution of $\rho_{0}=1$ $u_{y}(r,0)=0$ and $u_{x}(r,t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{y}} \right)$ was chosen, where $L_{y}$ is the length of the domain in the y direction, i.e. the height.
-% \begin{figure}[ht]
-% \centering
-% \resizebox{\columnwidth}{!}{\large\input{img/m3-2-velocity-decay.pgf}}
-% \vspace*{-10mm}
-% \caption[Velocity decay]{The velocity decay for $\omega=[0.3,1.1,1.7]$. The more viscose the fluid the faster the amplitude decays.}
-% \label{fig:m3-2-vel}
-% \end{figure}
-% The velocity decays much slower with higher $\omega$ compared to smaller values, i.e. a positive correlation between collision frequency and the time to reach the equilibrium.
-% Similarly to the density decay, this is in line with expectations and shows that the simulation is working.
-
-% The comparison between the numerical decay of the initial perturbation to the theoretical decay is shown in \ref{fig:m3-2-norm-vel} for $0.1 \leq \omega \leq 1.9 $.
-% \begin{figure}[ht]
-% \centering
-% \resizebox{\columnwidth}{!}{\large\input{img/m3-2-shear-wave-decay.pgf}}
-% \vspace*{-10mm}
-% \caption[Normalized density decay]{The density decay for $0.1 \leq \omega \leq 1.9 $ and $T=3,000$. a) is the numerical decay and b) is the theoretical decay.}
-% \label{fig:m3-2-norm-vel}
-% \end{figure}
-% Both graphs in figure \ref{fig:m3-2-norm-vel} use the same axes, time on the x axis and the normalized maximum velocity values along the y dimension (height dimension) on the y axis.
-% It illustrates that the higher the collision frequency the faster the system converges towards an equilibrium state where $a)$ is the numerical, velocity decay and $b)$ is the theoretical viscosity decay.
-% For all values of $\omega$, except for $\omega=0.1$, the numerical and the theoretical decay are very similar
-% For $\omega=0.1$ the numerical decay is very similar to $\omega=0.3$.
-% In addition to figure \ref{fig:m3-2-vel}, it also shows that  increases in the collision frequency $\omega$ have a disproportional bigger effect on the time it takes to reach the equilibrium state.
-
-
-% \paragraph{M3.3 Kinematic viscosity scaling with $\omega$}
-% The kinematic viscosity is (theoretically) only dependent $\omega$. 
-% Plotting the theoretical and the numerical kinematic viscosities next to each other, as done in figure \ref{fig:m3-3-kinematic-viscocity}, should then reflect the model performs according to theory. 
-% \begin{figure}[ht]
-% \centering
-% \resizebox{0.8\columnwidth}{!}{\large\input{img/m3-3-kinematic-viscocity-scaling.pgf}}
-% % \vspace*{-10mm}
-% \caption[Kinematic viscosity]{The numerical and theoretical kinematic viscosity for $0.1 \leq \omega \leq 1.9 $. For low $\omega$ the kinematic viscocities diverge.}
-% \label{fig:m3-3-kinematic-viscocity}
-% \end{figure}
-% For low values of $\omega$ the theoretical and numerical values of $\nu$ diverge quite significantly, while for values $\geq\omega$ the values are almost identical.
-
-% The reason for the significant divergence is the relative low physical space which leads to inaccuracies for high viscocities. Increasing the physical/euclidean space to a $300\times300$ grid alleviates the issue as shown in figure \ref{fig:m3-3-update}
-% \begin{figure}[ht]
-% \centering
-% \resizebox{0.8\columnwidth}{!}{\large\input{img/m3-3-update.pgf}}
-% % \vspace*{-10mm}
-% \caption[Kinematic viscosity]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
-% \label{fig:m3-3-update}
-% \end{figure}
-
-% Initially I wanted to include the correct numerical results, but decided to include the numerical incorrect results and then show that using a bigger physical space alleviates the problem.
-% I found it interesting that the correctness of the results would be influenced by the collision frequency \textbf{and} the dimensions of the physical space. 
-% As $\omega$ only influences how much the equilibrium function is integrated in the collision term, I suspect that the increased rolling over the boundaries somehow causes the equilibrium function to be more imprecise. 
-% This is just one possible reason, but not a definitive explanation.
-
-% \section{M4: Couette flow}
-% The Couette flow is a fluid flow in between two reflective boundaries, where one of the two boundaries is moving relative to the other.
-% This introduces a constant perturbation which means the system can never reach an equilibrium state.
-% Figure \ref{fig:m4-1-streamplot}
+\section{M4: Couette flow}
+The Couette flow is a fluid flow in between two reflective boundaries, where one of the two boundaries is moving relative to the other.
+This introduces a constant perturbation which means the system can never reach an equilibrium state.
+Figure \ref{fig:m4-1-streamplot}
 
 \begin{figure}[ht]
 \centering
-\resizebox{0.8\columnwidth}{!}{\large\input{img/m4-1-streamplot.pgf}}
+\includegraphics[width=\columnwidth]{milestones/final/img/m4-1-streamplot.png}
 % \vspace*{-10mm}
 \caption[Flow ]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
 \label{fig:m4-1-streamplot}
