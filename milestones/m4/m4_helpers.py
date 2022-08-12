@@ -10,7 +10,8 @@ def m4_1(x_dim, y_dim, epochs, omega, top_vel):
 
     velocities = []
     for t in range(epochs):
-        velocities.append(u_axy)
+        if t % 100 == 0:
+            velocities.append(u_axy)
         f_cxy = lbm.stream(f_cxy=f_cxy)
         f_cxy = lbm.bottom_wall(f_cxy=f_cxy)
         f_cxy = lbm.apply_sliding_top_wall_simple(f_cxy=f_cxy, velocity=top_vel)
