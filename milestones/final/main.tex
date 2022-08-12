@@ -348,15 +348,25 @@ This is just one possible reason, but not a definitive explanation.
 \section{M4: Couette flow}
 The Couette flow is a fluid flow in between two reflective boundaries, where one of the two boundaries is moving relative to the other.
 This introduces a constant perturbation which means the system can never reach an equilibrium state.
-Figure \ref{fig:m4-1-streamplot}
-
+For this I use the following parameters:
+\begin{enumerate}
+    \item $L_{x}, L_{y} = 100, 100$
+    \item $\rho(\textbf{r}, 0) = 0$
+    \item $u(\textbf{r}, 0) = 0$
+    \item $T = 100000$
+    \item $top\_lid\_vel = 1$
+    \item $omega = 1$
+\end{enumerate}
+Figure \ref{fig:m4-1-streamplot} shows the results in a streamplot.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{milestones/final/img/m4-1-streamplot.png}
 % \vspace*{-10mm}
-\caption[Flow ]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
+\caption[Couette flow ]{Streamplot of the Couette flow after $t=200$, $t=400$, $t=600$. It shows the velocity in the x direction on the grid.}
 \label{fig:m4-1-streamplot}
 \end{figure}
+After $t=200$ more than half the grid has a directional flow. At $t=400$ it is 
+
 
 
 
