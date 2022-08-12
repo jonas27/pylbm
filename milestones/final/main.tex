@@ -253,13 +253,14 @@ But under the assumption that all transport processes occur on a longer time sca
 \chapter{Milestones}
 \section{M3: Shear Wave Decay}
 Shear wave decay describes the amplitude decay of shear waves, i.e. elastic waves travelling through the body of an object.
-In this milestone I am interested in the effects of a certain $\omega$  on the shear wave decay and thus on the kinematic viscosity $\nu$ of a fluid. 
-It is especially relevant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid:
+In this milestone I am interested in the effects of a certain $\omega$, and thereby the kinematic viscosity $\nu(\omega)$ of a fluid, on the shear wave decay..
+The kinematic viscosity is especially relevant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid:
 \begin{equation}
 \nu = \frac{\mu}{\rho}
 \end{equation}
 The milestone is separated in three different parts. 
-The general motion is to set a sinusoidal density or velocity profile and measure how fast it decays.
+The general motion is to set a sinusoidal density or velocity
+perturbation and measure how fast it decays, i.e. reaches the equilibrium.
 For each part we use the following setup:
 \begin{enumerate}
     \item epochs\footnote{We use the common name 'epochs' from machine learning to describe the number of time steps. } = 3000
@@ -303,39 +304,41 @@ To test this, an initial distribution of $\rho_{0}=1$ $u_{y}(r,0)=0$ and $u_{x}(
 The velocity decays much slower with higher $\omega$ compared to smaller values, i.e. a positive correlation between collision frequency and the time to reach the equilibrium.
 Similarly to the density decay, this is in line with expectations and shows that the simulation is working.
 
-Plotting the normalized maximum velocity values along the y dimension and time on the x axis for $0.1 \leq \omega \leq 1.9 $ is shown in figure \ref{fig:m3-2-norm-vel}.
+The comparison between the numerical decay of the initial perturbation to the theoretical decay is shown in \ref{fig:m3-2-norm-vel} for $0.1 \leq \omega \leq 1.9 $.
 \begin{figure}[ht]
 \centering
 \resizebox{\columnwidth}{!}{\large\input{img/m3-2-shear-wave-decay.pgf}}
 \vspace*{-10mm}
-\caption[Normalized density decay]{The density decay for $0.1 \leq \omega \leq 1.9 $.  aster the amplitude decays. Left is the empirical decay and right}
+\caption[Normalized density decay]{The density decay for $0.1 \leq \omega \leq 1.9 $ and $T=3,000$. a) is the numerical decay and b) is the theoretical decay.}
 \label{fig:m3-2-norm-vel}
 \end{figure}
-It illustrates that the higher the collision frequency the faster the system converges towards an equilibrium state. But contrary to the figure \ref{fig:m3-2-vel} it also shows that  increases in the collision frequency have a disproportional effect on the time it takes to reach the equilibrium state.
+Both graphs in figure \ref{fig:m3-2-norm-vel} use the same axes, time on the x axis and the normalized maximum velocity values along the y dimension (height dimension) on the y axis.
+It illustrates that the higher the collision frequency the faster the system converges towards an equilibrium state where $a)$ is the numerical, velocity decay and $b)$ is the theoretical viscosity decay.
+In addition to figure \ref{fig:m3-2-vel}, it also shows that  increases in the collision frequency $\omega$ have a disproportional bigger effect on the time it takes to reach the equilibrium state.
+For all values of $\omega$, except for $\omega=0.1$, the numerical and the theoretical decay are very similar
+For $\omega=0.1$ the numerical decay is very similar to $\omega=0.3$.
 
 
+\paragraph{M3.3 Kinematic viscosity scaling with $\omega$}
+The kinematic viscosity is (theoretically) only dependent $\omega$. 
+Plotting the theoretical and the numerical kinematic viscosities next to each other, as done in figure \ref{fig:m3-3-kinematic-viscocity}, should then reflect the model performs according to theory. 
 \begin{figure}[ht]
 \centering
-\resizebox{\columnwidth}{!}{\large\input{img/m3-3-kinematic-viscocity-scaling.pgf}}
-\vspace*{-10mm}
-\caption[Normalized amplitude decay]{The density decay with for $0.1 \leq \omega \geq 1.9 $. The less viscose the fluid the faster the amplitude decays.}
-\label{fig:m3-1}
+\resizebox{0.8\columnwidth}{!}{\large\input{img/m3-3-kinematic-viscocity-scaling.pgf}}
+% \vspace*{-10mm}
+\caption[Kinematic viscosity]{The numerical and theoretical kinematic viscosity for $0.1 \leq \omega \leq 1.9 $. For low $\omega$ the kinematic viscocities diverge.}
+\label{fig:m3-3-kinematic-viscocity}
 \end{figure}
+For low values of $\omega$ the theoretical and numerical values of $\nu$ diverge quite significantly, while for values $\geq\omega$ the values are almost identical.
 
-
-% \begin{figure}
-% %   \captionsetup{justification=centering,margin=1cm}
-%   \includegraphics[scale=0.8]{}
-% \end{figure}
-
-% \centering
-% \includegraphics[width=0.9\columnwidth]{figs/fig-cell-normal-to-cancer.png}
-% \caption{Cell development: from normal to cancer. \\Credit: Terese Winslow LLC}
-% % https://www.cancer.gov/about-cancer/understanding/what-is-cancer
-% \label{fig:cancer-cell-development}
-
-
-% .$u(r,0)  ρ(r,0)=\rho_{0}+ \eps \sin \left( \frac{2\pi x}{L_{x}} \right)$
+The reason for the significant divergence is relative low physical space. Increasing the physical/euclidean space to a $300\times300$ grid alivates the issue as shown in figure \
+\begin{figure}[ht]
+\centering
+\resizebox{0.8\columnwidth}{!}{\large\input{img/m3-3-kinematic-viscocity-scaling.pgf}}
+% \vspace*{-10mm}
+\caption[Kinematic viscosity]{The numerical and theoretical kinematic viscosity for $0.1 \leq \omega \leq 1.9 $. For low $\omega$ the kinematic viscocities diverge.}
+\label{fig:m3-3-kinematic-viscocity}
+\end{figure}
 
 
 
