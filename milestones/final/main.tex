@@ -317,8 +317,6 @@ It illustrates that the higher the collision frequency the faster the system con
 For all values of $\omega$, except for $\omega=0.1$, the numerical and the theoretical decay are very similar
 For $\omega=0.1$ the numerical decay is very similar to $\omega=0.3$.
 In addition to figure \ref{fig:m3-2-vel}, it also shows that  increases in the collision frequency $\omega$ have a disproportional bigger effect on the time it takes to reach the equilibrium state.
-This effect is becomes more pronounced over time as shown in figure
-
 
 
 \paragraph{M3.3 Kinematic viscosity scaling with $\omega$}
@@ -342,12 +340,24 @@ The reason for the significant divergence is the relative low physical space whi
 \label{fig:m3-3-update}
 \end{figure}
 
-I initially wanted to only include the good theoretical results, but decided to include the original results and the update.
-I found it interesting that the correctness of the results would be influenced by the collision frequency and the dimensions of the physical space. 
+Initially I wanted to include the correct numerical results, but decided to include the numerical incorrect results and then show that using a bigger physical space alleviates the problem.
+I found it interesting that the correctness of the results would be influenced by the collision frequency \textbf{and} the dimensions of the physical space. 
 As $\omega$ only influences how much the equilibrium function is integrated in the collision term, I suspect that the increased rolling over the boundaries somehow causes the equilibrium function to be more imprecise. 
 This is just one possible reason, but not a definitive explanation.
 
-\paragraph{M4}
+\section{M4: Couette flow}
+The Couette flow is a fluid flow in between two reflective boundaries, where one of the two boundaries is moving relative to the other.
+This introduces a constant perturbation which means the system can never reach an equilibrium state.
+Figure \ref{fig:m4-1-streamplot}
+
+% \begin{figure}[ht]
+% \centering
+% \resizebox{0.8\columnwidth}{!}{\large\input{img/m4-1-streamplot.pgf}}
+% % \vspace*{-10mm}
+% \caption[Flow ]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
+% \label{fig:m4-1-streamplot}
+% \end{figure}
+
 
 
 
