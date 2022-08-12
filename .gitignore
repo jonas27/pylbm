@@ -4,6 +4,9 @@ __pycache__/
 *$py.class
 *.pyc
 
+# don't sync numpy arrays
+*.npy
+
 *cpython*.pyc
 
 # C extensions
