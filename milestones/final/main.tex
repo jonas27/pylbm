@@ -314,9 +314,11 @@ The comparison between the numerical decay of the initial perturbation to the th
 \end{figure}
 Both graphs in figure \ref{fig:m3-2-norm-vel} use the same axes, time on the x axis and the normalized maximum velocity values along the y dimension (height dimension) on the y axis.
 It illustrates that the higher the collision frequency the faster the system converges towards an equilibrium state where $a)$ is the numerical, velocity decay and $b)$ is the theoretical viscosity decay.
-In addition to figure \ref{fig:m3-2-vel}, it also shows that  increases in the collision frequency $\omega$ have a disproportional bigger effect on the time it takes to reach the equilibrium state.
 For all values of $\omega$, except for $\omega=0.1$, the numerical and the theoretical decay are very similar
 For $\omega=0.1$ the numerical decay is very similar to $\omega=0.3$.
+In addition to figure \ref{fig:m3-2-vel}, it also shows that  increases in the collision frequency $\omega$ have a disproportional bigger effect on the time it takes to reach the equilibrium state.
+This effect is becomes more pronounced over time as shown in figure
+
 
 
 \paragraph{M3.3 Kinematic viscosity scaling with $\omega$}
@@ -331,14 +333,21 @@ Plotting the theoretical and the numerical kinematic viscosities next to each ot
 \end{figure}
 For low values of $\omega$ the theoretical and numerical values of $\nu$ diverge quite significantly, while for values $\geq\omega$ the values are almost identical.
 
-The reason for the significant divergence is relative low physical space. Increasing the physical/euclidean space to a $300\times300$ grid alivates the issue as shown in figure \
+The reason for the significant divergence is the relative low physical space which leads to inaccuracies for high viscocities. Increasing the physical/euclidean space to a $300\times300$ grid alleviates the issue as shown in figure \ref{fig:m3-3-update}
 \begin{figure}[ht]
 \centering
-\resizebox{0.8\columnwidth}{!}{\large\input{img/m3-3-kinematic-viscocity-scaling.pgf}}
+\resizebox{0.8\columnwidth}{!}{\large\input{img/m3-3-update.pgf}}
 % \vspace*{-10mm}
-\caption[Kinematic viscosity]{The numerical and theoretical kinematic viscosity for $0.1 \leq \omega \leq 1.9 $. For low $\omega$ the kinematic viscocities diverge.}
-\label{fig:m3-3-kinematic-viscocity}
+\caption[Kinematic viscosity]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
+\label{fig:m3-3-update}
 \end{figure}
+
+I initially wanted to only include the good theoretical results, but decided to include the original results and the update.
+I found it interesting that the correctness of the results would be influenced by the collision frequency and the dimensions of the physical space. 
+As $\omega$ only influences how much the equilibrium function is integrated in the collision term, I suspect that the increased rolling over the boundaries somehow causes the equilibrium function to be more imprecise. 
+This is just one possible reason, but not a definitive explanation.
+
+\paragraph{M4}
 
 
 
