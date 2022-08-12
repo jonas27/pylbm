@@ -333,7 +333,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=4.517045in,y=0.632162in,,top]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont time}%
+\pgftext[x=4.517045in,y=0.632162in,,top]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont t}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfpathrectangle{\pgfqpoint{1.875000in}{1.000000in}}{\pgfqpoint{5.284091in}{6.040000in}}%

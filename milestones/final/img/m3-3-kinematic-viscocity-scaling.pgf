@@ -945,7 +945,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=3.869352in,y=3.531239in,left,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont Empirical viscocities}%
+\pgftext[x=3.869352in,y=3.531239in,left,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont Numerical viscocities}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%
