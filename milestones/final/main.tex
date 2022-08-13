@@ -352,7 +352,7 @@ For this I use the following parameters:
 \begin{enumerate}
     \item $L_{x}, L_{y} = 100, 100$
     \item $\rho(\textbf{r}, 0) = 0$
-    \item $u(\textbf{r}, 0) = 0$
+    \item $\textbf{u}(\textbf{r}, 0) = 0$
     \item $T = 100000$
     \item $top\_lid\_vel = 1$
     \item $omega = 1$
@@ -365,11 +365,11 @@ Figure \ref{fig:m4-1-streamplot} shows the results in a streamplot.
 \caption[Couette flow ]{Streamplot of the Couette flow after $t=200$, $t=400$, $t=600$. It shows the velocity in the x direction on the grid.}
 \label{fig:m4-1-streamplot}
 \end{figure}
-After $t=200$ more than half the grid has a directional flow. At $t=400$ it is almost $10\%$ and at $t=600$  
+After $t=200$ more than half the grid has a directional flow. At $t=400$ it is almost $90\%$ and at $t=600$ all particles flow in the x direction. But even after $100,000$ timesteps the 
 
 \begin{figure}[ht]
 \centering
-\resizebox{0.8\columnwidth}{!}{\large\input{img/m4-1-velocities-over-time.pgf}}
+\resizebox{0.6\columnwidth}{!}{\large\input{img/m4-1-velocities-over-time.pgf}}
 \caption[Kinematic viscosity]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
 \label{fig:m3-3-update}
 \end{figure}
