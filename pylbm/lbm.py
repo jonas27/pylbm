@@ -138,6 +138,15 @@ def sliding_right_wall(f_cxy: np.array) -> np.array:
     f_cxy[6, -2, :] = f_cxy[8, -1, :] + 1 / 6.0 * 0.1
     return f_cxy
 
+def top_wall(f_cxy: np.array) -> np.array:
+    """m4: in the couette flow we have no side walls and thus need to copy all values up."""
+    # should be np roll
+    # argument ohne np roll: im steady state ist es egal
+    f_cxy[4, :, 1] = f_cxy[2, :, 0]
+    f_cxy[7, :, 1] = f_cxy[5, :, 0]
+    f_cxy[8, :, 1] = f_cxy[6, :, 0]
+    return f_cxy
+
 
 def apply_sliding_top_wall(f_cxy: np.array, velocity: float) -> np.array:
     # calc vel at sliding wall
