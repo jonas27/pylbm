@@ -346,9 +346,11 @@ As $\omega$ only influences how much the equilibrium function is integrated in t
 This is just one possible reason, but not a definitive explanation.
 
 \section{M4: Couette flow}
-The Couette flow is a fluid flow in between two reflective boundaries, where one of the two boundaries is moving relative to the other.
+The Couette flow is a fluid flow in between two reflective boundaries, where one of the two boundaries is moving relative to the other. 
 This introduces a constant perturbation which means the system can never reach an equilibrium state.
-For this I use the following parameters:
+The Couette flow can be used to model the the Earth's mantle and atmosphere and results in a Couette solution, where the velocity in the moving boundary direction is almost constant and decreasing from the moving boundary to the (relative) static one.
+
+To emulate such a behaviour I use the following parameters:
 \begin{enumerate}
     \item $L_{x}, L_{y} = 100, 100$
     \item $\rho(\textbf{r}, 0) = 0$
@@ -361,18 +363,21 @@ Figure \ref{fig:m4-1-streamplot} shows the results in a streamplot.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{milestones/final/img/m4-1-streamplot.png}
-% \vspace*{-10mm}
-\caption[Couette flow ]{Streamplot of the Couette flow after $t=200$, $t=400$, $t=600$. It shows the velocity in the x direction on the grid.}
+\vspace*{-4mm}
+\caption[Couette flow ]{Streamplot of the Couette flow after $t=200$, $t=400$, $t=600$ showing the velocity in the x direction on the grid. At the right end of the figure is an imshow of the velocities at $t=100,000$.}
 \label{fig:m4-1-streamplot}
 \end{figure}
-After $t=200$ more than half the grid has a directional flow. At $t=400$ it is almost $90\%$ and at $t=600$ all particles flow in the x direction. But even after $100,000$ timesteps the 
+After $t=200$ more than half the grid has a directional flow. At $t=400$ it is almost $90\%$ and at $t=600$ all particles flow in the x direction. After $100,000$ time steps the velocity reaches a state where the flow fluid stays relatively the same, but no equilibrium state, i.e. $f^{eq}_{cxy}\neq f_{cxy}$. 
+It is decreasing from the top to bottom, with $v_{x}(y=1)=1$ and $v_{x}(y=98)=0$, as the first and last raw are dry nodes.
 
+To visualize the velocities over time I plot the single column over time, shown in figure \ref{fig:m4-1-velocities-over-time}.
 \begin{figure}[ht]
 \centering
-\resizebox{0.6\columnwidth}{!}{\large\input{img/m4-1-velocities-over-time.pgf}}
-\caption[Kinematic viscosity]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
-\label{fig:m3-3-update}
+\resizebox{0.7\columnwidth}{!}{\large\input{img/m4-1-velocities-over-time.pgf}}
+\caption[Column velocities over time]{Column velocities over time}
+\label{fig:m4-1-velocities-over-time}
 \end{figure}
+At first the velocities are high only at the moving lid, but after time, the velocities are 
 
 
 
