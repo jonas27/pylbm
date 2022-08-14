@@ -9,12 +9,12 @@
 \usepackage{listings} % package for listing parts of code
 
 \usepackage{amsmath}
-\usepackage{hyperref}
 
 \usepackage{pgfplots}
 
-\usepackage{movie15} % for gifs
 \usepackage{animate} % to animate stuff
+
+\usepackage{hyperref} % load last
 
 % \renewcommand*\footnoterule{}
 
@@ -444,12 +444,14 @@ number Re = 7500. Since then various results were given in the literature. This 
 
 \cite{bruneau20062-lid-cavity}
 
-\begin{figure}[ht]
-\centering
-\includemovie{1cm}{1cm}{img/m6.gif}
-\caption[Poiseuille analysis extended]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$ for different pipe sizes. The maximal difference following the order of the graphs is: $-0.00148$, $0.161374$ and $0.000348$, respectively.}
-\label{fig:m5-1-num-theo-extended}
-\end{figure}
+% \begin{figure}[ht]
+% \centering
+\begin{frame}{}
+\animategraphics[loop,autoplay, width=\columnwidth]{10}{ani/ani-}{0}{99}
+\end{frame}
+% \caption[Poiseuille analysis extended]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$ for different pipe sizes. The maximal difference following the order of the graphs is: $-0.00148$, $0.161374$ and $0.000348$, respectively.}
+% \label{fig:m5-1-num-theo-extended}
+% \end{figure}
 
 \bibliographystyle{unsrt}
 \bibliography{bib}
