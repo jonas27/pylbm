@@ -2,7 +2,7 @@ import numpy as np
 from pylbm.torchlbm import lbm_t as lbm
 
 x_dim = 300
-y_dim = 3000
+y_dim = 300
 omega = 0.5
 epochs = 100000
 rho_in = 1.01
