@@ -438,7 +438,7 @@ I then tried to find the numerical solution most similar to the theoretical solu
 The sliding lid problem has been developed to benchmark the efficieny of algorithms simulating the flow of viscous (mostly) incompressible fluid flow~\cite{bruneau20062-lid-cavity}.
 It has been investigated by many authors starting in the early 80ties and a Reynolds number of $1,000$ has been widely adopted to make the results comparable~\cite{bruneau20062-lid-cavity}.
 
-Here the following parameters are chosen:
+In the lecture the the following parameters were recommended:
 \begin{enumerate}
     \item $L_x = L_y = 300$
     \item $\rho(\textbf{r},0) = 1.0$
@@ -447,19 +447,23 @@ Here the following parameters are chosen:
     \item $\omega = 1.7$
     \item $top_vel = 0.1$
 \end{enumerate}
-The results in a Reynolds number of $1,020$, so slightly higher than $1,000$ but recommended in the lecture.
+These parameters result in a Reynolds number of $1,020$, which could be close enough to be comparable with similar research.
 
-Running this configuration results in a 
+Running this configuration results in a lid driven cavity  after $T=100,000$ shown in figure \
 \begin{figure}[ht]
 \centering
 % \begin{frame}{}
-a)
+\textbf{\large a)}
+% \vspace*{-50mm}
 \animategraphics[loop,autoplay, width=\columnwidth]{10}{ani/ani-}{0}{100}
-b)
-\includegraphics[width=\columnwidth]{milestones/final/img/m5-1-vel-time.png}
-\caption[Poiseuille analysis extended]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$ for different pipe sizes. The maximal difference following the order of the graphs is: $-0.00148$, $0.161374$ and $0.000348$, respectively.}
-\label{fig:m5-1-num-theo-extended}
+\textbf{\large b)}
+% \vspace*{-5mm}
+\includegraphics[width=\columnwidth]{milestones/final/img/m6-1-vels.png}
+\caption[Lid-driven cavity]{Lid-driven cavity shown as \textit{streamplot}. a) is an animation of the lid-driven cavity for time steps of $1,000$ viewable in some pdf readers (tested in adobe and okular) . b) shows the same solution but as static graphs in time steps of $10,000$. }
+\label{fig:m6-1}
 \end{figure}
+
+
 
 \bibliographystyle{unsrt}
 \bibliography{bib}
