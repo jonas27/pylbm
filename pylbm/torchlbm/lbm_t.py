@@ -12,14 +12,14 @@ import torch
 
 TAU = 0.5
 
-ttype = torch.double
+T_TYPE = torch.double
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # DEVICE = torch.device("cpu")
 
 C_CA: torch.tensor = torch.tensor([[0, 0], [1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]], device=DEVICE)
 
-W_C: torch.tensor = torch.tensor([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36], dtype=ttype, device=DEVICE)
+W_C: torch.tensor = torch.tensor([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36], dtype=T_TYPE, device=DEVICE)
 # W_C: Tuple = (4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36)
 
 # The bounce back direction
@@ -29,7 +29,7 @@ C_REVERSED: torch.tensor = torch.tensor([0, 3, 4, 1, 2, 7, 8, 5, 6], device=DEVI
 
 def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01) -> torch.tensor:
     """rho_init based on dim, a mean and a deviation factor eps."""
-    r_ij = eps * torch.randn(x_dim, y_dim, device=DEVICE, dtype=ttype)
+    r_ij = eps * torch.randn(x_dim, y_dim, device=DEVICE, dtype=T_TYPE)
     r_ij[:, :] += r_mean
     return r_ij
 
@@ -42,7 +42,7 @@ def density(f_cxy: torch.tensor) -> torch.tensor:
 
 def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float):
     """local_avg_velocity_init based on dim, a mean and a deviation factor eps."""
-    u_aij = eps * torch.randn(2, x_dim, y_dim, device=DEVICE, dtype=ttype)
+    u_aij = eps * torch.randn(2, x_dim, y_dim, device=DEVICE, dtype=T_TYPE)
     u_aij[:, :] += u_mean
     return u_aij
 
@@ -138,8 +138,8 @@ def apply_sliding_top_wall_simple(f_cxy: torch.tensor, velocity: float = None) -
 def in_out_pressure(f_cxy: torch.tensor, rho_in: float, rho_out: float) -> torch.tensor:
     r_xy = density(f_cxy)
 
-    r_xy_in = torch.full((1, r_xy.shape[1] - 2), rho_in)
-    r_xy_out = torch.full((1, r_xy.shape[1] - 2), rho_out)
+    r_xy_in = torch.full((1, r_xy.shape[1] - 2), rho_in, device=DEVICE, dtype=T_TYPE)
+    r_xy_out = torch.full((1, r_xy.shape[1] - 2), rho_out, device=DEVICE, dtype=T_TYPE)
 
     u_axy = local_avg_velocity(f_cxy=f_cxy, r_xy=r_xy)
     f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
