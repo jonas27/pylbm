@@ -435,23 +435,31 @@ I then tried to find the numerical solution most similar to the theoretical solu
 
 
 \section{M6: Sliding Lid}
-The classical lid-driven cavity problem has been investigated by many authors since some pioneer works giving good results of steady solutions twenty years ago [8,20]. Their results were confirmed by many other studies and the solution obtained at Re = 1000 for instance is quite close
-from one author to another. Nevertheless there still are very different results concerning the first
-Hopf bifurcation and the behaviour of the solution for intermediate and high Reynolds numbers.
-In a former work [5], it was suggested that the first Hopf bifurcation occurs around Reynolds
-number Re = 7500. Since then various results were given in the literature. This first bifurcation
+The sliding lid problem has been developed to benchmark the efficieny of algorithms simulating the flow of viscous (mostly) incompressible fluid flow~\cite{bruneau20062-lid-cavity}.
+It has been investigated by many authors starting in the early 80ties and a Reynolds number of $1,000$ has been widely adopted to make the results comparable~\cite{bruneau20062-lid-cavity}.
 
+Here the following parameters are chosen:
+\begin{enumerate}
+    \item $L_x = L_y = 300$
+    \item $\rho(\textbf{r},0) = 1.0$
+    \item $\textbf{u}(\textbf{r},0) = 0.0$
+    \item $T = 100000$
+    \item $\omega = 1.7$
+    \item $top_vel = 0.1$
+\end{enumerate}
+The results in a Reynolds number of $1,020$, so slightly higher than $1,000$ but recommended in the lecture.
 
-\cite{bruneau20062-lid-cavity}
-
-% \begin{figure}[ht]
-% \centering
-\begin{frame}{}
-\animategraphics[loop,autoplay, width=\columnwidth]{10}{ani/ani-}{0}{99}
-\end{frame}
-% \caption[Poiseuille analysis extended]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$ for different pipe sizes. The maximal difference following the order of the graphs is: $-0.00148$, $0.161374$ and $0.000348$, respectively.}
-% \label{fig:m5-1-num-theo-extended}
-% \end{figure}
+Running this configuration results in a 
+\begin{figure}[ht]
+\centering
+% \begin{frame}{}
+a)
+\animategraphics[loop,autoplay, width=\columnwidth]{10}{ani/ani-}{0}{100}
+b)
+\includegraphics[width=\columnwidth]{milestones/final/img/m5-1-vel-time.png}
+\caption[Poiseuille analysis extended]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$ for different pipe sizes. The maximal difference following the order of the graphs is: $-0.00148$, $0.161374$ and $0.000348$, respectively.}
+\label{fig:m5-1-num-theo-extended}
+\end{figure}
 
 \bibliographystyle{unsrt}
 \bibliography{bib}
