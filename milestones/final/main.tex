@@ -397,12 +397,27 @@ To model this flow I use the following parameters:
     \item $\rho_{out} = 0.99$
 \end{enumerate}
 This means at the inlet a constant pressure is applied and propagated through the grid until it reaches the outlet. The resulting pressure difference between the in- and outlet is $0.02$. 
-The results are shown in figure \ref{fig:use}.
+The results are shown in figure \ref{fig:m5-1-vel-time}.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{milestones/final/img/m5-1-vel-time.png}
+\vspace*{-4mm}
+\caption[Poiseuille Velocities]{Poiseuille velocities visualized with streamplot at $t=50$ and $t=100$ and with imshow at $t=500$ and $t=10,000$ }
+\label{fig:m5-1-vel-time}
+\end{figure}
+The two left grids visualize the velocities with \textit{streamplot} at $t=50$ and $t=100$ while the last two grids use \textit{imshow}. 
 
-The two left grids visualize the velocities with \textit{imshow} at $t=50$ and $t=100$ while the last two grids . 
-At 
-The flow in the correct direction and the effects of the reflective boundaries are clearly visible, at the bottom and at the top of the pipe the arrows are not flowing parallel to the boundaries. 
-In the 
+At $t=50$ and $t=100$ the velocities in the \textit{streamplot} flow in the correct direction and the effects of the reflective boundaries are clearly visible at the bottom and top of the pipe. While in the middle of the pipe the arrows point parallel to the boundaries, close to the boundaries turbulences caused by friction develop, which become less pronounced over time.
+At $t=500$ and $t=10,000$ I use an \textit{imshow} to show the magnitudes of the velocities.
+At $t=500$ they are still very small, between $0\leq\textbf{u}_{x}(x,y)\leq0.3$, but become larger and converge towards $0\leq\textbf{u}_{x}(x,y)\leq1.1$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.6\columnwidth]{milestones/final/img/m5-1-num-theo.png}
+\vspace*{-4mm}
+\caption[Poiseuille Velocities]{Poiseuille velocities visualized with streamplot at $t=50$ and $t=100$ and with imshow at $t=500$ and $t=10,000$ }
+\label{fig:m5-1-num-theo}
+\end{figure}
 
 
 
