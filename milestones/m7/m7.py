@@ -8,15 +8,15 @@ TODO: Moving from global lists to tuples could be faster.
 
 import numpy as np
 from mpi4py import MPI
+from numpy.lib.format import dtype_to_descr, magic
 
 C_CA = np.array([[0, 0], [1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]])
 
+# the weights of
 W_C = np.array([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36])
-# W_C: Tuple = (4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36)
 
 # The bounce back direction
 C_REVERSED = np.array([0, 3, 4, 1, 2, 7, 8, 5, 6])
-# C_REVERSED: Tuple = (0, 3, 4, 1, 2, 7, 8, 5, 6)
 
 
 def density_init(x_dim, y_dim, r_mean, eps) -> np.array:
@@ -43,7 +43,6 @@ def local_avg_velocity(f_cxy: np.array, r_xy: np.array):
 
 
 def f_eq(u_axy, r_xy):
-
     cu_cxy_3 = 3 * np.einsum("ac,axy->cxy", C_CA.T, u_axy)
     u_xy_2 = np.einsum("axy->xy", u_axy * u_axy)
     r_cxy_w = np.einsum("c,xy->cxy", W_C, r_xy)
@@ -68,8 +67,6 @@ def stream(f_cxy):
 
 def bottom_wall(f_cxy):
     """m4: in the couette flow we have no side walls and thus need to copy all values up."""
-    # should be np roll
-    # argument ohne np roll: im steady state ist es egal
     f_cxy[2, :, 1] = f_cxy[4, :, 0]
     f_cxy[5, :, 1] = f_cxy[7, :, 0]
     f_cxy[6, :, 1] = f_cxy[8, :, 0]
@@ -191,7 +188,6 @@ def save_mpiio(comm: MPI.Cartcomm, fn, g_kl):
         Portion of the array on this MPI processes. This needs to be a
         two-dimensional array.
     """
-    from numpy.lib.format import dtype_to_descr, magic
 
     magic_str = magic(1, 0)
 
@@ -229,7 +225,7 @@ def save_mpiio(comm: MPI.Cartcomm, fn, g_kl):
     file.Close()
 
 
-def run():
+if __name__ == "__main__":
     org_x_dim = 300
     org_y_dim = 300
     size = org_y_dim * org_x_dim
@@ -268,6 +264,3 @@ def run():
 
     save_mpiio(cartcomm, "./ux_{}.npy".format(size), u_axy[0, :, :])
     save_mpiio(cartcomm, "./uy_{}.npy".format(size), u_axy[1, :, :])
-
-
-run()
