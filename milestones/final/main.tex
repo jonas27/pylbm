@@ -449,21 +449,25 @@ In the lecture the the following parameters were recommended:
 \end{enumerate}
 These parameters result in a Reynolds number of $1,020$, which could be close enough to be comparable with similar research.
 
-Running this configuration results in a lid driven cavity  after $T=100,000$ shown in figure \
+Running this configuration results in a lid driven cavity  after $T=100,000$ shown in figure \ref{fig:m6-1}.
+The most striking feature in the graphs is the moving cavity. Because of the moving lid, it forms in the top right corner and steadily moves to the center of the graph. 
+They are also cavities, albeit a lot smaller ones, in the bottom left and right corners. 
 \begin{figure}[ht]
 \centering
 % \begin{frame}{}
 \textbf{\large a)}
-% \vspace*{-50mm}
 \animategraphics[loop,autoplay, width=\columnwidth]{10}{ani/ani-}{0}{119}
+\vspace*{2mm}
+
 \textbf{\large b)}
-% \vspace*{-5mm}
 \includegraphics[width=\columnwidth]{milestones/final/img/m6-1-vels.png}
-\caption[Lid-driven cavity]{Lid-driven cavity shown as \textit{streamplot}. a) is an animation of the lid-driven cavity for time steps of $1,000$ viewable in some pdf readers (tested in adobe and okular) . b) shows the same solution but as static graphs in time steps of $10,000$. }
+\caption[Lid-driven cavity]{Lid-driven cavity shown as \textit{streamplot}. a) is an animation of the lid-driven cavity for time steps of $1,000$ viewable in some pdf readers (tested in Adobe and Okular) . b) shows the same solution but as static graphs in time steps of $10,000$. }
 \label{fig:m6-1}
 \end{figure}
 
 
+\section{M7: Parallelization}
+The parallelization is done via the Message Passing Interface (MPI) and serves as a 
 
 \bibliographystyle{unsrt}
 \bibliography{bib}
