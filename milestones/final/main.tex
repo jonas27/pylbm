@@ -350,7 +350,7 @@ The Couette flow is a fluid flow in between two reflective boundaries, where one
 This introduces a constant perturbation which means the system can never reach an equilibrium state.
 The Couette flow can be used to model the the Earth's mantle and atmosphere and results in a Couette solution, where the velocity in the moving boundary direction is almost constant and decreasing from the moving boundary to the (relative) static one.
 
-To emulate such a behaviour I use the following parameters:
+To model such a behaviour I use the following parameters:
 \begin{enumerate}
     \item $L_{x}, L_{y} = 100, 100$
     \item $\rho(\textbf{r}, 0) = 0$
@@ -370,14 +370,40 @@ Figure \ref{fig:m4-1-streamplot} shows the results in a streamplot.
 After $t=200$ more than half the grid has a directional flow. At $t=400$ it is almost $90\%$ and at $t=600$ all particles flow in the x direction. After $100,000$ time steps the velocity reaches a state where the flow fluid stays relatively the same, but no equilibrium state, i.e. $f^{eq}_{cxy}\neq f_{cxy}$. 
 It is decreasing from the top to bottom, with $v_{x}(y=1)=1$ and $v_{x}(y=98)=0$, as the first and last raw are dry nodes.
 
-To visualize the velocities over time I plot the single column over time, shown in figure \ref{fig:m4-1-velocities-over-time}.
+To visualize the velocities over time I plot a single column over time, shown on the left in figure \ref{fig:m4-1-velocities-over-time}.
 \begin{figure}[ht]
 \centering
-\resizebox{0.7\columnwidth}{!}{\large\input{img/m4-1-velocities-over-time.pgf}}
-\caption[Column velocities over time]{Column velocities over time}
+\resizebox{\columnwidth}{!}{\large\input{img/m4-1-velocities-over-time.pgf}}
+\caption[Column velocities over time]{The left graph shows the velocities in $x$ direction over time. The right graph shows the numerical solution of $v_{x}$ at $t=100,000$ vs the cleaned solution.}
 \label{fig:m4-1-velocities-over-time}
 \end{figure}
-At first the velocities are high only at the moving lid, but after time, the velocities are 
+At first the velocities are high only at the moving lid, but after time the velocities are a constantly decreasing from the velocity at the moving wall, i.e. $v_{lid}=1$, to zero.
+However, figure only shows the wet nodes, plotting the dry nodes as well, as done on the right hand side of figure \ref{fig:m4-1-velocities-over-time}, the dry nodes do not follow this pattern. They are influenced from the dry nodes on both sides and thus the top is too slow and the bottom is too fast.
+The orange line shows the cleaned values, where a curve is fitted on the wet nodes and then extended to the dry nodes. As can be seen in the figure, the cleaned values are as expected if there was no interference between the two boundaries.
+
+\section{M5: Poiseuille Flow}
+The Poiseuille flow describes a pressure-induced fluid flow between two opposite and static boundaries. 
+It is most commonly used to model the flow of a fluid through a pipe. 
+Because the outer boundaries introduce friction, the velocity is expected to be highest in the middle of the pipe on lowest at the sides.
+
+To model this flow I use the following parameters:
+\begin{enumerate}
+    \item $L_{x}, L_{y} = 100, 80$
+    \item $\rho(\textbf{r}, 0) = 1$
+    \item $\textbf{u}(\textbf{r}, 0) = 0$
+    \item $T = 10,000$
+    \item $omega = 0.5$
+    \item $\rho_{in} = 1.01$
+    \item $\rho_{out} = 0.99$
+\end{enumerate}
+This means at the inlet a constant pressure is applied and propagated through the grid until it reaches the outlet. The resulting pressure difference between the in- and outlet is $0.02$. 
+The results are shown in figure \ref{fig:use}.
+
+The two left grids visualize the velocities with \textit{imshow} at $t=50$ and $t=100$ while the last two grids . 
+At 
+The flow in the correct direction and the effects of the reflective boundaries are clearly visible, at the bottom and at the top of the pipe the arrows are not flowing parallel to the boundaries. 
+In the 
+
 
 
 
