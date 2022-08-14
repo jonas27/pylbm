@@ -84,13 +84,23 @@ def stream(f_cxy: torch.tensor) -> torch.tensor:
     return f_cxy
 
 
-def apply_bottom_wall(f_cxy: torch.tensor) -> torch.tensor:
+def bottom_wall(f_cxy: torch.tensor) -> torch.tensor:
     """m4: in the couette flow we have no side walls and thus need to copy all values up."""
     # should be torch roll
     # argument ohne torch roll: im steady state ist es egal
     f_cxy[2, :, 1] = f_cxy[4, :, 0]
     f_cxy[5, :, 1] = f_cxy[7, :, 0]
     f_cxy[6, :, 1] = f_cxy[8, :, 0]
+    return f_cxy
+
+
+def top_wall(f_cxy: torch.tensor) -> torch.tensor:
+    """m4: in the couette flow we have no side walls and thus need to copy all values up."""
+    # should be np roll
+    # argument ohne np roll: im steady state ist es egal
+    f_cxy[4, :, -2] = f_cxy[2, :, -1]
+    f_cxy[7, :, -2] = f_cxy[5, :, -1]
+    f_cxy[8, :, -2] = f_cxy[6, :, -1]
     return f_cxy
 
 
@@ -178,9 +188,10 @@ def run():
     for t in range(epochs):
         # velocities.append(u_axy)
         f_cxy = stream(f_cxy=f_cxy)
-        f_cxy = apply_bottom_wall(f_cxy=f_cxy)
+        f_cxy = bottom_wall(f_cxy=f_cxy)
         f_cxy = apply_sliding_top_wall_simple(f_cxy=f_cxy, velocity=top_vel)
         f_cxy, u_axy = collision(f_cxy=f_cxy, omega=omega)
 
 
-run()
+if __name__ == "__main__":
+    run()
