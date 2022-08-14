@@ -421,8 +421,15 @@ Finally, I compare the theoretical solution to the numerical solution at $t=100,
 The theoretical solution, red line, has similar velocities at the boundaries but significantly higher velocities at the boundaries (the exact difference is $0.00397$).
 A possible explanation could be the velocity reduction because of the collisions.
 
-To test this hypothesis I first calculated the velocities for $L_x=L_y=30$ and $L_x=L_y=300$ as shown in the first two graphs of figure \fi
-
+To test this hypothesis I first calculated the velocities for $L_x=L_y=30$ and $L_x=L_y=300$ as shown in the first two graphs of figure \ref{fig:m5-1-num-theo-extended}.
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m5-1-num-theo-extended.pgf}}
+\caption[Poiseuille analysis extended]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$ for different pipe sizes. The maximal difference following the order of the graphs is: $-0.00148$, $0.161374$ and $0.000348$, respectively.}
+\label{fig:m5-1-num-theo-extended}
+\end{figure}
+Interestingly, the difference in the theoretical and the numerical velocities increases with the size of the grid, here pipe. In a small pipe, the numerical solution is actually higher than the theoretical, whereas at $L=300$ the difference between expected and actual velocity is $0.161$. 
+I then tried to find the numerical solution most similar to the theoretical solution, which is the case around $L=50$ (right graph in figure \ref{fig:m5-1-num-theo-extended} with a difference of maximal $0.000348$.
 
 
 \section{M6: Sliding Lid}
