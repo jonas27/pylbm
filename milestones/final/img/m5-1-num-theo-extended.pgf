@@ -1102,7 +1102,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=10.250000in,y=4.483333in,,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont \(\displaystyle L_x=300\) and \(\displaystyle L_y=300\)}%
+\pgftext[x=10.250000in,y=4.483333in,,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont \(\displaystyle L_x=\)300 and \(\displaystyle L_y=\)300}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -1636,7 +1636,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=15.720588in,y=4.483333in,,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont \(\displaystyle L_x=50\) and \(\displaystyle L_y=50\)}%
+\pgftext[x=15.720588in,y=4.483333in,,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont \(\displaystyle L_x=\)50 and \(\displaystyle L_y=\)50}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
