@@ -21,7 +21,7 @@ for e in range(epochs):
     f_cxy = lbm.left_wall(f_cxy=f_cxy)
     f_cxy = lbm.right_wall(f_cxy=f_cxy)
     f_cxy, u_axy = lbm.collision(f_cxy=f_cxy, omega=omega)
-    if e - 1 % 1000 == 0:
+    if e % 1000 == 0:
         velocities.append(u_axy.cpu().numpy())
 
 np.save(path, velocities)
