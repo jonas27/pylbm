@@ -8,7 +8,6 @@ import m5_helpers
 
 x_dim = 100
 y_dim = 80
-epochs = 10000
 omega = 0.5
 rho_in = 1.01
 rho_out = 0.99
