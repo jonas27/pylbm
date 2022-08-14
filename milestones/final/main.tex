@@ -411,13 +411,18 @@ At $t=50$ and $t=100$ the velocities in the \textit{streamplot} flow in the corr
 At $t=500$ and $t=10,000$ I use an \textit{imshow} to show the magnitudes of the velocities.
 At $t=500$ they are still very small, between $0\leq\textbf{u}_{x}(x,y)\leq0.3$, but become larger and converge towards $0\leq\textbf{u}_{x}(x,y)\leq1.1$.
 
-Finally, I compare the analystical solution to the analytical solution at $t=100,000$.
+Finally, I compare the theoretical solution to the numerical solution at $t=100,000$ shown in figure \ref{fig:m5-1-num-theo}.
 \begin{figure}[ht]
 \centering
 \resizebox{0.7\columnwidth}{!}{\large\input{img/m5-1-num-theo.pgf}}
-\caption[Poiseuille numerical vs analytical]{Poiseuille velocities comparing the numerical (blue) and analytical (red) solution at $t=100,000$ and $\frac{L_{x}}{2}$.}
+\caption[Poiseuille numerical vs analytical]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$.}
 \label{fig:m5-1-num-theo}
 \end{figure}
+The theoretical solution, red line, has similar velocities at the boundaries but significantly higher velocities at the boundaries (the exact difference is $0.00397$).
+A possible explanation could be the velocity reduction because of the collisions.
+
+To test this hypothesis I first calculated the velocities for $L_x=L_y=30$ and $L_x=L_y=300$ as shown in the first to graphs of figure \fi
+
 
 
 \section{M6: Sliding Lid}
