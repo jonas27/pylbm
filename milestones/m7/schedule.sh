@@ -2,7 +2,7 @@
 
 # pip install --user --upgrade numpy matplotlib mpi4py
 
-for nodes = 2
+# for nodes = 2
 for i in 2  8 18 50 72
 do
 ./m7.job 2 $((i*2))
