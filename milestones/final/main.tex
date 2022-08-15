@@ -14,6 +14,8 @@
 
 \usepackage{animate} % to animate stuff
 
+\usepackage{dirtytalk} % say
+
 \usepackage{hyperref} % load last
 
 % \renewcommand*\footnoterule{}
@@ -456,6 +458,7 @@ They are also cavities, albeit a lot smaller ones, in the bottom left and right 
 \centering
 % \begin{frame}{}
 \textbf{\large a)}
+% \animategraphics[loop, width=\columnwidth]{10}{ani/ani-}{0}{119}
 \animategraphics[loop,autoplay, width=\columnwidth]{10}{ani/ani-}{0}{119}
 \vspace*{2mm}
 
@@ -467,7 +470,42 @@ They are also cavities, albeit a lot smaller ones, in the bottom left and right 
 
 
 \section{M7: Parallelization}
-The parallelization is done via the Message Passing Interface (MPI) and serves as a 
+Parallelization was and still is a hot topic. 
+It is the concept of running multiple processes at the same time.
+But its important to understand that parallelization is only useful with efficient concurrency. 
+Concurrency is the computer's ability to deal with multiple things at the same time. 
+In the LBM context, letting the full operations be handled on multiple CPUs and only using the fastest result would not be ideal. 
+But, splitting up the calculations in multiple parts, executing them in different processes and combining them in the end can increase the run time significantly. 
+This is the concept of concurrency, enabling code to run at different time points and/or on different processes.
+To make use of concurrency we use the Message Passing Interface (MPI) framework using the openMPI~\cite{gabriel04:_open_mpi} implementation. 
+
+\say{Performance evaluation is an effective and inexpensive method for assessing research results}~\cite{beyer2019-benchmark}.
+It is critical in areas like high-performance computing, but can often be influenced by outside factors.  
+To measure the implementation performance we let the code run on the BwUniCluster under the following configurations:
+\begin{enumerate}
+    \item 2 Nodes with $[2, 8, 18, 32]$ CPUs
+    \item 4 Nodes with $[1, 4, 9, 16]$ CPUs
+    \item Slurm default memory configuration
+\end{enumerate}
+This results in a total of eight configurations. Each total number of CPUs is present twice, once on two and once on four nodes. 
+This allows us to compare the performance between setups with more nodes but less CPUs per node and less nodes but more CPUs per node.
+
+Finally, GPUs have recently gained popularity~\cite{boyer2013gpu-pop} for two main purposes: training artificial neural networks (ANN) and mining crypto currency. 
+Both of these rely on heavy number crunching and GPUs are well suited for that purpose without going further into the details of GPUs\footnote{For the interested reader this article provides more explaination \url{https://bit.ly/3zV04Ik}}
+\footnote{TPUs are designed around tensor cores which allow for faster matrix multiplication and are even more specialized then GPUs.}.
+I rewrote the code using Pytorch~\cite{pytorch} and benchmarked the application on a \textit{Tesla V100 SXM2} with 32GB of memory and 125 Tensor TFLOPS cores.
+I use double precision floating-point (FP64) as is the case in the numpy implementation but differences in how the GPU uses mathematical approximations could lead to tiny differences in the results~\cite{precision-nvidia}.
+
+The results for the parallization results are shown in figure \ref{}.
+
+
+
+
+
+
+
+\chapter{Acknowledgements}
+The authors acknowledge support by the state of Baden-Württemberg through bwHPC.
 
 \bibliographystyle{unsrt}
 \bibliography{bib}
