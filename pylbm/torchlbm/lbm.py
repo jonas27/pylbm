@@ -10,58 +10,38 @@ from typing import Tuple
 
 import torch
 
-TAU = 0.5
-
 T_TYPE = torch.double
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# DEVICE = torch.device("cpu")
 
 C_CA: torch.tensor = torch.tensor([[0, 0], [1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]], device=DEVICE)
 
 W_C: torch.tensor = torch.tensor([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36], dtype=T_TYPE, device=DEVICE)
-# W_C: Tuple = (4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36)
 
-# The bounce back direction
 C_REVERSED: torch.tensor = torch.tensor([0, 3, 4, 1, 2, 7, 8, 5, 6], device=DEVICE)
-# C_REVERSED: Tuple = (0, 3, 4, 1, 2, 7, 8, 5, 6)
 
 
-def density_init(x_dim: int, y_dim: int, r_mean: float = 0.5, eps: float = 0.01) -> torch.tensor:
-    """rho_init based on dim, a mean and a deviation factor eps."""
-    r_ij = eps * torch.randn(x_dim, y_dim, device=DEVICE, dtype=T_TYPE)
-    r_ij[:, :] += r_mean
+def local_density_init(x_dim: int, y_dim: int, r_init: float = 0.5) -> torch.tensor:
+    r_ij = torch.zeros((x_dim, y_dim), device=DEVICE, dtype=T_TYPE) + r_init
     return r_ij
 
 
-def density(f_cxy: torch.tensor) -> torch.tensor:
-    """rho is the local density."""
+def local_density(f_cxy: torch.tensor) -> torch.tensor:
     r_xy = torch.einsum("cxy -> xy", f_cxy)
     return r_xy
 
 
-def local_avg_velocity_init(x_dim, y_dim, u_mean: float, eps: float):
-    """local_avg_velocity_init based on dim, a mean and a deviation factor eps."""
-    u_aij = eps * torch.randn(2, x_dim, y_dim, device=DEVICE, dtype=T_TYPE)
-    u_aij[:, :] += u_mean
+def local_avg_velocity_init(x_dim, y_dim, u_init: float):
+    u_aij = torch.zeros((2, x_dim, y_dim), device=DEVICE, dtype=T_TYPE) + u_init
     return u_aij
 
 
 def local_avg_velocity(f_cxy: torch.tensor, r_xy: torch.tensor) -> torch.tensor:
-    """local_avg_velocity calculation based on f and rho."""
     u_aij = torch.einsum("ac, cxy->axy", C_CA.T.double(), f_cxy) / r_xy
     return u_aij
 
 
 def f_eq(u_axy: torch.tensor, r_xy: torch.tensor) -> torch.tensor:
-    """f_eq calculates the probability equilibrium distribution function.
-
-    The probability density function  f(r,v,t)  has a non trivial physical meaning. Therefore we suggest, at the beginning, to think of the value of  fi(r,t)  as the number of "particles" which are in the position  r  at the time  t  and that are moving in the direction  ci
-
-    Returns:
-        f_eq_cxy: equilibrium distribution function.
-        u_ija: the local average velocity u(r) for testing.
-    """
     cu_cxy_3 = 3 * torch.einsum("ac,axy->cxy", C_CA.T.double(), u_axy)
     u_xy_2 = torch.einsum("axy->xy", u_axy * u_axy)
     r_cxy_w = torch.einsum("c,xy->cxy", W_C, r_xy)
@@ -70,24 +50,12 @@ def f_eq(u_axy: torch.tensor, r_xy: torch.tensor) -> torch.tensor:
 
 
 def stream(f_cxy: torch.tensor) -> torch.tensor:
-    """stream shifts all values according to the velocities.
-
-    Implementation:
-        Ranges over all velocities and rolls the values.
-        Starts at index 1 as it doesn't change in 0 channel.
-
-    Rational:
-        Rolling over after tensor ends is ok, as we simulate a large plane which in its limit is transformed into a cylinder.
-    """
     for i in range(1, 9):
         f_cxy[i, :, :] = torch.roll(f_cxy[i, :, :], shifts=C_CA[i].tolist(), dims=(0, 1))
     return f_cxy
 
 
 def bottom_wall(f_cxy: torch.tensor) -> torch.tensor:
-    """m4: in the couette flow we have no side walls and thus need to copy all values up."""
-    # should be torch roll
-    # argument ohne torch roll: im steady state ist es egal
     f_cxy[2, :, 1] = f_cxy[4, :, 0]
     f_cxy[5, :, 1] = f_cxy[7, :, 0]
     f_cxy[6, :, 1] = f_cxy[8, :, 0]
@@ -95,9 +63,6 @@ def bottom_wall(f_cxy: torch.tensor) -> torch.tensor:
 
 
 def top_wall(f_cxy: torch.tensor) -> torch.tensor:
-    """m4: in the couette flow we have no side walls and thus need to copy all values up."""
-    # should be np roll
-    # argument ohne np roll: im steady state ist es egal
     f_cxy[4, :, -2] = f_cxy[2, :, -1]
     f_cxy[7, :, -2] = f_cxy[5, :, -1]
     f_cxy[8, :, -2] = f_cxy[6, :, -1]
@@ -119,7 +84,6 @@ def right_wall(f_cxy: torch.tensor) -> torch.tensor:
 
 
 def apply_sliding_top_wall(f_cxy: torch.tensor, velocity: float) -> torch.tensor:
-    # calc vel at sliding wall
     r_x_top = f_cxy[[0, 1, 3], 1:-1, -2].sum(axis=0) + 2.0 * (f_cxy[2, 1:-1, -1] + f_cxy[5, 2:, -1] + f_cxy[6, :-2, -1])
     f_cxy[4, 1:-1, -2] = f_cxy[2, 1:-1, -1]
     f_cxy[7, 1:-1, -2] = f_cxy[5, 2:, -1] - 6.0 * W_C[5] * r_x_top * velocity
@@ -136,7 +100,7 @@ def apply_sliding_top_wall_simple(f_cxy: torch.tensor, velocity: float = None) -
 
 
 def in_out_pressure(f_cxy: torch.tensor, rho_in: float, rho_out: float) -> torch.tensor:
-    r_xy = density(f_cxy)
+    r_xy = local_density(f_cxy)
 
     r_xy_in = torch.full((1, r_xy.shape[1] - 2), rho_in, device=DEVICE, dtype=T_TYPE)
     r_xy_out = torch.full((1, r_xy.shape[1] - 2), rho_out, device=DEVICE, dtype=T_TYPE)
@@ -153,21 +117,7 @@ def in_out_pressure(f_cxy: torch.tensor, rho_in: float, rho_out: float) -> torch
 
 
 def collision(f_cxy: torch.tensor, omega: float) -> Tuple[torch.tensor, torch.tensor]:
-    """collision adds the collision term \Delta_i to the probability distribution function f.
-
-        Here we use the Bhatnagar-Gross-Krook-Operator (BGK-Operator):
-        {\displaystyle \Delta _{i}={\frac {1}{\tau }}(f_{i}^{\mathrm {eq} }-f_{i})}{\displaystyle \Delta _{i}={\frac {1}{\tau }}(f_{i}^{\mathrm {eq} }-f_{i})}.
-
-    Source:
-        https://de.wikipedia.org/wiki/Lattice-Boltzmann-Methode
-
-    Args:
-        Omega:  Das statistische Gewicht {\displaystyle \Omega }\Omega  ist ein Maß für die Wahrscheinlichkeit eines bestimmten Makrozustandes.
-                Die Relaxationszeit {\displaystyle \tau }\tau  bestimmt, wie schnell sich das Fluid dem Gleichgewicht nähert und hängt somit direkt von der Viskosität des Fluids ab. Der Wert {\displaystyle f_{i}^{\mathrm {eq} }}{\displaystyle f_{i}^{\mathrm {eq} }} ist die lokale Gleichgewichtsfunktion, welche die Boltzmannverteilung approximiert. (wiki)
-                omega = 1 / tau wobei tau
-
-    """
-    r_xy = density(f_cxy)
+    r_xy = local_density(f_cxy)
     u_axy = local_avg_velocity(f_cxy=f_cxy, r_xy=r_xy)
     f_eq_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
     f_cxy += omega * (f_eq_cxy - f_cxy)
@@ -180,8 +130,8 @@ def run():
     top_vel = 1.7
     omega = 0.1
 
-    r_xy = density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
-    u_axy = local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
+    r_xy = local_density_init(x_dim=x_dim, y_dim=y_dim, r_init=1.0)
+    u_axy = local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_init=0.0)
     f_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
 
     velocities = []

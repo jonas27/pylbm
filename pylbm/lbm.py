@@ -1,9 +1,8 @@
 """
+This module provides all the functions necessary to run all milestones.
+
 Notations:
-f_ijc: is the probability density function with space dim i and j and velocity dim c
-
-TODO: Moving from global lists to tuples could be faster.
-
+    _cxy: is the probability density function with velocity dim c and space dim x and y.
 """
 
 from pathlib import Path
@@ -14,7 +13,6 @@ from mpi4py import MPI
 from numpy.lib.format import dtype_to_descr, magic
 
 REPO_DIR = str(Path(__file__).absolute().parents[1])
-
 
 """ The particle speed vector for each velocity.
     It is a 9x2 matrix.
@@ -61,7 +59,7 @@ def local_density(f_cxy: np.array) -> np.array:
     return r_xy
 
 
-def local_avg_velocity_init(x_dim: int, y_dim: int, u_init: float):
+def local_avg_velocity_init(x_dim: int, y_dim: int, u_init: float) -> np.array:
     """local_avg_velcotiy_init inits the local avg densities denoted by $u$.
 
     Args:
@@ -76,7 +74,7 @@ def local_avg_velocity_init(x_dim: int, y_dim: int, u_init: float):
     return u_axy
 
 
-def local_avg_velocity(f_cxy: np.array, r_xy: np.array):
+def local_avg_velocity(f_cxy: np.array, r_xy: np.array) -> np.array:
     """local_avg_velocity calculates the local density based on the PDF by summing over the velocities.
 
     Args:
@@ -300,7 +298,7 @@ def reynolds(y_dim: int, omega: float, top_vel: float) -> float:
     return (top_vel * y_dim) / (nu)
 
 
-def sync_shifts(cartcomm: MPI.Cartcomm):
+def sync_shifts(cartcomm: MPI.Cartcomm) -> Tuple:
     """sync_shifts defines how the cartcomm is shifted
 
     Args:
@@ -317,7 +315,7 @@ def sync_shifts(cartcomm: MPI.Cartcomm):
     return shifts
 
 
-def sync_f(cartcomm: MPI.Cartcomm, shifts: Tuple, f_cxy: np.array):
+def sync_f(cartcomm: MPI.Cartcomm, shifts: Tuple, f_cxy: np.array) -> np.array:
     """sync_f syncs the pdf calculation across multiple processes.
 
     Syncing can be achieved by multithreading and thus does not require multiple CPUs.
