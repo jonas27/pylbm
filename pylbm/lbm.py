@@ -214,10 +214,10 @@ def sliding_top_wall(f_cxy: np.array, velocity: float) -> np.array:
     Returns:
         - f_cxy: The PDF after applying the top sliding wall.
     """
-    r_x_top = f_cxy[[0, 1, 3], :, -2].sum(axis=0) + 2.0 * (f_cxy[2, :, -1] + f_cxy[5, :, -1] + f_cxy[6, :, -1])
+    r_top = f_cxy[[0, 1, 3], :, -2].sum(axis=0) + 2.0 * (f_cxy[2, :, -1] + f_cxy[5, :, -1] + f_cxy[6, :, -1])
     f_cxy[4, :, -2] = f_cxy[2, :, -1]
-    f_cxy[7, :, -2] = f_cxy[5, :, -1] - 6.0 * W_C[5] * r_x_top * velocity
-    f_cxy[8, :, -2] = f_cxy[6, :, -1] + 6.0 * W_C[6] * r_x_top * velocity
+    f_cxy[7, :, -2] = f_cxy[5, :, -1] - 6.0 * W_C[5] * r_top * velocity
+    f_cxy[8, :, -2] = f_cxy[6, :, -1] + 6.0 * W_C[6] * r_top * velocity
     return f_cxy
 
 
