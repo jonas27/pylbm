@@ -4,22 +4,25 @@
 
 # for nodes = 2
 # not possible for 50 72
-# for i in 2 8 18 50 72
-# do
-# ./m7.job 2 $i
-# done
+# 32 is not quadratic
+for i in 2 8 18 32
+do
+./m7.job 2 $i
+done
 
 # for nodes = 4
-# for i in 1 4 9 25 36
-# do
-# ./m7.job 4 $i
-# done
+# 16 is not quadratic
+for i in 1 4 9 16 25 36 
+do
+./m7.job 4 $i
+done
 
 # for nodes = 6
-for i in 6 24
-do
-./m7.job 6 $i
-done
+# can't use 6 nodes
+# for i in 6 24
+# do
+# ./m7.job 6 $i
+# done
 
 # for nodes = 8
 # can't use 8 nodes
