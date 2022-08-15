@@ -496,7 +496,14 @@ Both of these rely on heavy number crunching and GPUs are well suited for that p
 I rewrote the code using Pytorch~\cite{pytorch} and benchmarked the application on a \textit{Tesla V100 SXM2} with 32GB of memory and 125 Tensor TFLOPS cores.
 I use double precision floating-point (FP64) as is the case in the numpy implementation but differences in how the GPU uses mathematical approximations could lead to tiny differences in the results~\cite{precision-nvidia}.
 
-The results for the parallization results are shown in figure \ref{}.
+The results for the parallization results are shown in figure \ref{fig:m7}.
+\begin{figure}[ht]
+\centering
+\resizebox{\columnwidth}{!}{\large\input{img/m7.pgf}}
+\caption[Poiseuille analysis extended]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$ for different pipe sizes. The maximal difference following the order of the graphs is: $-0.00148$, $0.161374$ and $0.000348$, respectively.}
+\label{fig:m7}
+\end{figure}
+
 
 
 
