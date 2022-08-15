@@ -257,7 +257,47 @@ But under the assumption that all transport processes occur on a longer time sca
 \section{Boundaries}
 The simplest boundaries are static walls. 
 The bounce back from the walls are modeled to occur in the opposed direction. 
+Listing \ref{lst:top} shows the code for top wall.
+\begin{center}
+  \begin{lstlisting}[caption=Bounce back at the top wall.,label=lst:top, basicstyle=\small]
+def top_wall(f_cxy: np.array) -> np.array:
+    f_cxy[4, :, -2] = f_cxy[2, :, -1]
+    f_cxy[7, :, -2] = f_cxy[5, :, -1]
+    f_cxy[8, :, -2] = f_cxy[6, :, -1]
+    return f_cxy
+  \end{lstlisting}
+\end{center}
+The wall reverses the effects of the streaming, just in the opposite direction.
 
+Adding a velocity to the wall leads to a bounce back with added or subtracted velocity as shown in listing \ref{lst:top-slide}. 
+\begin{center}
+  \begin{lstlisting}[caption=Bounce back at the top sliding wall.,label=lst:top-slide, basicstyle=\small]
+def sliding_top_wall(f_cxy: np.array, velocity: float):
+    r_top = ( f_cxy[[0, 1, 3], :, -2].sum(axis=0) + 
+            2.0 * (f_cxy[2, :, -1] + f_cxy[5, :, -1] + f_cxy[6, :, -1]) )
+    f_cxy[4, :, -2] = f_cxy[2, :, -1]
+    f_cxy[7, :, -2] = f_cxy[5, :, -1] - 6.0 * W_C[5] * r_top * velocity
+    f_cxy[8, :, -2] = f_cxy[6, :, -1] + 6.0 * W_C[6] * r_top * velocity
+    return f_cxy
+  \end{lstlisting}
+\end{center}
+In the first line, the density at the sliding wall is calculated and later used in the update of the diagonal velocities.
+
+\section{Reynolds number}
+The flow induced by an upper moving wall or lid can be characterized by a certain Reynolds number (Re).
+It expresses the ratio between the inertial terms and the viscous ones and be calculated as follow:
+\begin{equation}
+    \nu = 1 / 3 * (1 / \omega - 1 / 2) \\
+\end{equation}
+\begin{equation}
+     Re = \frac{top-vel * L_x}{\nu}
+\end{equation}
+
+
+\section{Parallelization}
+To run the code in an high performance computing environment, i.e. super computers, the code must be able to be used in parallel.
+This means the different operations inside the LBM have to be able to be splitted up and calculated by different processes. 
+To achieve this ghost cells are added around each splitted up section of the grid. Basically, an additional row or columns of nodes are added, called dry nodes. These nodes are not part of the actual experiment but are solely used for computational purposes.
 
 
 \chapter{Milestones}
@@ -273,13 +313,13 @@ The general motion is to set a sinusoidal density or velocity
 perturbation and measure how fast it decays, i.e. reaches the equilibrium.
 For each part we use the following setup:
 \begin{enumerate}
-    \item epochs\footnote{We use the common name 'epochs' from machine learning to describe the number of time steps. } = 3000
+    \item $T = 3000$
     % \item $\mu_{\rho}=\mu_{u}=0.5$
-    \item $\epsilon$ = 0.1
+    \item $\epsilon = 0.1$
     \item $L_{x}$, $L_{y}$ = 30, 30
 \end{enumerate}
 
-\textcolor{red}{low values for omega \url{https://www.researchgate.net/publication/339136823_Impact_of_collision_models_on_the_physical_properties_and_the_stability_of_lattice_Boltzmann_methods}}
+% \textcolor{red}{low values for omega \url{https://www.researchgate.net/publication/339136823_Impact_of_collision_models_on_the_physical_properties_and_the_stability_of_lattice_Boltzmann_methods}}
 
 \paragraph{M3.1 Density decay} 
 In a closed fluid system with an unequal density, the density is expected to decay over time. In the LBM this decay is dependent on the collision frequency $\omega$ and the size of the system, where both parameters are expected to be inversely correlated to the time it takes to get to the equilibrium.
@@ -521,7 +561,10 @@ The LBM is an easy to use method to model fluid and gas flows. In this report I 
 Afterwards, I showed and explained important implementations like the streaming and collision functions.
 Finally, all relevant milestones were achieved and analysed.
 
-For the future, using MPI on GPUs and TPUs could unlock 
+For the future, using MPI on GPUs and TPUs should make the computation even faster.
+Using CuPy could make the integration with BwUniCluster quite easy and it would be super cool to try. Unfortunately I was not able to do it, but it could speed up the computation quite significantly.
+However, this is given that MPI on GPUs behaves similarly to CPU, which is probably not the case, as GPUs pack hundreds of cores and are not designed to run in parallel. 
+This is changing making the future more interesting than ever.
 
 
 
