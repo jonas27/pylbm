@@ -14,7 +14,7 @@ def test_collision():
     i_dim, j_dim = 5, 10
     omega = 2
     epochs = 300
-    r_ij = lbm.density_init(x_dim=i_dim, y_dim=j_dim, r_mean=r_mean, eps=eps)
+    r_ij = lbm.local_density_init(x_dim=i_dim, y_dim=j_dim, r_init=r_mean, eps=eps)
     u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
     f_cij = lbm.f_eq(u_axy=u_aij, r_xy=r_ij)
 
@@ -39,7 +39,7 @@ def test_uniform_density():
     i_dim, j_dim = 8, 8
     omega = 0.1
     epochs = 300
-    r_ij = lbm.density_init(x_dim=i_dim, y_dim=j_dim, r_mean=r_mean, eps=eps)
+    r_ij = lbm.local_density_init(x_dim=i_dim, y_dim=j_dim, r_init=r_mean, eps=eps)
     # increase local density in the center
     r_ij[int(i_dim / 2 - 1) : int(i_dim / 2 + 1), int(j_dim / 2 - 1) : int(j_dim / 2 + 1)] = 0.9
     u_aij = lbm.local_avg_velocity_init(x_dim=i_dim, y_dim=j_dim, u_mean=u_mean, eps=eps)
@@ -51,5 +51,5 @@ def test_uniform_density():
             print(r_ij.max())
             print("==================================")
         f_cij = lbm.stream(f_cxy=f_cij)
-        r_ij = lbm.density(f_cij)
+        r_ij = lbm.local_density(f_cij)
         f_cij, u_aij = lbm.collision(f_cxy=f_cij, omega=omega)

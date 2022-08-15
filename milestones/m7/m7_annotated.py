@@ -2,6 +2,7 @@
 Notations:
 f_ijc: is the probability density function with space dim i and j and velocity dim c
 
+TODO: Moving from global lists to tuples could be faster.
 
 """
 
@@ -10,61 +11,60 @@ from mpi4py import MPI
 from numpy.lib.format import dtype_to_descr, magic
 
 """ The particle speed vector for each velocity.
-    It is a 9x2 matrix.
-"""
+
+    It is a 9x2 matrix."""
 C_CA = np.array([[0, 0], [1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]])
 
 """ The weight factors of each velocity for the distribution function.
-    It is a 9D vector.
-"""
+
+    It is a 9D vector. """
 W_C = np.array([4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36])
 
 """ The bounce back directions corresponding to each velocity direction.
-    It is a 9D vector.
-"""
+
+    It is a 9D vector. """
 C_REVERSED = np.array([0, 3, 4, 1, 2, 7, 8, 5, 6])
 
 
-def local_density_init(x_dim, y_dim, r_init) -> np.array:
-    """local_density_init initializes the local densities denoted by $\rho$.
+def density_init(x_dim, y_dim, r_mean, eps) -> np.array:
+    """This function initializes the local densities denoted by $\rho$.
+        If eps is set to zero, then r_mean is the true mean.
+        If eps is set to somethin
 
     Params:
         - x_dim: The dimension of the x axis.
         - y_dim: The dimension of the y axis.
-        - r_init: Initializes all values of $\rho_{x,y}$ to r_init
+        - r_mean: The mean of
 
-    Returns:
-        - r_ij: The initialized local density. Dimension: x_dim x y_dim.
     """
-    r_xy = np.zeros((x_dim, y_dim)) + r_init
-    return r_xy
+    r_ij = eps * np.random.randn(x_dim, y_dim)
+    r_ij[:, :] += r_mean
+    return r_ij
 
 
-def local_density(f_cxy) -> np.array:
-    """local_density calculates the local density based on the PDF by summing over the velocities.
+def density_init_new(x_dim, y_dim, r_mean) -> np.array:
+    """This function initializes the local densities denoted by $\rho$.
+        If eps is set to zero, then r_mean is the true mean.
+        If eps is set to somethin
 
     Params:
-        - f_cxy: The PDF with dimension c,x and y.
-            c is the velocity dim and x and y the spatial dim.
+        - x_dim: The dimension of the x axis.
+        - y_dim: The dimension of the y axis.
+        - r_mean: The mean of
 
-    Returns:
-        - r_xy: The local density matrix. Dimension: x_dim x y_dim.
     """
+    r_ij = np.zeros((x_dim, y_dim)) + r_mean
+    return r_ij
+
+
+def density(f_cxy) -> np.array:
     r_xy = np.einsum("cxy -> xy", f_cxy)
     return r_xy
 
 
-def local_avg_velocity_init(x_dim, y_dim, u_init):
-    """local calculates the local density based on the PDF by summing over the velocities.
-
-    Params:
-        - f_cxy: The PDF with dimension c,x and y.
-            c is the velocity dim and x and y the spatial dim.
-
-    Returns:
-        - r_xy: The local density matrix. Dimension: x_dim x y_dim.
-    """
-    u_aij = np.zeros((2, x_dim, y_dim)) + u_init
+def local_avg_velocity_init(x_dim, y_dim, u_mean, eps):
+    u_aij = eps * np.random.randn(2, x_dim, y_dim)
+    u_aij[:, :] += u_mean
     return u_aij
 
 
@@ -257,7 +257,7 @@ def save_mpiio(comm: MPI.Cartcomm, fn, g_kl):
     file.Close()
 
 
-def run_m7():
+if __name__ == "__main__":
     org_x_dim = 300
     org_y_dim = 300
     size = org_y_dim * org_x_dim
@@ -274,7 +274,7 @@ def run_m7():
 
     cartcomm = comm.Create_cart(dims=(x_sects, y_sects), periods=(False, False), reorder=False)
 
-    r_xy = local_density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
+    r_xy = density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
     u_axy = local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
     f_cxy = f_eq(u_axy=u_axy, r_xy=r_xy)
     shifts = sync_shifts(cartcomm)
@@ -296,7 +296,3 @@ def run_m7():
 
     save_mpiio(cartcomm, "./ux_{}.npy".format(size), u_axy[0, :, :])
     save_mpiio(cartcomm, "./uy_{}.npy".format(size), u_axy[1, :, :])
-
-
-if __name__ == "__main__":
-    run_m7()

@@ -4,7 +4,7 @@ from pylbm import lbm
 
 
 def m5_1(x_dim, y_dim, epochs, omega, rho_in, rho_out):
-    r_xy = lbm.density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
+    r_xy = lbm.local_density_init(x_dim=x_dim, y_dim=y_dim, r_init=1.0, eps=0.0)
     u_axy = lbm.local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
     f_cxy = lbm.f_eq(u_axy=u_axy, r_xy=r_xy)
 
@@ -44,8 +44,9 @@ def m5_1_fig(fig, x_dim, y_dim, velocities):
         fig.add_axes(ax)
     return fig
 
+
 def m5_1_only_final(x_dim, y_dim, epochs, omega, rho_in, rho_out):
-    r_xy = lbm.density_init(x_dim=x_dim, y_dim=y_dim, r_mean=1.0, eps=0.0)
+    r_xy = lbm.local_density_init(x_dim=x_dim, y_dim=y_dim, r_init=1.0, eps=0.0)
     u_axy = lbm.local_avg_velocity_init(x_dim=x_dim, y_dim=y_dim, u_mean=0.0, eps=0.0)
     f_cxy = lbm.f_eq(u_axy=u_axy, r_xy=r_xy)
 

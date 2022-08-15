@@ -84,19 +84,21 @@ It also assumed that streaming and collision happened synchronously for all node
 
 In 1988 McNamara and Zanetti introduced the LBM as a direct alternative to the LGA~\cite{mcnamara1988boltzmann-method}.
 Their new method "is based on the simulation of a very simple microscopic system, rather than on the direct integration of partial differential equations"~\cite{mcnamara1988boltzmann-method}.
-Because of their close similarity the LBM shares many features with the LGA, like the lack of Galilean invariance but it also satisfies the Navier-Stokes equation in the macroscopic limit.
-It, crucially, "directly stud[ies] the time evolution of the mean values"~\cite{mcnamara1988boltzmann-method} and thus does not need statistical averaging to compute the velocity as in LGA leading to lower computing requirements.
+Because of their close similarity, the LBM shares many features with the LGA, like the lack of Galilean invariance and both satisfy the Navier-Stokes equation in the macroscopic limit.
+It, crucially, "directly stud[ies] the time evolution of the mean values"~\cite{mcnamara1988boltzmann-method} and thus does not need statistical averaging to compute the velocity, as is the case in LGA, leading to lower computing requirements.
 
 The key points of the LBM success is it's simplicity, relatively low consumption of computing requirements and easy parallelization of the algorithm.
 This is achieved by approximating the fluid to particles on a grid and using a separate streaming and collision step to simulate the particles behaviour over time.
 This is unlike other computational fluid dynamics (CFD) methods which directly solve the numerically macroscopic properties of a fluied, i.e. the mass, momentum, and energy.
-Using particles also makes incorperating boundries and microscopic interactions easier than in most other CFD models.
+Simulating the particles themselves also makes incorperating boundries and microscopic interactions easier than in most other CFD models.
 
-The reminder of the report will first introduce the theory behind the LBM and later present the results for each milestone.
+The reminder of the report is structed in the follwing way: The second chapter introduce the theoretical background of the LBM. Chapter three introduces the most important implementations and chapter four shows the results of the individual milestones.
+Afterwards I will conclude and give a future outlook.
 
-\chapter{Theoretical background}
+\chapter{Theoretical Background}
 \section{Probability Density Function}
-The probability density function (PDF) describes the statistical probability of particles in a closed system not in equilibrium and is denoted by $f$.
+The probability density function (PDF) describes the statistical probability of finding particles in a closed system not in equilibrium and is denoted by $f$ in the implementation.
+It thereby replaces tagging each particle, as in molecular dynamic simulations.
 In this case, the PDF is given by $f(r_i,v_i,t)$ where $r$ are the positions and $v$ the velocities.
 The probability for finding a particle in a certain part of the phase space is then given by equation~\ref{eq:pdf}.
 \begin{equation}
@@ -115,7 +117,8 @@ The probability of finding a single particle with an arbitraty place $r$ and an 
     P = \int_{\Omega_{\vec{r}}} \int_{\Omega_{\vec{v}}}  f(\vec{r},\vec{v},t) d^{3}\vec{r} d^{3}\vec{v} \quad \overset{!}{=} 1
   \end{aligned}
 \end{equation}
-As we are in a closed system where no particles are added or destroyed we can assume that it must hold that equation \href{eq:prob-single} is equal to one, i.e. normalized to unity.
+Assuming the fluid is in a closed system where no particles are added or destroyed, it must hold that equation \href{eq:prob-single} is equal to one, i.e. normalized to unity. 
+This means, the chance to find an arbitrary particle in an arbitraty location is equal to one.
 
 This then leads us to the general form of the $i$-th moments of $ f(\vec{r},\vec{v},t) $ w.r.t. $ \vec{v} $ shown in equation \ref{eq:general-moments}.
 \begin{equation}
@@ -125,13 +128,16 @@ This then leads us to the general form of the $i$-th moments of $ f(\vec{r},\vec
   \end{aligned}
 \end{equation}
 The first and second order moments are the main subjects of this project and can be readily interpreted.
-The first order moment is the velocity in our system, which for liquids is the flow field.
+The first order moment is the velocity in the system, which for liquids is the flow field.
+In a 2D lattice a two dimensional vector for each field is needed to describe the average local velocity of each particle.
 The second order moment is the kenetic energy density in our system which can be readily interpreted as the temperature of a fluid.
 Different fluids can have different translation ratios between velocities and temperature and thus an increase in temperature in a closed system would lead to higher velocities but the exact increase is depended on the fluid.
 
 
 \section{Boltzmann Transport Equation}
-The Boltzmann transport equation (BTE) tracks the time evolution of the probability distribution function and was published by Ludwig Boltzmann in 1872.
+The Boltzmann transport equation (BTE) tracks the time evolution of the probability distribution function and was published by Ludwig Boltzmann in 1872. 
+Ludwig Eduard Boltzmann (1844–1906) was an Austrian physicist whose greatest achievement was in the development of statistical mechanics~\cite{book}. 
+
 To derive it we take the first order derivative of the PDF in respect to time as shown in
 equation \ref{eq:BTE}.
 \begin{equation}
@@ -142,12 +148,8 @@ equation \ref{eq:BTE}.
 \end{equation}
 Where the term $f$ is the PDF, $\frac{dr(t)}{dt}$ is called the velocity and $\frac{dv(t)}{dt}$ is called the acceleration and by Newtons law is the force acting on the particles devivded by their respective mass.
 The \textit{l.h.s.} of equation \ref{eq:BTE} is called the streaming term and the \textit{r.h.s} is the collision term.
-To show an implementation of the streaming and collision terms the BTE first needs to be discretized.
-
-\textcolor{red}{ More detail}
-\textcolor{red}{Show streaming}
-\textcolor{red}{Show collision}
-\textcolor{red}{Show equilibrium func}
+To implement the streaming and collision terms the BTE first needs to be discretized.
+The streaming and collision are discussed in more detail in chapter 3.
 
 
 
@@ -155,19 +157,19 @@ To show an implementation of the streaming and collision terms the BTE first nee
 The BTE is defined in a continous phase space which is not readily implementable in computer code.
 This can be overcome by approximating the continous phase space to a discrete phase space, called the Lattice-Boltzmann method (LBM).
 The idea is to discretize over a lattice and use the partial derivatives to solve the BTE.
-In this project the the spatial dimension is discretized to a 2D lattice and the velocities are descritized to 9 directions also called a D2Q9-model.
-This is illustarate in \href{fig:d2q9-scheme} where $a$ shows the discretazation of the velocity space and $b$ the discretized of the physical space on a 2D grid with the velocity layered on top.
+In this project the spatial dimension is discretized to a 2D lattice and the velocities are descritized to 9 directions also called a \textit{D2Q9}-model.
+This scheme is illustarate in \href{fig:d2q9-scheme} where $a$ shows the discretazation of the velocity space and $b$ the discretized of the physical space on a 2D grid with the velocity layered on top.
 \begin{figure}[h]
-  \caption{Discretization of the BTE.}
-  \label{fig:d2q9-scheme}
   \centering
   \includegraphics[width=9cm]{d2q9_scheme.png}\\
   (a) Discretization on the velocity space according to D2Q9.\\
   (b) Uniform 2D grid for the discretization in the physical space.\\
   \small{(Material from lecture)}
+  \caption{Discretization of the BTE.}
+  \label{fig:d2q9-scheme}
 \end{figure}
 
-\clearpage
+
 \chapter{Implementation}
 This chapter shows the most important code implementations, mainly the streaming, the collision, the boundaries and the moving top lid.
 Throughout the report I will use the notation $_cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the velocities, notated as $_axy$, where $a=2$ a
@@ -470,25 +472,25 @@ They are also cavities, albeit a lot smaller ones, in the bottom left and right 
 
 
 \section{M7: Parallelization}
-Parallelization was and still is a hot topic. 
-It is the concept of running multiple processes at the same time.
+Parallelization is the concept of running multiple processes at the same time and thereby enables high performance computing on multiple nodes and CPUs. 
 But its important to understand that parallelization is only useful with efficient concurrency. 
-Concurrency is the computer's ability to deal with multiple things at the same time. 
-In the LBM context, letting the full operations be handled on multiple CPUs and only using the fastest result would not be ideal. 
-But, splitting up the calculations in multiple parts, executing them in different processes and combining them in the end can increase the run time significantly. 
-This is the concept of concurrency, enabling code to run at different time points and/or on different processes.
-To make use of concurrency we use the Message Passing Interface (MPI) framework using the openMPI~\cite{gabriel04:_open_mpi} implementation. 
+Concurrency is a program's ability to run a program at different time points and/or on different processes and is the foundation of parallelization.
+For example, a program running the same problem multiple times, using only the fastest result and discarding the rest is using parallelization but very inefficiently.
+On the other hand, splitting up the calculations in multiple smaller parts, executing them in different processes and combining them in the end can decrease the run time significantly.
+To make use of parallelization we use the Message Passing Interface (MPI) framework using the openMPI~\cite{gabriel04:_open_mpi} implementation which has an effective implementation of concurrency.
 
 \say{Performance evaluation is an effective and inexpensive method for assessing research results}~\cite{beyer2019-benchmark}.
 It is critical in areas like high-performance computing, but can often be influenced by outside factors.  
-To measure the implementation performance we let the code run on the BwUniCluster under the following configurations:
+To measure the implementation performance I let the code run on the BwUniCluster for the following configurations:
 \begin{enumerate}
-    \item 2 Nodes with $[2, 8, 18, 32]$ CPUs
-    \item 4 Nodes with $[1, 4, 9, 16]$ CPUs
+    \item 2 Nodes with $[2, 8, 18, 32^{*},]$ CPUs
+    \item 4 Nodes with $[1, 4, 9, 16^{*}, 25, 36]$ CPUs
     \item Slurm default memory configuration
 \end{enumerate}
 This results in a total of eight configurations. Each total number of CPUs is present twice, once on two and once on four nodes. 
 This allows us to compare the performance between setups with more nodes but less CPUs per node and less nodes but more CPUs per node.
+The configurations marked with $*$ do not result in a perfect geometric splitting of the LBM grid but are included to provide one more datapoint to compare the performance between 2 and 4 nodes.
+Running on one, six or eight nodes was not possible.
 
 Finally, GPUs have recently gained popularity~\cite{boyer2013gpu-pop} for two main purposes: training artificial neural networks (ANN) and mining crypto currency. 
 Both of these rely on heavy number crunching and GPUs are well suited for that purpose without going further into the details of GPUs\footnote{For the interested reader this article provides more explaination \url{https://bit.ly/3zV04Ik}}
@@ -500,7 +502,7 @@ The results for the parallization results are shown in figure \ref{fig:m7}.
 \begin{figure}[ht]
 \centering
 \resizebox{\columnwidth}{!}{\large\input{img/m7.pgf}}
-\caption[Poiseuille analysis extended]{Poiseuille velocities comparing the numerical (blue) and theoretical (red) solution at $t=100,000$ for different pipe sizes. The maximal difference following the order of the graphs is: $-0.00148$, $0.161374$ and $0.000348$, respectively.}
+\caption[Performance per configuration.]{The performance per configuration. The blue line is the performance for 2 nodes, the orange line is the performance for 4 nodes and the red dot is the performance for the GPU. The GPU is marked at 125 CPUs but has instead 125 TPUs.}
 \label{fig:m7}
 \end{figure}
 

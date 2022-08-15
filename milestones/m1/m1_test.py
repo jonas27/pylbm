@@ -12,7 +12,7 @@ def test_bench_streaming():
     eps = 0.01
     r_value = 1.5
     i_dim, j_dim, v_dim = 500, 1000, 9
-    r_ij = lbm.density_init(x_dim=i_dim, y_dim=j_dim, r_mean=r_value, eps=eps)
+    r_ij = lbm.local_density_init(x_dim=i_dim, y_dim=j_dim, r_init=r_value, eps=eps)
     f_ijc_init = lbm.f_ijc_init(i_dim=i_dim, j_dim=j_dim, v_dim=v_dim, r_ij=r_ij)
     f_ijc = f_ijc_init.copy()
     log.info(cProfile.runctx("for i in range(100): stream(f_ijc)", {"stream": lbm.stream, "f_ijc": f_ijc}, {}))
@@ -22,7 +22,7 @@ def test_streaming():
     eps = 0.01
     r_value = 1.5
     i_dim, j_dim, v_dim = 5, 10, 9
-    r_ij = lbm.density_init(x_dim=i_dim, y_dim=j_dim, r_mean=r_value, eps=eps)
+    r_ij = lbm.local_density_init(x_dim=i_dim, y_dim=j_dim, r_init=r_value, eps=eps)
     f_ijc_init = lbm.f_ijc_init(i_dim=i_dim, j_dim=j_dim, v_dim=v_dim, r_ij=r_ij)
     f_ijc = lbm.stream(f_cxy=f_ijc_init.copy())
 
