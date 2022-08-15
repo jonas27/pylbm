@@ -15,11 +15,18 @@
 # ./m7.job 4 $i
 # done
 
-# for nodes = 8
-for i in 2 18
+# for nodes = 6
+for i in 6 24
 do
-./m7.job 8 $i
+./m7.job 6 $i
 done
+
+# for nodes = 8
+# can't use 8 nodes
+# for i in 2 18
+# do
+# ./m7.job 8 $i
+# done
 
 # one node not working!!! 
 # for nodes = 1
