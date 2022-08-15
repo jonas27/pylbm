@@ -152,7 +152,7 @@ To implement the streaming and collision terms the BTE first needs to be discret
 The streaming and collision are discussed in more detail in chapter 3.
 
 
-
+\clearpage
 \section{Lattice-Boltzmann Method} \label{sec:lbm}
 The BTE is defined in a continous phase space which is not readily implementable in computer code.
 This can be overcome by approximating the continous phase space to a discrete phase space, called the Lattice-Boltzmann method (LBM).
@@ -161,18 +161,17 @@ In this project the spatial dimension is discretized to a 2D lattice and the vel
 This scheme is illustarate in \href{fig:d2q9-scheme} where $a$ shows the discretazation of the velocity space and $b$ the discretized of the physical space on a 2D grid with the velocity layered on top.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=9cm]{d2q9_scheme.png}\\
-  (a) Discretization on the velocity space according to D2Q9.\\
-  (b) Uniform 2D grid for the discretization in the physical space.\\
+  \includegraphics[width=0.8\columnwidth]{d2q9_scheme.png}\\
   \small{(Material from lecture)}
-  \caption{Discretization of the BTE.}
+  \caption[Discretization of the BTE]{Discretization of the BTE. a) is the discretization on the velocity space according to D2Q9 and b) the discretization of the physical space on a  2D lattice or grid.\\
+  Source: Lecture}
   \label{fig:d2q9-scheme}
 \end{figure}
 
 
 \chapter{Implementation}
 This chapter shows the most important code implementations, mainly the streaming, the collision, the boundaries and the moving top lid.
-Throughout the report I will use the notation $_cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the velocities, notated as $_axy$, where $a=2$ a
+Throughout the report I will use the notation $cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the local average velocities, notated as $axy$, where $a=2$, and the local densities n $xy$.
 
 \section{M1: Streaming}
 The main part of milestone 1 is the streaming operator. It is not necessary to include the final report, but because it is used throughout the report it is explained here once. 
@@ -233,7 +232,7 @@ def local_density(f_cxy: np.array) -> np.array:
   \end{lstlisting}
 \end{center}
 The local average velocity is more complicated but effectively it is the summation over the velocity dimensions for each physical dimension divided by the local density.
-It is calculated via $u(r)=\frac{1}{\rho (r)} \sum_{i} c_{i}f_{i}(r)$ and respective code is shown in listing \ref{lst:vel}.
+It is calculated via $\textbf{u}(\textbf{r})=\frac{1}{\rho (\textbf{r})} \sum_{i} c_{i}f_{i}(\textbf{r})$ and respective code is shown in listing \ref{lst:vel}.
 \begin{center}
   \begin{lstlisting}[caption=Implementation of the local average velocity.,label=lst:vel, basicstyle=\small]
 def local_avg_velocity(f_cxy: np.array, r_xy: np.array):
@@ -254,6 +253,11 @@ w_i = \left( \frac{4}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{9}, \frac{1}{9}, \f
 \end{equation}
 It is important to note that the approximation in the collision term is not always accurate.
 But under the assumption that all transport processes occur on a longer time scale it is appropriate to do.
+
+\section{Boundaries}
+The simplest boundaries are static walls. 
+The bounce back from the walls are modeled to occur in the opposed direction. 
+
 
 
 \chapter{Milestones}
@@ -449,13 +453,9 @@ In the lecture the the following parameters were recommended:
     \item $\textbf{u}(\textbf{r},0) = 0.0$
     \item $T = 100000$
     \item $\omega = 1.7$
-    \item $top_vel = 0.1$
+    \item $top-vel = 0.1$
 \end{enumerate}
-These parameters result in a Reynolds number of $1,020$, which could be close enough to be comparable with similar research.
-
-Running this configuration results in a lid driven cavity  after $T=100,000$ shown in figure \ref{fig:m6-1}.
-The most striking feature in the graphs is the moving cavity. Because of the moving lid, it forms in the top right corner and steadily moves to the center of the graph. 
-They are also cavities, albeit a lot smaller ones, in the bottom left and right corners. 
+\clearpage
 \begin{figure}[ht]
 \centering
 % \begin{frame}{}
@@ -469,6 +469,13 @@ They are also cavities, albeit a lot smaller ones, in the bottom left and right 
 \caption[Lid-driven cavity]{Lid-driven cavity shown as \textit{streamplot}. a) is an animation of the lid-driven cavity for time steps of $1,000$ viewable in some pdf readers (tested in Adobe and Okular) . b) shows the same solution but as static graphs in time steps of $10,000$. }
 \label{fig:m6-1}
 \end{figure}
+\clearpage
+These parameters result in a Reynolds number of $1,020$, which could be close enough to be comparable with similar research.
+
+Running this configuration results in a lid driven cavity  after $T=100,000$ shown in figure \ref{fig:m6-1}.
+The most striking feature in the graphs is the moving cavity. Because of the moving lid, it forms in the top right corner and steadily moves to the center of the graph. 
+Cavities also form in the bottom left and right corners, albeit a lot smaller ones. 
+
 
 
 \section{M7: Parallelization}
@@ -505,6 +512,16 @@ The results for the parallization results are shown in figure \ref{fig:m7}.
 \caption[Performance per configuration.]{The performance per configuration. The blue line is the performance for 2 nodes, the orange line is the performance for 4 nodes and the red dot is the performance for the GPU. The GPU is marked at 125 CPUs but has instead 125 TPUs.}
 \label{fig:m7}
 \end{figure}
+Contrary to my expectations using more nodes was superior to less nodes with a constant number of CPUs. 
+
+It is also surprising that
+
+\chapter{Conclusion}
+The LBM is an easy to use method to model fluid and gas flows. In this report I first explained the evolution and theoretical background of the LBM. 
+Afterwards, I showed and explained important implementations like the streaming and collision functions.
+Finally, all relevant milestones were achieved and analysed.
+
+For the future, using MPI on GPUs and TPUs could unlock 
 
 
 
@@ -512,8 +529,7 @@ The results for the parallization results are shown in figure \ref{fig:m7}.
 
 
 
-
-\chapter{Acknowledgements}
+\section{Acknowledgements}
 The authors acknowledge support by the state of Baden-Württemberg through bwHPC.
 
 \bibliographystyle{unsrt}
