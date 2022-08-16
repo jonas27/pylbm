@@ -5,6 +5,8 @@ Notations:
     _cxy: is the probability density function with velocity dim c and space dim x and y.
 """
 
+import argparse
+import logging
 from pathlib import Path
 from typing import Tuple
 
@@ -204,7 +206,6 @@ def sliding_top_wall(f_cxy: np.array, velocity: float) -> np.array:
     """sliding_top_wall implements the sliding top lid.
 
     The lid velocity is constantly applied to the top of the grid.
-    The current
     This step has to be done after the streaming and before the collision step.
 
     Args:
@@ -226,6 +227,7 @@ def sliding_top_wall_simple(f_cxy: np.array, velocity: float = None) -> np.array
 
     The lid velocity is constantly applied to the top of the grid.
     This step has to be done after the streaming and before the collision step.
+    Here, I approximate the density at the lid to 1/6 and multiply it by the velocity.
 
     Args:
         - f_cxy: The PDF with dimension c,x and y. c is the velocity dim and x and y the spatial dim.
@@ -412,13 +414,38 @@ def save_mpiio(comm: MPI.Cartcomm, fn, g_kl):
 
 def run_m7():
     """run_m7 runs the lid driven cavity problem from milestone 7."""
-    org_x_dim = 300
-    org_y_dim = 300
-    epochs = 100000
-    omega = 1.7
-    top_vel = 0.1
-    r_init = 1.0
-    u_init = 0.0
+
+    logger = logging.getLogger("pylbm")
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter("%(asctime)s %(pathname)s:%(lineno)d %(levelname)s - %(message)s", datefmt="%H:%M:%S")
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+
+    parser = argparse.ArgumentParser(description="graphdriver")
+    parser.add_argument("-d", default=False, action="store_true", help="Debug: Run with logging.debug")
+    parser.add_argument("--lid_vel", default="0.1", help="The lid velocity used in the simulation.", type=float)
+    parser.add_argument("--omega", default="1.7", help="The omega/collision frequency used in the simulation.", type=float)
+    parser.add_argument("--density", default="1.0", help="The initial local density used in the simulation.", type=float)
+    parser.add_argument("--time", default="300000", help="The number of time steps.", type=int)
+    parser.add_argument("--velocity", default="0.0", help="The initial local average velocity used in the simulation.", type=float)
+    parser.add_argument("--x_dim", default="300", help="The x dimension used in the simulation.", type=int)
+    parser.add_argument("--y_dim", default="300", help="The y dimension used in the simulation.", type=int)
+    argss = parser.parse_args()
+
+    if argss.d:
+        logger.setLevel(logging.DEBUG)
+
+    logger.debug(argss)
+
+    org_x_dim = argss.x_dim
+    org_y_dim = argss.y_dim
+    epochs = argss.time
+    omega = argss.omega
+    top_vel = argss.lid_vel
+    r_init = argss.density
+    u_init = argss.velocity
 
     # get comm_world
     comm = MPI.COMM_WORLD
@@ -443,7 +470,9 @@ def run_m7():
     # Get static shifts
     shifts = sync_shifts(cartcomm)
 
-    for _ in range(epochs):
+    for e in range(epochs):
+        if e % 1000 == 0:
+            logger.debug("Current epoch is: {}".format(e))
         # sync the PDF via cartcomm
         f_cxy = sync_f(cartcomm, shifts, f_cxy)
         f_cxy = stream(f_cxy=f_cxy)
