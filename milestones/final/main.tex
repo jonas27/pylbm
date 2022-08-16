@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt, oneside]{book}
+\documentclass[a4paper,12pt, oneside]{book}
 \usepackage[LGR,T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -7,6 +7,33 @@
 \usepackage[english]{babel}
 
 \usepackage{listings} % package for listing parts of code
+
+% for chapter titles
+\usepackage{titlesec, blindtext, color}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+
+\usepackage{chngcntr}  % continuous numbering of figures/tables over chapters
+\counterwithout{equation}{chapter}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+\AtBeginDocument{% the counter is defined later
+  \counterwithout{lstlisting}{chapter}%
+}
+\makeatletter
+\renewcommand{\l@lstlisting}[2]{%
+  \@dottedtocline{1}{0em}{1.5em}{\lstlistingname\ #1}{#2}%
+}
+\makeatother
+% \counterwithout{lstlisting}{chapter}
+
+% for headers
+\usepackage{fancyhdr}
+
+%makes caption bolt
+\usepackage[labelfont=bf]{caption} 
 
 \usepackage{amsmath}
 
@@ -18,62 +45,63 @@
 
 \usepackage{hyperref} % load last
 
-% \renewcommand*\footnoterule{}
-
-% \makeatletter
-% \renewcommand{\@chapapp}{}% Not necessary...
-% \newenvironment{chapquote}[2][2em]
-%   {\setlength{\@tempdima}{#1}%
-%    \def\chapquote@author{#2}%
-%    \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
-%    \itshape}
-%   {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
-% \makeatother
-
-% \def\subsubsectionfont{\fontfamily{\rmdefault}\fontshape{it}\selectfont\raggedright}
-% % \newcounter {subsubsection}[subsection]
-% % \newcounter {paragraph}[subsubsection]
-% % \renewcommand\thesubsubsection{\thesubsection .\@arabic\c@subsubsection}
-% % \renewcommand\theparagraph    {\thesubsubsection.\@arabic\c@paragraph}
-% \newcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
-%                                     {-11pt \@plus -2\p@ \@minus -2\p@}%
-%                                     {-.5em}%
-%                                     {\subsubsectionfont}}
-% % \newcommand*\l@subsubsection{\@dottedtocline{3}{3.8em}{3.2em}}
-
+\renewcommand{\baselinestretch}{1.2} %set line width
 
 % Book's title and subtitle
 \title{\Huge \textbf{High Performance Computing with Python} \vspace{4mm} \\ \huge Final Report}
 % Author
 % \author{\textsc{First-name Last-name}\footnote{email address}}
-\author{\textsc{Jonas Manser} \\ \vspace{3mm}\text{4953222}  \\
-\vspace{3mm}\text{jonas.burster@gmail.com}}
+\author{\textsc{Jonas Manser} \\ 
+\vspace{3mm}\text{4953222}  \\
+\vspace{3mm}\url{jonas.burster@gmail.com} \\
+\vspace{3mm}\url{https://github.com/jonas27/pylbm/}}
+
+
+
 
 
 \begin{document}
 
-% \makeatletter
-% \begin{titlepage}
-%   \begin{center}
-%     \includegraphics[width=0.5\linewidth]{logos/Uni_Logo-Grundversion_E1_A4_CMYK.eps}\\[4ex]
-%     {\huge \bfseries  \@title }\\[2ex]
-%     {\LARGE  \@author}\\[30ex]
-%     {\large \@date}
-%   \end{center}
-% \end{titlepage}
-% \makeatother
-% \thispagestyle{empty}
-% \newpage
+\makeatletter
+\begin{titlepage}
+  \begin{center}
+    \includegraphics[width=0.5\linewidth]{logos/Uni_Logo-Grundversion_E1_A4_CMYK.eps}\\[4ex]
+    {\huge \bfseries  \@title }\\[2ex]
+    {\LARGE  \@author}\\[30ex]
+    {\large \@date}
+  \end{center}
+\end{titlepage}
+\makeatother
+\thispagestyle{empty}
+\newpage
 
-
+\pagenumbering{Roman}
 \tableofcontents
-\clearpage
+\thispagestyle{plain}
+\listoffigures
+\thispagestyle{plain}
+\lstlistoflistings
+\thispagestyle{plain}
+
+
+
+
+\pagenumbering{arabic}
+
+
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{%
+  \markboth{\thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{%
+  \markright{\thesection.\ #1}}
 
 
 \chapter{Introduction}
 The Lattice Boltzmann Method (LBM) is a numerical solution of (nonlinear) partial differential equations of the original BLT introduced in 1988 by McNamara and Zanetti~\cite{mcnamara1988boltzmann-method}.
-It is used to simulate flows in a closed system and is based on the core assumption that flows can be approximated to particles on a lattice.
-This assumption has been shown to be true for incompressible subsonic flows of fluids and gases.
+It is used to simulate liquids\footnote{I will focus exclusively on liquids, but most aspects in the report hold for some gases as well.} in a closed system and is based on the core assumption that their flows can be approximated to particles on a lattice.
+To simulate the correct flow of liquids a model must lead to the the Navier–Stokes equations in the macoscopic limit.
+The Navier–Stokes equations are partial differential equations to describe the motion of viscous fluid substances, named after the physicists Claude-Louis Navier and George Gabriel Stokes.
+It has been shown that the LBM does indeed fulfill these equations for incompressible subsonic flows of fluids.
 Today, the LBM is used in a wide variety of fields from car aerodynamics to ocean current flows.
 
 The LBM originates from the lattice gas automata (LGA) pioneered by Hardy, Pomeau and de Pazzis in the 1970s with the HPP-model~\cite{hardy1973timeHPP}.
@@ -87,7 +115,7 @@ Their new method "is based on the simulation of a very simple microscopic system
 Because of their close similarity, the LBM shares many features with the LGA, like the lack of Galilean invariance and both satisfy the Navier-Stokes equation in the macroscopic limit.
 It, crucially, "directly stud[ies] the time evolution of the mean values"~\cite{mcnamara1988boltzmann-method} and thus does not need statistical averaging to compute the velocity, as is the case in LGA, leading to lower computing requirements.
 
-The key points of the LBM success is it's simplicity, relatively low consumption of computing requirements and easy parallelization of the algorithm.
+The key points of the LBM success is its simplicity, relatively low consumption of computing requirements and easy parallelization of the algorithm.
 This is achieved by approximating the fluid to particles on a grid and using a separate streaming and collision step to simulate the particles behaviour over time.
 This is unlike other computational fluid dynamics (CFD) methods which directly solve the numerically macroscopic properties of a fluied, i.e. the mass, momentum, and energy.
 Simulating the particles themselves also makes incorperating boundries and microscopic interactions easier than in most other CFD models.
@@ -96,41 +124,45 @@ The reminder of the report is structed in the follwing way: The second chapter i
 Afterwards I will conclude and give a future outlook.
 
 \chapter{Theoretical Background}
+The probability density function is used to describe the state of particles in a closed system and the Boltzmann transport equation tracks the time evolution of this function.
+Combining these methods and discretizing them over a lattice leads to the LBM.
+In this section I will discuss each individual component in greater detail.
+
 \section{Probability Density Function}
 The probability density function (PDF) describes the statistical probability of finding particles in a closed system not in equilibrium and is denoted by $f$ in the implementation.
 It thereby replaces tagging each particle, as in molecular dynamic simulations.
-In this case, the PDF is given by $f(r_i,v_i,t)$ where $r$ are the positions and $v$ the velocities.
+The PDF is given by $f(r_i,v_i,t)$ where $r$ are the physical positions, $v$ the velocities and $t$ the time.
 The probability for finding a particle in a certain part of the phase space is then given by equation~\ref{eq:pdf}.
 \begin{equation}
   \label{eq:pdf}
   \begin{aligned}
-    dP = f(\vec{r},\vec{v},t) d^{3}\vec{r} d^{3}\vec{v}
+    dP = f(r,v,t) d^{3}r d^{3}v
   \end{aligned}
 \end{equation}
-The phase space for equation \href{eq:pdf} is given by $[\vec{r}, \vec{r}+d\vec{r}, \vec{v}, \vec{v}+d\vec{v}]$.
+The phase space for equation \ref{eq:pdf} is given by $[r, r+dr, v, v+dv]$.
 Thus, the probability for finding a particle in the phase space at position $r_i$ is only depended on the velocity $v_i$ and time $t$.
 
 The probability of finding a single particle with an arbitraty place $r$ and an arbitrary velocity $v$ in the entire phase space is given by equation \ref{eq:prob-single}.
 \begin{equation}
   \label{eq:prob-single}
   \begin{aligned}
-    P = \int_{\Omega_{\vec{r}}} \int_{\Omega_{\vec{v}}}  f(\vec{r},\vec{v},t) d^{3}\vec{r} d^{3}\vec{v} \quad \overset{!}{=} 1
+    P = \int_{\Omega_{r}} \int_{\Omega_{\vec{v}}}  f(r,v,t) d^{3}r d^{3}v \quad \overset{!}{=} 1
   \end{aligned}
 \end{equation}
-Assuming the fluid is in a closed system where no particles are added or destroyed, it must hold that equation \href{eq:prob-single} is equal to one, i.e. normalized to unity. 
-This means, the chance to find an arbitrary particle in an arbitraty location is equal to one.
+Assuming the fluid is in a closed system where no particles are added or removed, it must hold that equation \href{eq:prob-single} is equal to one, i.e. normalized to unity. 
+This means the chance to find an arbitrary particle in an arbitrary location is equal to one.
 
-This then leads us to the general form of the $i$-th moments of $ f(\vec{r},\vec{v},t) $ w.r.t. $ \vec{v} $ shown in equation \ref{eq:general-moments}.
+This then leads to the general form of the $i$-th moments of $ f(r,v,t) $ w.r.t. $ v $ shown in equation \ref{eq:general-moments}.
 \begin{equation}
   \label{eq:general-moments}
   \begin{aligned}
-    \mu_{i}(\vec{r}) =\int_{\Omega_{\vec{v}}}\vec{v}^{i} f(\vec{r},\vec{v},t)d^{3}\vec{v}
+    \mu_{i}(r) =\int_{\Omega_{v}}v^{i} f(r,v,t)d^{3}v
   \end{aligned}
 \end{equation}
 The first and second order moments are the main subjects of this project and can be readily interpreted.
 The first order moment is the velocity in the system, which for liquids is the flow field.
 In a 2D lattice a two dimensional vector for each field is needed to describe the average local velocity of each particle.
-The second order moment is the kenetic energy density in our system which can be readily interpreted as the temperature of a fluid.
+The second order moment is the kenetic energy density in the system which can be readily interpreted as the temperature of a fluid.
 Different fluids can have different translation ratios between velocities and temperature and thus an increase in temperature in a closed system would lead to higher velocities but the exact increase is depended on the fluid.
 
 
@@ -149,16 +181,15 @@ equation \ref{eq:BTE}.
 Where the term $f$ is the PDF, $\frac{dr(t)}{dt}$ is called the velocity and $\frac{dv(t)}{dt}$ is called the acceleration and by Newtons law is the force acting on the particles devivded by their respective mass.
 The \textit{l.h.s.} of equation \ref{eq:BTE} is called the streaming term and the \textit{r.h.s} is the collision term.
 To implement the streaming and collision terms the BTE first needs to be discretized.
-The streaming and collision are discussed in more detail in chapter 3.
+The implementation of the streaming and collision terms are discussed in more detail in chapter 3.
 
 
-\clearpage
 \section{Lattice-Boltzmann Method} \label{sec:lbm}
 The BTE is defined in a continous phase space which is not readily implementable in computer code.
 This can be overcome by approximating the continous phase space to a discrete phase space, called the Lattice-Boltzmann method (LBM).
 The idea is to discretize over a lattice and use the partial derivatives to solve the BTE.
-In this project the spatial dimension is discretized to a 2D lattice and the velocities are descritized to 9 directions also called a \textit{D2Q9}-model.
-This scheme is illustarate in \href{fig:d2q9-scheme} where $a$ shows the discretazation of the velocity space and $b$ the discretized of the physical space on a 2D grid with the velocity layered on top.
+In this report the spatial dimension is discretized to a 2D lattice and the velocities are descritized to 9 directions also called a \textit{D2Q9}-model.
+This scheme is illustarate in \ref{fig:d2q9-scheme} where $a$ shows the discretazation of the velocity space and $b$ the discretized of the physical space on a 2D grid with the velocity layered on top. Thus, each particle has a 2D positional vector and a 9D velocity vector.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\columnwidth]{d2q9_scheme.png}\\
@@ -169,12 +200,14 @@ This scheme is illustarate in \href{fig:d2q9-scheme} where $a$ shows the discret
 \end{figure}
 
 
+
 \chapter{Implementation}
 This chapter shows the most important code implementations, mainly the streaming, the collision, the boundaries and the moving top lid.
-Throughout the report I will use the notation $cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the local average velocities, notated as $axy$, where $a=2$, and the local densities n $xy$.
+Throughout the report I will use the code notation $\_cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the local average velocities, notated as $\_axy$, where $a=2$, and the local densities $_xy$.
 
-\section{M1: Streaming}
-The main part of milestone 1 is the streaming operator. It is not necessary to include the final report, but because it is used throughout the report it is explained here once. 
+\section{Streaming}
+The main part of milestone 1 is the streaming operator. It is explained here for reference and used throughout the report. 
+
 From equation~\ref{eq:pdf} it follows that streaming and collision are two separate terms and collision can be ignored by setting it to zero, i.e. $\left( \frac{\partial f}{\partial t} \right)_{col} \overset{!}{=} 0$.
 This simplifies the BTE to equation \ref{eq:streaming} 
 \begin{equation}
@@ -268,8 +301,10 @@ def top_wall(f_cxy: np.array) -> np.array:
   \end{lstlisting}
 \end{center}
 The wall reverses the effects of the streaming, just in the opposite direction.
+For the bottom wall the velocity vectors would be reversed and instead of copying from the last row to the second last, the first row should be copied to the second column.
+For the left and right wall, the left most (or right most) column should be copied to the second column with respect to the corresponding velocities.
 
-Adding a velocity to the wall leads to a bounce back with added or subtracted velocity as shown in listing \ref{lst:top-slide}. 
+Adding a velocity to the top wall leads to a bounce back with added or subtracted velocity as shown in listing \ref{lst:top-slide}. 
 \begin{center}
   \begin{lstlisting}[caption=Bounce back at the top sliding wall.,label=lst:top-slide, basicstyle=\small]
 def sliding_top_wall(f_cxy: np.array, velocity: float):
@@ -281,23 +316,25 @@ def sliding_top_wall(f_cxy: np.array, velocity: float):
     return f_cxy
   \end{lstlisting}
 \end{center}
-In the first line, the density at the sliding wall is calculated and later used in the update of the diagonal velocities.
+In the first line, the density at the sliding wall is calculated and later used in the update of the diagonal velocities. For other walls this could be implemented similarly, just with other velocities and row or columns depending on where the wall is located.
 
 \section{Reynolds number}
-The flow induced by an upper moving wall or lid can be characterized by a certain Reynolds number (Re).
-It expresses the ratio between the inertial terms and the viscous ones and be calculated as follow:
+The flow induced by a moving wall, in this report a moving lid, can be characterized by a certain Reynolds number (Re).
+It expresses the ratio between the inertial terms and the viscous ones and can be calculated by equation \ref{eq:reynolds}.
 \begin{equation}
     \nu = 1 / 3 * (1 / \omega - 1 / 2) \\
 \end{equation}
-\begin{equation}
+\begin{equation}\label{eq:reynolds}
      Re = \frac{top-vel * L_x}{\nu}
 \end{equation}
 
 
 \section{Parallelization}
-To run the code in an high performance computing environment, i.e. super computers, the code must be able to be used in parallel.
+To run the code in an high performance computing environment, e.g. super computers, the code must be able to be used in parallel.
 This means the different operations inside the LBM have to be able to be splitted up and calculated by different processes. 
-To achieve this ghost cells are added around each splitted up section of the grid. Basically, an additional row or columns of nodes are added, called dry nodes. These nodes are not part of the actual experiment but are solely used for computational purposes.
+To achieve this ghost cells are added around each splitted up section of the grid. 
+Basically, an additional row or columns of nodes are added to the grid called dry nodes. 
+These nodes are not part of the actual experiment but are solely used for computational purposes.
 
 
 \chapter{Milestones}
@@ -389,8 +426,7 @@ The reason for the significant divergence is the relative low physical space whi
 \caption[Kinematic viscosity]{The numerical and theoretical velocity amplitude decay and respective kinematic viscosity for $\omega=[0.1, 0.3] $.}
 \label{fig:m3-3-update}
 \end{figure}
-
-Initially I wanted to include the correct numerical results, but decided to include the numerical incorrect results and then show that using a bigger physical space alleviates the problem.
+Initially, I wanted to include only the correct numerical results, but decided to include the numerical incorrect results and then show that using a bigger physical space alleviates the problem.
 I found it interesting that the correctness of the results would be influenced by the collision frequency \textbf{and} the dimensions of the physical space. 
 As $\omega$ only influences how much the equilibrium function is integrated in the collision term, I suspect that the increased rolling over the boundaries somehow causes the equilibrium function to be more imprecise. 
 This is just one possible reason, but not a definitive explanation.
@@ -534,7 +570,7 @@ To measure the implementation performance I let the code run on the BwUniCluster
     \item 4 Nodes with $[1, 4, 9, 16^{*}, 25, 36]$ CPUs
     \item Slurm default memory configuration
 \end{enumerate}
-This results in a total of eight configurations. Each total number of CPUs is present twice, once on two and once on four nodes. 
+This results in a total of eight overlapping configurations and two configurations only possible for 4 nodes. Each total number of CPUs is present twice, once on two and once on four nodes. 
 This allows us to compare the performance between setups with more nodes but less CPUs per node and less nodes but more CPUs per node.
 The configurations marked with $*$ do not result in a perfect geometric splitting of the LBM grid but are included to provide one more datapoint to compare the performance between 2 and 4 nodes.
 Running on one, six or eight nodes was not possible.
@@ -548,13 +584,23 @@ I use double precision floating-point (FP64) as is the case in the numpy impleme
 The results for the parallization results are shown in figure \ref{fig:m7}.
 \begin{figure}[ht]
 \centering
-\resizebox{\columnwidth}{!}{\large\input{img/m7.pgf}}
-\caption[Performance per configuration.]{The performance per configuration. The blue line is the performance for 2 nodes, the orange line is the performance for 4 nodes and the red dot is the performance for the GPU. The GPU is marked at 125 CPUs but has instead 125 TPUs.}
+\textbf{\large a)} \\
+\resizebox{0.8\columnwidth}{!}{\large\input{img/m7.pgf}}
+\vspace*{2mm}
+
+\textbf{\large b)} \\
+\resizebox{0.8\columnwidth}{!}{\large\input{img/m7-mlups.pgf}}
+\caption[Performance per configuration.]{The performance per configuration. The blue line is the performance for 2 nodes, the orange line is the performance for 4 nodes and the red dot is the performance for the GPU. The GPU is marked at 125 CPUs but has instead 125 TPUs.
+a) shows the performance in seconds whereas b) shows the performance in MLUPS.}
 \label{fig:m7}
 \end{figure}
-Contrary to my expectations using more nodes was superior to less nodes with a constant number of CPUs. 
+The MLUPS score is calculated by the number of grid points multiplied by the number of time steps and divided by the runtime.
+Contrary to my expectations using more nodes was superior to less nodes with the same number of total CPUs. 
+Less nodes would also mean less communication outside the node which should theoretically speed up the computation. The contrary was the case.
 
-It is also surprising that
+It is also surprising that the GPU performed as well as 4 nodes and 16 CPUs per node, so 64 CPUs in total. 
+Both run for 87 seconds and achieved an MLUPS of $103448275$.
+The GPU I used has 125 TPUs and uses advanced algorithm to make matrix computation even faster. This means comparing the results between CPU and GPU is very hard and needs deep knowledge of both architectures, the underlying network stack and the frameworks.
 
 \chapter{Conclusion}
 The LBM is an easy to use method to model fluid and gas flows. In this report I first explained the evolution and theoretical background of the LBM. 
