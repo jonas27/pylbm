@@ -73,7 +73,6 @@
 \end{titlepage}
 \makeatother
 \thispagestyle{empty}
-\newpage
 
 \pagenumbering{Roman}
 \tableofcontents
@@ -120,7 +119,7 @@ This is achieved by approximating the fluid to particles on a grid and using a s
 This is unlike other computational fluid dynamics (CFD) methods which directly solve the numerically macroscopic properties of a fluied, i.e. the mass, momentum, and energy.
 Simulating the particles themselves also makes incorperating boundries and microscopic interactions easier than in most other CFD models.
 
-The reminder of the report is structed in the follwing way: The second chapter introduce the theoretical background of the LBM. Chapter three introduces the most important implementations and chapter four shows the results of the individual milestones.
+The reminder of the report is structed in the follwing way: The second chapter introduce the theoretical background of the LBM. Chapter three introduces the most important implementations and chapter four shows the results of the milestones.
 Afterwards I will conclude and give a future outlook.
 
 \chapter{Theoretical Background}
@@ -335,25 +334,28 @@ This means the different operations inside the LBM have to be able to be splitte
 To achieve this dry nodes are added around each splitted up section of the grid.
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.4\columnwidth]{milestones/final/img/latttice-ghost.png}
+\includegraphics[width=0.5\columnwidth]{milestones/final/img/latttice-ghost-beschriftet.png}
 \caption[Wet and dry nodes]{$3\times3$ grids where in blue we have the wet nodes and in gray are the dry nodes.}
-\label{fig:m4-1-streamplot}
+\label{fig:para-ghost}
 \end{figure}
-Basically, two additional rows and columns are added to each sub grid. The nodes inside them are called dry nodes, because they are not part of the simulation but are solely used for computational purposes.
+Basically, two additional rows and columns are added to each sub grid. 
+The nodes inside them are called dry nodes, because they are not part of the actual simulation but are solely used for computational purposes.
 
 
-\chapter{Milestones}
+\chapter{Results}
+In this chapter I will present the results obtained for the milestones. I chose to keep the order of the milestones and named them chapters accordingly.
+
 \section{M3: Shear Wave Decay}
 Shear wave decay describes the amplitude decay of shear waves, i.e. elastic waves travelling through the body of an object.
-In this milestone I am interested in the effects of a certain $\omega$, and thereby the kinematic viscosity $\nu(\omega)$ of a fluid, on the shear wave decay..
-The kinematic viscosity is especially relevant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid:
-\begin{equation}
+An interesting aspect is the effects of a certain $\omega$, and thereby the kinematic viscosity $\nu(\omega)$ of a fluid, on the shear wave decay.
+The kinematic viscosity is especially relevant in fluid dynamics and is defined as the ratio of the dynamic viscosity $\mu$ over the density $\rho$ of the fluid as in equation \ref{eq:viscocity}.
+\begin{equation}\label{eq:viscocity}.
 \nu = \frac{\mu}{\rho}
 \end{equation}
 The milestone is separated in three different parts. 
 The general motion is to set a sinusoidal density or velocity
 perturbation and measure how fast it decays, i.e. reaches the equilibrium.
-For each part we use the following setup:
+For each part I use the following setup:
 \begin{enumerate}
     \item $T = 3000$
     % \item $\mu_{\rho}=\mu_{u}=0.5$
@@ -364,10 +366,10 @@ For each part we use the following setup:
 % \textcolor{red}{low values for omega \url{https://www.researchgate.net/publication/339136823_Impact_of_collision_models_on_the_physical_properties_and_the_stability_of_lattice_Boltzmann_methods}}
 
 \paragraph{M3.1 Density decay} 
-In a closed fluid system with an unequal density, the density is expected to decay over time. In the LBM this decay is dependent on the collision frequency $\omega$ and the size of the system, where both parameters are expected to be inversely correlated to the time it takes to get to the equilibrium.
+In a closed fluid system with an unequal density, the density is expected to decay over time. In the LBM this decay is dependent on the collision frequency $\omega$ and the size of the system, where both parameters are expected to be inversely correlated to the time it takes to reach the equilibrium state.
 
-To investigate if the constructed simulation acts according to the theoretical expectations, I simulate a sine wave in the densities over the length (x dimension) of the physical space.
-Specifically, the initial density distribution is $\rho (\textbf{r},t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}} \right)$ and the velocity is set to zero, i.e. $\textbf{u}(\textbf{r},0)=0$, where $L_{x}$ is the length of the domain in the x direction.
+To see if the simulation behaves according to the theoretical expectations, I simulate a sine wave in the densities over the length (x dimension) of the physical space.
+Specifically, the initial density distribution is $\rho (\textbf{r},t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{x}} \right)$, where $L_{x}$ is the length of the domain in the x direction, and the initial local average velocity is set to zero, i.e. $\textbf{u}(\textbf{r},0)=0$.
 I set $\rho_{0}=0.5$ and use three omega values for the simulation: $\omega=[0.5,1.0,1.7]$.
 The density decay for these values is shown in \ref{fig:m3-1}.
 \begin{figure}[ht]
