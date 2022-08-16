@@ -202,7 +202,8 @@ This scheme is illustarate in \ref{fig:d2q9-scheme} where $a$ shows the discreta
 
 \chapter{Implementation}
 This chapter shows the most important code implementations, mainly the streaming, the collision, the boundaries and the moving top lid.
-Throughout the report I will use the code notation $\_cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the local average velocities, notated as $\_axy$, where $a=2$, and the local densities $_xy$.
+Throughout the report I will use the code notation $\_cxy$ where $c$ is the rolling dimension, here the velocity directions, and $x$ and $y$ are the dimensions of the physical space. The same logic applies for the local average velocities, notated as $\_axy$, where $a=2$, and the local densities $\_xy$.
+The git repository for this report is under \href{https://github.com/jonas27/pylbm}{https://github.com/jonas27/pylbm} and can be installed with `\textit{pip install -e .}` from inside the root directory of the repo.
 
 \section{Streaming}
 The main part of milestone 1 is the streaming operator. It is explained here for reference and used throughout the report. 
@@ -343,7 +344,7 @@ The nodes inside them are called dry nodes, because they are not part of the act
 
 
 \chapter{Results}
-In this chapter I will present the results obtained for the milestones. I chose to keep the order of the milestones and named them chapters accordingly.
+In this chapter I will present the results obtained for the milestones. I chose to keep the order of the milestones and name them chapters accordingly.
 
 \section{M3: Shear Wave Decay}
 Shear wave decay describes the amplitude decay of shear waves, i.e. elastic waves travelling through the body of an object.
@@ -352,9 +353,9 @@ The kinematic viscosity is especially relevant in fluid dynamics and is defined 
 \begin{equation}\label{eq:viscocity}.
 \nu = \frac{\mu}{\rho}
 \end{equation}
-The milestone is separated in three different parts. 
+This milestone is separated in three different parts. 
 The general motion is to set a sinusoidal density or velocity
-perturbation and measure how fast it decays, i.e. reaches the equilibrium.
+perturbation and measure how fast it decays, i.e. the equilibrium state is reached.
 For each part I use the following setup:
 \begin{enumerate}
     \item $T = 3000$
@@ -362,10 +363,9 @@ For each part I use the following setup:
     \item $\epsilon = 0.1$
     \item $L_{x}$, $L_{y}$ = 30, 30
 \end{enumerate}
+The code for this milestone can be found \href{https://github.com/jonas27/pylbm/tree/master/milestones/m3}{here}.
 
-% \textcolor{red}{low values for omega \url{https://www.researchgate.net/publication/339136823_Impact_of_collision_models_on_the_physical_properties_and_the_stability_of_lattice_Boltzmann_methods}}
-
-\paragraph{M3.1 Density decay} 
+\paragraph{Density decay} 
 In a closed fluid system with an unequal density, the density is expected to decay over time. In the LBM this decay is dependent on the collision frequency $\omega$ and the size of the system, where both parameters are expected to be inversely correlated to the time it takes to reach the equilibrium state.
 
 To see if the simulation behaves according to the theoretical expectations, I simulate a sine wave in the densities over the length (x dimension) of the physical space.
@@ -385,7 +385,7 @@ The higher $\omega$, i.e. the collision frequency, the more the initial sine wav
 
 % Because $\omega = \frac{1}{\tau}$
 
-\paragraph{M3.2 Velocity decay}
+\paragraph{Velocity decay}
 Similarly, the velocity in an imbalanced state is expected to converge towards the equilibrium.
 To test this, an initial distribution of $\rho_{0}=1$ $u_{y}(r,0)=0$ and $u_{x}(r,t_{0})=\rho_{0}+\epsilon \sin \left( \frac{2\pi x}{L_{y}} \right)$ was chosen, where $L_{y}$ is the length of the domain in the y direction, i.e. the height.
 \begin{figure}[ht]
@@ -413,7 +413,7 @@ For $\omega=0.1$ the numerical decay is very similar to $\omega=0.3$.
 In addition to figure \ref{fig:m3-2-vel}, it also shows that  increases in the collision frequency $\omega$ have a disproportional bigger effect on the time it takes to reach the equilibrium state.
 
 
-\paragraph{M3.3 Kinematic viscosity scaling with $\omega$}
+\paragraph{Kinematic viscosity scaling with $\omega$}
 The kinematic viscosity is (theoretically) only dependent $\omega$. 
 Plotting the theoretical and the numerical kinematic viscosities next to each other, as done in figure \ref{fig:m3-3-kinematic-viscocity}, should then reflect the model performs according to theory. 
 \begin{figure}[ht]
