@@ -20,9 +20,9 @@
 %%
 %% Matplotlib used the following preamble
 %%   \usepackage{fontspec}
-%%   \setmainfont{DejaVuSerif.ttf}[Path=\detokenize{/home/joe/miniconda3/envs/high/lib/python3.9/site-packages/matplotlib/mpl-data/fonts/ttf/}]
-%%   \setsansfont{DejaVuSans.ttf}[Path=\detokenize{/home/joe/miniconda3/envs/high/lib/python3.9/site-packages/matplotlib/mpl-data/fonts/ttf/}]
-%%   \setmonofont{DejaVuSansMono.ttf}[Path=\detokenize{/home/joe/miniconda3/envs/high/lib/python3.9/site-packages/matplotlib/mpl-data/fonts/ttf/}]
+%%   \setmainfont{DejaVuSerif.ttf}[Path=\detokenize{/home/joe/.local/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/}]
+%%   \setsansfont{DejaVuSans.ttf}[Path=\detokenize{/home/joe/.local/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/}]
+%%   \setmonofont{DejaVuSansMono.ttf}[Path=\detokenize{/home/joe/.local/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/}]
 %%
 \begingroup%
 \makeatletter%
@@ -842,16 +842,16 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{3.036019in}{3.362349in}}%
-\pgfpathlineto{\pgfqpoint{7.005556in}{3.362349in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{7.061111in}{3.362349in}}{\pgfqpoint{7.061111in}{3.417904in}}%
-\pgfpathlineto{\pgfqpoint{7.061111in}{4.205556in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{7.061111in}{4.261111in}}{\pgfqpoint{7.005556in}{4.261111in}}%
-\pgfpathlineto{\pgfqpoint{3.036019in}{4.261111in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{2.980463in}{4.261111in}}{\pgfqpoint{2.980463in}{4.205556in}}%
-\pgfpathlineto{\pgfqpoint{2.980463in}{3.417904in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{2.980463in}{3.362349in}}{\pgfqpoint{3.036019in}{3.362349in}}%
-\pgfpathlineto{\pgfqpoint{3.036019in}{3.362349in}}%
+\pgfpathmoveto{\pgfqpoint{3.868815in}{3.569879in}}%
+\pgfpathlineto{\pgfqpoint{7.044444in}{3.569879in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{7.088889in}{3.569879in}}{\pgfqpoint{7.088889in}{3.614323in}}%
+\pgfpathlineto{\pgfqpoint{7.088889in}{4.244444in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{7.088889in}{4.288889in}}{\pgfqpoint{7.044444in}{4.288889in}}%
+\pgfpathlineto{\pgfqpoint{3.868815in}{4.288889in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{3.824371in}{4.288889in}}{\pgfqpoint{3.824371in}{4.244444in}}%
+\pgfpathlineto{\pgfqpoint{3.824371in}{3.614323in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{3.824371in}{3.569879in}}{\pgfqpoint{3.868815in}{3.569879in}}%
+\pgfpathlineto{\pgfqpoint{3.868815in}{3.569879in}}%
 \pgfpathclose%
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
@@ -862,9 +862,9 @@
 \definecolor{currentstroke}{rgb}{1.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{{5.550000pt}{2.400000pt}}{0.000000pt}%
-\pgfpathmoveto{\pgfqpoint{3.091574in}{4.036176in}}%
-\pgfpathlineto{\pgfqpoint{3.369352in}{4.036176in}}%
-\pgfpathlineto{\pgfqpoint{3.647130in}{4.036176in}}%
+\pgfpathmoveto{\pgfqpoint{3.913260in}{4.108941in}}%
+\pgfpathlineto{\pgfqpoint{4.135482in}{4.108941in}}%
+\pgfpathlineto{\pgfqpoint{4.357704in}{4.108941in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
@@ -891,7 +891,7 @@
 \pgfusepath{stroke,fill}%
 }%
 \begin{pgfscope}%
-\pgfsys@transformshift{3.369352in}{4.036176in}%
+\pgfsys@transformshift{4.135482in}{4.108941in}%
 \pgfsys@useobject{currentmarker}{}%
 \end{pgfscope}%
 \end{pgfscope}%
@@ -899,7 +899,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=3.869352in,y=3.938954in,left,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont Theoretical viscocities}%
+\pgftext[x=4.535482in,y=4.031163in,left,base]{\color{textcolor}\sffamily\fontsize{16.000000}{19.200000}\selectfont Theoretical viscocities}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -908,9 +908,9 @@
 \definecolor{currentstroke}{rgb}{0.000000,0.000000,1.000000}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{{5.550000pt}{2.400000pt}}{0.000000pt}%
-\pgfpathmoveto{\pgfqpoint{3.091574in}{3.628462in}}%
-\pgfpathlineto{\pgfqpoint{3.369352in}{3.628462in}}%
-\pgfpathlineto{\pgfqpoint{3.647130in}{3.628462in}}%
+\pgfpathmoveto{\pgfqpoint{3.913260in}{3.782769in}}%
+\pgfpathlineto{\pgfqpoint{4.135482in}{3.782769in}}%
+\pgfpathlineto{\pgfqpoint{4.357704in}{3.782769in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
@@ -937,7 +937,7 @@
 \pgfusepath{stroke,fill}%
 }%
 \begin{pgfscope}%
-\pgfsys@transformshift{3.369352in}{3.628462in}%
+\pgfsys@transformshift{4.135482in}{3.782769in}%
 \pgfsys@useobject{currentmarker}{}%
 \end{pgfscope}%
 \end{pgfscope}%
@@ -945,7 +945,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=3.869352in,y=3.531239in,left,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont Numerical viscocities}%
+\pgftext[x=4.535482in,y=3.704992in,left,base]{\color{textcolor}\sffamily\fontsize{16.000000}{19.200000}\selectfont Numerical viscocities}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%
