@@ -633,7 +633,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=5.125000in,y=4.483333in,,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont Performance in MLUPS}%
+\pgftext[x=5.125000in,y=4.483333in,,base]{\color{textcolor}\sffamily\fontsize{20.000000}{24.000000}\selectfont MLUPS with respect to time}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
