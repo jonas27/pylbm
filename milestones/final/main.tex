@@ -332,9 +332,14 @@ It expresses the ratio between the inertial terms and the viscous ones and can b
 \section{Parallelization}
 To run the code in an high performance computing environment, e.g. super computers, the code must be able to be used in parallel.
 This means the different operations inside the LBM have to be able to be splitted up and calculated by different processes. 
-To achieve this ghost cells are added around each splitted up section of the grid. 
-Basically, an additional row or columns of nodes are added to the grid called dry nodes. 
-These nodes are not part of the actual experiment but are solely used for computational purposes.
+To achieve this dry nodes are added around each splitted up section of the grid.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.4\columnwidth]{milestones/final/img/latttice-ghost.png}
+\caption[Wet and dry nodes]{$3\times3$ grids where in blue we have the wet nodes and in gray are the dry nodes.}
+\label{fig:m4-1-streamplot}
+\end{figure}
+Basically, two additional rows and columns are added to each sub grid. The nodes inside them are called dry nodes, because they are not part of the simulation but are solely used for computational purposes.
 
 
 \chapter{Milestones}
