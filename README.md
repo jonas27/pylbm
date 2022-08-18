@@ -1,23 +1,24 @@
 # pylbm
 
-low reynolds number means very viscos fluid
+Implementation of the Lattice-Boltzmann-Method (LBM) for a D29Q-model. 
+The code is implemented in Numpy and can be used with MPI.
+However, there is an alternative Pytorch implementation which can be used to run on GPUs.
 
-## Setup
-Create a conda environemnt:
+The code is part of the course *High-Performance Computing: Fluid Mechanics with Python* at the University of Freiburg. 
 
-```conda create --name high python=3.9 && conda activate high```
-
->  mpi4py can be install via conda `conda install -c conda-forge mpi4py`
-
-Then install this package into env high:
+## Installation
+Install this package into your pip env by executing the below line in the repo root dir:
 
 ```pip install -e .```
 
 ## Naming
-name variable as <name_dim>
-eg: "c_ca"
+The naming convention is adopted from the lecture. 
+The first index is the rolling index.
+x and y are the dimensions of the physical 2D space.
+E.g: "f_cxy" means the c=velocity space and x and y.
 
 ## Numpy funcs
+Important numpy funcs
 
 ### einsum
 Makes the sum over all dot products.
@@ -32,19 +33,8 @@ u_aij = np.einsum('cij,ca->aij',f_cij,c_ca)
 
 rho_ij = np.einsum('cij -> ij', f_cij)
 
-## From Lecture (23.5)
-Deadline: init june
-We have to show that our viscocity vs theoretical viscocity (picture 2).
+## Lid driven cavity problem
+![](https://github.com/jonas27/pylbm/blob/d4e7bc1c4a4b967b3517914cad728d4b4d3b81ac/milestones/m6/m6.gif?raw=true)
 
-$y=a(t)/a(0)$
-
-$x= t$
-
-$curve = e^(-v*t*k_y ^2)$
-
-shearwave decay is nothing else than testing streaming and collision
-
-## next deadline
-Couette flow is super important because we will paralyze it.
-
-### Last Paralization
+## Parallization results
+![](https://github.com/jonas27/pylbm/blob/754a690538eafa0f065327e84305ff308d3eb957/milestones/final/img/m7-mlups.png?raw=true)
